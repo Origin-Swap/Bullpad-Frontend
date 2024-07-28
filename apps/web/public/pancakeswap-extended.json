@@ -1,0 +1,46 @@
+{
+  "name": "Pancake Default List",
+  "timestamp": "2022-01-26T11:45:09Z",
+  "version": {
+    "major": 4,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://pancakeswap.finance/logo.png",
+  "keywords": ["pancake", "default"],
+  "tokens": [
+    {
+      "name": "Wrapped VANRY",
+      "symbol": "WVANRY",
+      "address": "0xa6C14412C9FDD2Ef31cB9b83df55EC0AFa061867",
+      "chainId": 2040,
+      "decimals": 18,
+      "logoURI": "https://bullpad.org/images/cards/Vanar.png"
+    },
+    {
+      "name": "Wrapped CORE",
+      "symbol": "WCORE",
+      "address": "0x40375C92d9FAf44d2f9db9Bd9ba41a3317a2404f",
+      "chainId": 1116,
+      "decimals": 18,
+      "logoURI": "https://res.corex.network/token/CORE_0x40375C92d9FAf44d2f9db9Bd9ba41a3317a2404f.png"
+    },
+    {
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "address": "0x900101d06a7426441ae63e9ab3b9b0f63be145f1",
+      "chainId": 1116,
+      "decimals": 6,
+      "logoURI": "https://www.geckoterminal.com/_next/image?url=https%3A%2F%2Fcoin-images.coingecko.com%2Fcoins%2Fimages%2F34424%2Fsmall%2Fusdt_logo.png%3F1704857706&w=32&q=75"
+    },
+    {
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "address": "0xa4151B2B3e269645181dCcF2D426cE75fcbDeca9",
+      "chainId": 1116,
+      "decimals": 6,
+      "logoURI": "https://www.geckoterminal.com/_next/image?url=https%3A%2F%2Fcoin-images.coingecko.com%2Fcoins%2Fimages%2F34423%2Fsmall%2Fusdc.png%3F1704857726&w=32&q=75"
+    }
+  ]
+}
