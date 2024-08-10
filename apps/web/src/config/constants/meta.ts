@@ -6,7 +6,7 @@ export const DEFAULT_META: PageMeta = {
   title: 'Bull-Ex',
   description:
     'The first DEFI AMM built on Vanar Network.',
-  image: 'https://i.ibb.co/FDsD6dn/hero2.png',
+  image: '/images/bannerbg.png',
 }
 
 interface PathList {

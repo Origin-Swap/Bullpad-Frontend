@@ -69,7 +69,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           content="BullEx, the leading DEX on Vanar Chain with the best farms in DeFi and a lottery for BULL."
         />
         <meta name="theme-color" content="#1FC7D4" />
-        <meta name="twitter:image" content="https://i.ibb.co/FDsD6dn/hero2.png" />
+        <meta name="twitter:image" content="/images/bannerbg.png" />
         <meta
           name="twitter:description"
           content="MULTICHAIN DEFI WEB 3.0 ECOSYSTEM!"
