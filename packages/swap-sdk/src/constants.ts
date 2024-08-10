@@ -8,6 +8,7 @@ export enum ChainId {
   BSC_TESTNET = 97,
   CORE = 1116,
   VANAR = 2040,
+  BCCHAIN = 1919,
 }
 
 export const FACTORY_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
@@ -22,6 +23,7 @@ export const FACTORY_ADDRESS_MAP: Record<number, string> = {
   [ChainId.BSC_TESTNET]: '0x6725f303b657a9451d8ba641348b6761a6cc7a17',
   [ChainId.CORE]: '0x67f232ee36996cCb863f36E74B093e19851e24c7', //unverify contract
   [ChainId.VANAR]: '0x515f9c54855700e74bdf81D668381453BB30EB4A',
+  [ChainId.BCCHAIN]: '0xaF56dAa09dD5C6eF1e72fC9cEf34CDf48AB33303',
 }
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
 
@@ -34,6 +36,7 @@ export const INIT_CODE_HASH_MAP: Record<number, string> = {
   [ChainId.BSC_TESTNET]: '0xd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66',
   [ChainId.CORE]: '0x4277ea1bf9c2d80fe93c1550902492fcdd6d68fda19af5d892d2b66a8700dd00',
   [ChainId.VANAR]: '0x7e70d033317128b7f797badfc21101a2813199e04e1ff442785eae5bf5e766dd',
+  [ChainId.BCCHAIN]: '0x4277ea1bf9c2d80fe93c1550902492fcdd6d68fda19af5d892d2b66a8700dd00',
 }
 
 export const WETH9 = {
@@ -104,6 +107,14 @@ export const WBNB = {
     'Wrapped VANRY',
     'https://www.vanachain.com/'
   ),
+  [ChainId.BCCHAIN]: new ERC20Token(
+    ChainId.BCCHAIN,
+    '0x4CB243911399aFff36cF29fD392D7CA2A4e3aae9',
+    18,
+    'WBCC',
+    'Wrapped BCC',
+    'https://bullpad.org/'
+  ),
 }
 
 export const WNATIVE: Record<number, ERC20Token> = {
@@ -114,6 +125,7 @@ export const WNATIVE: Record<number, ERC20Token> = {
   [ChainId.BSC_TESTNET]: WBNB[ChainId.BSC_TESTNET],
   [ChainId.CORE]: WBNB[ChainId.CORE],
   [ChainId.VANAR]: WBNB[ChainId.VANAR],
+  [ChainId.BCCHAIN]: WBNB[ChainId.BCCHAIN],
 }
 
 export const NATIVE: Record<
@@ -139,4 +151,5 @@ export const NATIVE: Record<
   },
   [ChainId.CORE]: { name: 'CORE', symbol: 'CORE', decimals: 18 },
   [ChainId.VANAR]: { name: 'Vanry', symbol: 'VANRY', decimals: 18 },
+  [ChainId.BCCHAIN]: { name: 'BC Chain', symbol: 'BCC', decimals: 18 },
 }

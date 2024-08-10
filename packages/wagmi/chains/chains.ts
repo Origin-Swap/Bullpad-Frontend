@@ -18,18 +18,18 @@ export const vanar: Chain = {
   },
 }
 
-export const avalandche: Chain = {
-  id: 43114,
-  name: 'Avalanche C-Chain',
-  network: 'avalanche',
+export const bcchain: Chain = {
+  id: 1919,
+  name: 'BCChain Testnet',
+  network: 'bcchain',
   rpcUrls: {
-    default: 'https://rpc.ankr.com/avalanche',
+    default: 'https://rpc.bcchaindev.com/',
   },
-  nativeCurrency: { name: 'Avalanche', symbol: 'AVAX', decimals: 18 },
+  nativeCurrency: { name: 'BC Chain', symbol: 'BCC', decimals: 18 },
   blockExplorers: {
     default: {
-      name: 'snowtrace',
-      url: 'https://snowtrace.io/',
+      name: 'BcScan',
+      url: 'https://explorer.bcchaindev.com',
     },
   },
 }

@@ -57,6 +57,30 @@
       "chainId": 1116,
       "decimals": 6,
       "logoURI": "https://www.geckoterminal.com/_next/image?url=https%3A%2F%2Fcoin-images.coingecko.com%2Fcoins%2Fimages%2F34423%2Fsmall%2Fusdc.png%3F1704857726&w=32&q=75"
+    },
+    {
+      "name": "Wrapped BCC",
+      "symbol": "WBCC",
+      "address": "0x4CB243911399aFff36cF29fD392D7CA2A4e3aae9",
+      "chainId": 1919,
+      "decimals": 18,
+      "logoURI": "https://explorer.bcchaindev.com/assets/network_icon.png"
+    },
+    {
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "address": "0xc7335f5A2Df157AeD53b0F5E3eF283173EfBB2Fa",
+      "chainId": 1919,
+      "decimals": 18,
+      "logoURI": "https://www.geckoterminal.com/_next/image?url=https%3A%2F%2Fcoin-images.coingecko.com%2Fcoins%2Fimages%2F34424%2Fsmall%2Fusdt_logo.png%3F1704857706&w=32&q=75"
+    },
+    {
+      "name": "BullPad Test",
+      "symbol": "BULL",
+      "address": "0x8D6E7213bad28E00156c7ecddEFac64Cc508CAD5",
+      "chainId": 1919,
+      "decimals": 18,
+      "logoURI": "https://i.ibb.co.com/wdhpDbb/Logo1.png"
     }
   ]
 }

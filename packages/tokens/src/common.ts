@@ -124,6 +124,15 @@ export const USDT_CORE = new ERC20Token(
   'https://lineswap.exchange',
 )
 
+export const USDT_BC = new ERC20Token(
+  ChainId.BCCHAIN,
+  '0xc7335f5A2Df157AeD53b0F5E3eF283173EfBB2Fa',
+  18,
+  'USDT',
+  'Tether USD',
+  'https://lineswap.exchange',
+)
+
 export const BUSD_BSC = new ERC20Token(
   ChainId.BSC,
   '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
@@ -168,6 +177,7 @@ export const BUSD: Record<ChainId, ERC20Token> = {
   [ChainId.BSC_TESTNET]: BUSD_TESTNET,
   [ChainId.CORE]: USDT_CORE,
   [ChainId.VANAR]: USDT_VANAR,
+  [ChainId.BCCHAIN]: USDT_BC,
 }
 
 export const CAKE = {
@@ -187,6 +197,7 @@ export const USDC = {
   [ChainId.GOERLI]: USDC_GOERLI,
   [ChainId.VANAR]: USDC_VANAR,
   [ChainId.CORE]: USDC_CORE,
+  [ChainId.BCCHAIN]: USDT_BC,
 }
 
 export const USDT = {
@@ -194,6 +205,7 @@ export const USDT = {
   [ChainId.ETHEREUM]: USDT_ETH,
   [ChainId.VANAR]: USDT_VANAR,
   [ChainId.CORE]: USDT_CORE,
+  [ChainId.BCCHAIN]: USDT_BC,
 }
 
 export const WBTC_ETH = new ERC20Token(
