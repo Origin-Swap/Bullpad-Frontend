@@ -17,7 +17,9 @@ import {
 } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useLPTokensWithBalanceByAccount } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import FullPositionCard, { StableFullPositionCard } from '../../components/PositionCard'
@@ -68,8 +70,11 @@ const HotTokenListContainer = styled.div`
   }
 `
 
+const table = [ChainId.CORE]
+
 export default function Pool() {
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, isChartSupported } =
@@ -219,7 +224,7 @@ export default function Pool() {
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
         </Flex>
-        <HotTokenList />
+        {chainId === ChainId.CORE && <HotTokenList />}
       </HotTokenListContainer>
     </Page>
   )
