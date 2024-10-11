@@ -170,7 +170,7 @@ export const useCakeBusdPrice = (
   const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet cake if chain is testnet
-  const cake: Token = isTestnet ? BULL[ChainId.VANAR] : BULL[ChainId.CORE]
+  const cake: Token = isTestnet ? BULL[ChainId.VANAR] : BULL[ChainId.SIRE_TESTNET]
   return usePriceByPairs(USDT[cake.chainId], cake)
 }
 
@@ -181,6 +181,6 @@ export const useBNBBusdPrice = (
   const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet wbnb if chain is testnet
-  const wbnb: Token = isTestnet ? WBNB[ChainId.VANAR] : WBNB[ChainId.CORE]
+  const wbnb: Token = isTestnet ? WBNB[ChainId.VANAR] : WBNB[ChainId.SIRE_TESTNET]
   return usePriceByPairs(USDT[wbnb.chainId], wbnb)
 }

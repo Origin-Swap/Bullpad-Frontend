@@ -6,6 +6,7 @@ import MulticallUpdater from './state/multicall/updater'
 import TransactionUpdater from './state/transactions/updater'
 import { chains } from './utils/wagmi'
 
+
 export function Updaters() {
   return (
     <>

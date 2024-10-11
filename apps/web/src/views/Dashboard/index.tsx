@@ -1,336 +1,284 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { ChainId, WNATIVE } from '@pancakeswap/sdk'
-import styled from 'styled-components';
-import {
-  Flex,
-  Box,
-  Heading,
-  IconButton,
-  CardBody,
-  Button,
-  Text,
-  CopyAddress,
-  Skeleton,
-  PageHeader,
-  NextLinkFromReactRouter,
-  Grid,
-} from '@pancakeswap/uikit';
-import useTokenBalance, { useGetCakeBalance } from 'hooks/useTokenBalance'
-import { formatBigNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import { useBalance } from 'wagmi'
-import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization';
+import { ChainId } from '@pancakeswap/sdk';
+import { FetchStatus } from 'config/constants/types';
+import { BACKEND_URL } from 'config/constants/backendApi';
+import { useRouter } from 'next/router';
+import styled from 'styled-components';
+import { Flex, Box, Heading, Button, Text, PageHeader } from '@pancakeswap/uikit';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import Activity from './Activity'
-import AddActivity from './AddActivity'
-import Page from '../Page';
-import ClaimReward from './DailyReward'
+import useNativeCurrency from 'hooks/useNativeCurrency';
+import useTokenBalance, { useGetCakeBalance, useGetUsdtBalance } from 'hooks/useTokenBalance';
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance';
+import { useBalance } from 'wagmi';
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend,
+  Area,
+} from 'recharts';
 
-const StyledSwapContainer = styled(Flex)`
-  flex-shrink: 0;
-  height: fit-content;
-  padding: 0 24px;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 0 40px;
+const Avatar = styled.img`
+  border: 0px solid;
+`;
+
+const CardImage = styled.img`
+  border: 0px;
+`;
+
+const DivHeader = styled.div`
+  margin: 20px;
+  @media screen and (max-width: 480px) {
+    margin: 10px;
   }
 `;
 
-const StyledInputCurrencyWrapper = styled(Box)`
-  width: 60px;
+const Div = styled.div`
+  padding: 1px;
 `;
 
-const Body = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
+const Card = styled.div`
+  flex: 1;
+  padding: 20px 10px 20px 10px;
+  border: 1px solid gray;
+  border-radius: 20px;
+  margin: 5px;
 `;
 
-const HotTokenListContainer = styled.div`
+const CardBody = styled.div`
+  display: flex;
+  background:  linear-gradient(69deg, #80bdff,#42d9ff,#1addff);
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  border: 2px ;
+  border-radius: 20px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  width: 100%;
 
   @media (min-width: 768px) {
-    // Untuk desktop, tampilkan di samping
-    display: flex;
     flex-direction: row;
   }
-
-  @media (max-width: 767px) {
-    // Untuk mobile, tampilkan di bawah
-    display: flex;
-    flex-direction: column;
-  }
-`
-
-const FarmH1 = styled(Heading)`
-  font-size: 16px;
-  margin-bottom: 8px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 24px;
-    margin-bottom: 24px;
-  }
-`
-const FarmH2 = styled(Heading)`
-  font-size: 16px;
-  margin-bottom: 8px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 24px;
-    margin-bottom: 18px;
-  }
-`
-
-const FarmFlexWrapper = styled(Flex)`
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-wrap: nowrap;
-  }
-`
-
-const Wrapper = styled.div`
-  display: grid;
-  margin-bottom: 20px;
-  grid-template-columns: auto;
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: grid;
-  column-gap: 10px;
-  grid-template-columns: auto auto;
-  }
-`
-
-const Wrapper2 = styled.div`
-  display: grid;
-  margin-bottom: 20px;
-  grid-template-columns: auto;
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: grid;
-  column-gap: 10px;
-  grid-template-columns: 25% 75%;
-  }
-`
-
-
-interface Swap {
-  _id: string;
-  chainId: number;
-  userAddress: string;
-  fromCurrency: string;
-  toCurrency: string;
-  amount1: number;
-  amount2: number;
-  txhash: string;
-  status: string;
-  price: number;
-  timestamp: string; // Assuming timestamp is a string for formatting
-}
-
-interface UserData {
-  totalCore: number;
-  totalVanry: number;
-  totalBull: number;
-  swaps: Swap[];
-}
-
-interface UserResponse {
-  [account: string]: UserData;
-}
+`;
 
 const UserDataComponent: React.FC = () => {
-  const { t } = useTranslation();
-  const { account, chainId, chain } = useActiveWeb3React()
-  const [userData, setUserData] = useState<UserResponse | null>(null);
+  const { account, chainId } = useActiveWeb3React();
+  const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(1);
-  const maxItemsPerPage = 10;
-  const isBSC = chainId === ChainId.CORE
-  const native = useNativeCurrency()
+  const router = useRouter();
+  const isBSC = chainId === ChainId.SIRE_TESTNET
+  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.SIRE_TESTNET })
   const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
+
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
+  const { balance: usdtBalance, fetchStatus: usdtFetchStatus } = useGetUsdtBalance()
 
-  const explorers = {
-    1116: 'https://scan.coredao.org/tx/',
-    2040: 'https://explorer.vanarchain.com/tx/',
-  };
-
-  const API_BASE_URL = 'https://swapback.vercel.app'; // Replace with your API base URL
-  // const API_BASE_URL = 'http://localhost:5000';
-
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/api/swaps/user-data`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    const getUserData = async () => {
+  const fetchUserData = useCallback(async (): Promise<void> => {
+      if (!account) return;
       try {
-        const data = await fetchUserData();
-        setUserData(data.userData);
+        const response = await axios.put(`${BACKEND_URL}/api/users/${account}`, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+        setUserData(response.data);
       } catch (error) {
-        console.error('Failed to fetch total CORE amount:', error);
+        console.error('Error fetching user data:', error);
       } finally {
         setLoading(false);
       }
-    };
+    }, [account]);
 
-    getUserData();
-    const intervalId = setInterval(getUserData, 5000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+    useEffect(() => {
+      fetchUserData();
+      const intervalId = setInterval(fetchUserData, 5000);
+      return () => clearInterval(intervalId);
+    }, [fetchUserData]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="text-center">Loading...</div>;
+  }
+
+  if (userData) {
+    if (userData === null) {
+      return (
+        <PageHeader className="rounded-lg p-4">
+          <div className="grid mb-5">
+            <Text className="text-black text-center">You have no register yet. Register now...</Text>
+            <Button onClick={() => router.push('/register')} className="mt-5">
+              Register Now
+            </Button>
+          </div>
+        </PageHeader>
+      );
+    }
   }
 
   if (!userData) {
-    return <div>User data not found for {account}</div>;
+    return (
+      <PageHeader className="rounded-lg p-4">
+        <div className="grid mb-5">
+          <p className="text-black text-center">Trade any token to view the dashboard</p>
+        </div>
+      </PageHeader>
+    );
   }
-  // Filter data untuk pengguna yang sedang aktif
-  const userAccountData = userData[account];
+
+  const userAccountData = userData;
+
+  const portfolioData = [
+      { name: 'Current $ Balance', value: parseFloat(formatBigNumber(bnbBalance.data.value, 2)) || 0 },
+      { name: '', value: 0 }, // Jika ada data sebelumnya
+      // Anda dapat menambahkan data lebih lanjut sesuai kebutuhan
+    ];
 
   return (
-    <PageHeader borderRadius="10px">
-      <FarmFlexWrapper
-      display="flex"
-      justifyContent="space-between"
-      style={{
-        padding: '10px',
-        border: '2px solid #80e1e6',
-        borderRadius: '10px',
-        marginBottom: '30px'
-      }}>
-        <Box>
-          <Text color="black" fontSize="32px">
-            {t('DashBoard')}
-          </Text>
-          <Text color="black" mb="10px" textAlign="center">
-            {account}
-          </Text>
-        </Box>
-        <Flex alignItems="center">
-        <Box style={{border: '1px solid #80e1e6', marginRight:'20px' , padding: '10px 20px 10px 20px', borderRadius: '10px'}}>
-        <Text color="textSubtle">
-          {native.symbol} {t('Balance')}
-        </Text>
-        {!nativeBalance.isFetched ? (
-          <Skeleton height="22px" width="60px" />
-        ) : (
-          <Text fontSize="24px">{formatBigNumber(nativeBalance.data.value, 3)} {native.symbol}</Text>
-        )}
-        </Box>
-        <Box style={{border: '1px solid #80e1e6', padding: '10px 20px 10px 20px', borderRadius: '10px'}}>
-        <Text color="textSubtle">{t('BULL Balance')}</Text>
-        {cakeFetchStatus !== FetchStatus.Fetched ? (
-          <Skeleton height="22px" width="60px" />
-        ) : (
-          <Text fontSize="24px">{formatBigNumber(cakeBalance, 3)} BULL</Text>
-        )}
-        </Box>
-        </Flex>
-      </FarmFlexWrapper>
-      <Wrapper>
-      <ClaimReward />
-      {userAccountData && (
-        <Flex style={{alignItems: 'center', justifyContent: 'center', border: '2px solid #80e1e6', borderRadius: '10px', margin: '5px', boxShadow: '2px 2px 4px 2px #919191', padding: '10px'}}>
-          <Text style={{ paddingRight: '20px', marginTop: '5px', color: 'black' }}>
-            Trading Reward
-          </Text>
-          <Button
-            style={{
-              border: '2px solid #80e1e6',
-              borderRadius: '10px',
-              boxShadow: '2px 2px 4px 2px #919191',
-              fontSize: '16px'
-            }}
-            disabled
-          >
-            Claim {userAccountData.totalBull} BULL
-          </Button>
-        </Flex>
-      )}
-      </Wrapper>
+    <DivHeader className="rounded-lg p-2">
+      <div className="mb-5">
+        <Div className="flex items-center">
+          <Avatar src="https://st2.depositphotos.com/2703645/7304/v/450/depositphotos_73040253-stock-illustration-male-avatar-icon.jpg" className="h-10 w-10 mr-2 rounded-full" />
+          <Div>
+            <p className="text-xs"> Welcome Back</p>
+            <p className="text-lg">
+              {userAccountData.username
+                ? userAccountData.username
+                : `${userAccountData.walletAddress.slice(0, 6)}...${userAccountData.walletAddress.slice(-4)}`}
+            </p>
+          </Div>
+        </Div>
+        <FlexContainer>
+          <Card style={{ flex: 2, paddingTop: "20px" }}>
+          <CardBody>
+            <div className="ml-4">
+              <p className="text-lg text-white">Balance</p>
+              <p className="text-2xl md:text-3xl text-white">${formatBigNumber(bnbBalance.data.value, 2)}</p>
+            </div>
+            <div className="flex justify-center items-center">
+              <CardImage src="/images/cardheaddashboard.png" className="h-24 w-24 mr-8" />
+            </div>
+          </CardBody>
+            <Box mt="30px">
+              <Flex alignItems="center" justifyContent="space-between" mb="4px" style={{borderBottom: '1px solid gray', paddingBottom: '10px'}}>
+              <Flex>
+               <Avatar
+               src="https://pbs.twimg.com/profile_images/1745156323338301443/5tCj2PYf_400x400.jpg"
+               className="h-10 w-10 mr-2 rounded-full"
+               />
+               <Div>
+                <p className="text-lg font-semibold">5IRE</p>
+                <p className="text-xs">5ire Chain</p>
+               </Div>
+               </Flex>
+               <Div>
+                <p className="text-lg font-semibold">{formatBigNumber(bnbBalance.data.value, 2)}</p>
+                <p className="text-xs">$0.000</p>
+               </Div>
+              </Flex>
+              <Flex alignItems="center" justifyContent="space-between" mb="4px" style={{borderBottom: '1px solid gray', paddingBottom: '10px', paddingTop: '10px'}}>
+              <Flex>
+               <Avatar src="https://w7.pngwing.com/pngs/840/253/png-transparent-usdt-cryptocurrencies-icon-thumbnail.png" className="h-10 w-10 mr-2 rounded-full" />
+               <Div>
+                <p className="text-lg font-semibold">USDT</p>
+                <p className="text-xs">tether USD</p>
+               </Div>
+               </Flex>
+               <Div>
+                <p className="text-lg font-semibold">{formatBigNumber(usdtBalance, 2)}</p>
+                <p className="text-xs">$0.000</p>
+               </Div>
+              </Flex>
+              <Flex alignItems="center" justifyContent="space-between" mb="4px" style={{borderBottom: '1px solid gray', paddingBottom: '10px', paddingTop: '10px'}}>
+              <Flex>
+               <Avatar src="/BullPad.png" className="h-10 w-10 mr-2 rounded-full" />
+               <Div>
+                <p className="text-lg font-semibold">BULL</p>
+                <p className="text-xs">BullPad</p>
+               </Div>
+               </Flex>
+               <Div>
+                <p className="text-lg font-semibold">{formatBigNumber(cakeBalance, 2)}</p>
+                <p className="text-xs">$0.000</p>
+               </Div>
+              </Flex>
+            </Box>
+          </Card>
+          <Card style={{ flex: 3 }}>
+            <p className="px-4 py-4 border-2 border-black rounded-lg">Portpolio Chart</p>
+            {/* <ResponsiveContainer width="100%" height={350}>
+              <LineChart data={portfolioData}>
+                <defs>
+                  <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
 
-      <Wrapper>
+                <XAxis dataKey="name" reversed />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="value" stroke="#8884d8" fill="url(#colorUv)" strokeWidth={2} dot={false} />
 
-        <Box
-          style={{
-            background: 'white',
-            border: '2px solid #80e1e6',
-            padding: '10px 20px',
-            borderRadius: '10px',
-            margin: '5px',
-            boxShadow: '2px 2px 4px 2px #919191',
-          }}
-        >
-          <Text style={{ padding: '5px' }}>TRADE</Text>
-          <Text style={{ padding: '5px' }}>+ Earn 2 BULL for every 1 CORE you Swap</Text>
-          <Text style={{ padding: '5px' }}>+ Earn 2 BULL for every 5 VANRY you Swap</Text>
-          <NextLinkFromReactRouter to="/swap">
-            <Button marginTop="24px">{t('Launch Swap')}</Button>
-          </NextLinkFromReactRouter>
-        </Box>
-        <Box
-          style={{
-            background: 'white',
-            border: '2px solid #80e1e6',
-            padding: '10px 20px',
-            borderRadius: '10px',
-            margin: '5px',
-            boxShadow: '2px 2px 4px 2px #919191',
-          }}
-        >
-          <Text style={{ padding: '5px' }}>ADD LIQUIDITY</Text>
-          <Text style={{ padding: '5px' }}>+ Earn 2 BULL for every 1 CORE you Add</Text>
-          <Text style={{ padding: '5px' }}>+ Earn 2 BULL for every 5 VANRY you Add</Text>
-          <NextLinkFromReactRouter to="/add">
-            <Button marginTop="24px">{t('Add Liquidity')}</Button>
-          </NextLinkFromReactRouter>
-        </Box>
-      </Wrapper>
-        {/* {userAccountData && (
-          <Box
-            style={{
-              background: 'white',
-              border: '2px solid #80e1e6',
-              padding: '10px 20px',
-              borderRadius: '10px',
-              marginTop: '5px',
-              boxShadow: '2px 2px 4px 2px #919191',
-            }}
-          >
-            <Text style={{ padding: '10px', marginTop: '5px', color: 'black' }}>
-              Trading Reward
-            </Text>
-            <Text style={{ padding: '0 10px', fontSize: '24px', color: 'blue' }}>
-              {userAccountData.totalBull} BULL
-            </Text>
-            <Button
-              type="button"
-              color="primary"
-              style={{
-                border: '2px solid #80e1e6',
-                padding: '10px 20px',
-                borderRadius: '10px',
-                margin: '5px',
-                boxShadow: '2px 2px 4px 2px #919191',
-              }}
-              disabled
-            >
-              Claim Reward
-            </Button>
+                <Area type="monotone" dataKey="value" stroke="#8884d8" fillOpacity={1} reversed fill="url(#colorUv)" />
+              </LineChart>
+            </ResponsiveContainer> */}
+          </Card>
+        </FlexContainer>
+        <div className="border rounded-lg py-4">
+          <Box mt="3">
+            <Heading size="lg">Last 5 Trading Transactions</Heading>
+            {userAccountData.lastTransactions && userAccountData.lastTransactions.length > 0 ? (
+              <div className="grid grid-cols-3 gap-2 mt-4 border border-gray-100" style={{border: '2px solid gray', borderRadius: '10px', padding: '10px'}}>
+                {/* Column Headers */}
+                <div className="font-semibold" style={{borderRight: '2px solid gray', borderBottom: '2px solid gray', padding: '10px 5px 5px 5px'}}>Sent</div>
+                <div className="font-semibold" style={{borderRight: '2px solid gray', borderBottom: '2px solid gray', padding: '10px 5px 5px 5px'}}>Received</div>
+                <div className="font-semibold" style={{borderBottom: '2px solid gray', padding: '10px 5px 5px 5px'}}>TX Hash</div>
+
+                {userAccountData.lastTransactions.map((transaction: any) => (
+                  <React.Fragment key={transaction.txhash}> {/* Use a unique identifier here */}
+                    <p className="text-sm" style={{ borderRight: '1px solid gray', borderBottom: '1px solid gray', padding: '0px 5px 5px 5px' }}>
+                      {transaction.amount1} {transaction.fromCurrency}
+                    </p>
+                    <p className="text-sm" style={{ borderRight: '1px solid gray', borderBottom: '1px solid gray', padding: '0px 5px 5px 5px' }}>
+                      {transaction.amount2} {transaction.toCurrency}
+                    </p>
+                    <p className="text-sm" style={{ borderBottom: '1px solid gray', padding: '0px 5px 5px 5px' }}>
+                      <a
+                        href={`https://etherscan.io/tx/${transaction.txhash}`} // Ubah URL ini jika Anda menggunakan explorer lain
+                        target="_blank" // Membuka di tab baru
+                        rel="noopener noreferrer" // Keamanan untuk membuka tautan di tab baru
+                        style={{ textDecoration: 'underline', color: 'green' }} // Tambahkan gaya untuk tautan
+                      >
+                        {`${transaction.txhash.slice(0, 3)}...${userAccountData.walletAddress.slice(-4)}`}
+                      </a>
+                    </p>
+                  </React.Fragment>
+                ))}
+
+              </div>
+            ) : (
+              <Text>No transactions recorded</Text>
+            )}
           </Box>
-        )} */}
-        <Activity />
-      <AddActivity />
-    </PageHeader>
+        </div>
+
+      </div>
+    </DivHeader>
   );
 };
-
 
 export default UserDataComponent;

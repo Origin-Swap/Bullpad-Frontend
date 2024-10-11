@@ -16,6 +16,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Column from 'components/Layout/Column';
 import { useUserSingleHopOnly } from 'state/user/hooks';
 import { BIG_INT_ZERO } from 'config/constants/exchange';
+import { BACKEND_URL } from 'config/constants/backendApi';
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange';
 import { useSwapCallback } from 'hooks/useSwapCallback';
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments';
@@ -106,7 +107,7 @@ export default function SwapCommitButton({
   // Fungsi untuk mencatat swap
   const recordSwap = async (swapData) => {
     try {
-      const response = await axios.post('https://swapback.vercel.app/api/swaps', swapData);
+      const response = await axios.post(`${BACKEND_URL}/api/swaps`, swapData);
       // Removed console.log statement
     } catch (error) {
       console.error('Failed to record swap:', error);
@@ -139,7 +140,7 @@ export default function SwapCommitButton({
         // Data yang dikirim ke backend harus mencakup semua field yang diperlukan
         const swapData = {
           chainId, // Shorthand property
-          userAddress: account,
+          walletAddress: account,
           fromCurrency: currencies[Field.INPUT]?.symbol,
           toCurrency: currencies[Field.OUTPUT]?.symbol,
           amount1: parsedIndepentFieldAmount?.toExact(),

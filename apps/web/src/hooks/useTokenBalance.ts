@@ -1,6 +1,6 @@
 import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
-import { BULL } from '@pancakeswap/tokens'
+import { BULL, USDT } from '@pancakeswap/tokens'
 import { FAST_INTERVAL } from 'config/constants'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { Zero } from '@ethersproject/constants'
@@ -52,7 +52,15 @@ export const useGetBnbBalance = () => {
 
 export const useGetCakeBalance = () => {
   const { chainId } = useWeb3React()
-  const { balance, fetchStatus } = useTokenBalance(BULL[chainId]?.address || BULL[ChainId.CORE]?.address, true)
+  const { balance, fetchStatus } = useTokenBalance(BULL[chainId]?.address || BULL[ChainId.SIRE_TESTNET]?.address, true)
+
+  // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
+  return { balance: EthersBigNumber.from(balance.toString()), fetchStatus }
+}
+
+export const useGetUsdtBalance = () => {
+  const { chainId } = useWeb3React()
+  const { balance, fetchStatus } = useTokenBalance(USDT[chainId]?.address || USDT[ChainId.SIRE_TESTNET]?.address, true)
 
   // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
   return { balance: EthersBigNumber.from(balance.toString()), fetchStatus }

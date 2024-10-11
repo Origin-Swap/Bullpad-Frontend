@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BACKEND_URL } from 'config/constants/backendApi';
 
 
 interface Swap {
@@ -43,7 +44,7 @@ const SwapTable: React.FC = () => {
   useEffect(() => {
     const fetchAdds = async () => {
       try {
-        const response = await axios.get<{ adds: Swap[] }>('https://swapback.vercel.app/api/adds');
+        const response = await axios.get<{ adds: Swap[] }>(`${BACKEND_URL}/api/adds`);
         const fetchedSwaps = response.data.adds;
 
         if (Array.isArray(fetchedSwaps)) {
@@ -71,7 +72,7 @@ const SwapTable: React.FC = () => {
   useEffect(() => {
     const fetchRemoves = async () => {
       try {
-        const response = await axios.get<{ removes: Remove[] }>('https://swapback.vercel.app/api/removes');
+        const response = await axios.get<{ removes: Remove[] }>(`${BACKEND_URL}/api/removes`);
         const fetchedRemoves = response.data.removes;
 
         if (Array.isArray(fetchedRemoves)) {

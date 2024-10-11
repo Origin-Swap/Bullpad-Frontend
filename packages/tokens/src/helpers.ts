@@ -12,7 +12,7 @@ export const EMPTY_LIST: TokenAddressMap<ChainId> = {
   [ChainId.BSC_TESTNET]: {},
   [ChainId.CORE]: {},
   [ChainId.VANAR]: {},
-  [ChainId.BCCHAIN]: {},
+  [ChainId.SIRE_TESTNET]: {},
 }
 
 export function serializeTokens(unserializedTokens) {

@@ -29,6 +29,7 @@ import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { ContractMethodName } from 'utils/types'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { BACKEND_URL } from 'config/constants/backendApi';
 import { useLPApr } from 'state/swap/useLPApr'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
@@ -77,7 +78,7 @@ enum Steps {
 
 const recordAdd = async (liquidityData) => {
   try {
-    const response = await axios.post('https://swapback.vercel.app/api/adds', liquidityData);
+    const response = await axios.post(`${BACKEND_URL}/api/add`, liquidityData);
     // Removed console.log statement
   } catch (error) {
     console.error('Failed to record swap:', error);
@@ -245,26 +246,27 @@ export default function AddLiquidity({ currencyA, currencyB }) {
   const routerContract = useRouterContract()
 
   async function onAdd() {
-    if (!chainId || !account || !routerContract) return
+    if (!chainId || !account || !routerContract) return;
 
-    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts
+    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts;
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
-      return
+      return;
     }
 
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
       [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
-    }
+    };
 
-    let estimate
-    let method: (...args: any) => Promise<TransactionResponse>
-    let args: Array<string | string[] | number>
-    let value: BigNumber | null
+    let estimate;
+    let method;
+    let args;
+    let value;
+
     if (currencyA?.isNative || currencyB?.isNative) {
-      const tokenBIsNative = currencyB?.isNative
-      estimate = routerContract.estimateGas.addLiquidityETH
-      method = routerContract.addLiquidityETH
+      const tokenBIsNative = currencyB?.isNative;
+      estimate = routerContract.estimateGas.addLiquidityETH;
+      method = routerContract.addLiquidityETH;
       args = [
         (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
         (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
@@ -272,11 +274,11 @@ export default function AddLiquidity({ currencyA, currencyB }) {
         amountsMin[tokenBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
         account,
         deadline.toHexString(),
-      ]
-      value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString())
+      ];
+      value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString());
     } else {
-      estimate = routerContract.estimateGas.addLiquidity
-      method = routerContract.addLiquidity
+      estimate = routerContract.estimateGas.addLiquidity;
+      method = routerContract.addLiquidity;
       args = [
         currencyA?.wrapped?.address ?? '',
         currencyB?.wrapped?.address ?? '',
@@ -286,13 +288,12 @@ export default function AddLiquidity({ currencyA, currencyB }) {
         amountsMin[Field.CURRENCY_B].toString(),
         account,
         deadline.toHexString(),
-      ]
-      value = null
+      ];
+      value = null;
     }
 
+    setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined });
 
-
-    setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>
         method(...args, {
@@ -300,12 +301,13 @@ export default function AddLiquidity({ currencyA, currencyB }) {
           gasLimit: calculateGasMargin(estimatedGasLimit),
           gasPrice,
         }).then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash });
 
-          const symbolA = currencies[Field.CURRENCY_A]?.symbol
-          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
-          const symbolB = currencies[Field.CURRENCY_B]?.symbol
-          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+          const symbolA = currencies[Field.CURRENCY_A]?.symbol;
+          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3);
+          const symbolB = currencies[Field.CURRENCY_B]?.symbol;
+          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3);
+
           addTransaction(response, {
             summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
             translatableSummary: {
@@ -313,30 +315,34 @@ export default function AddLiquidity({ currencyA, currencyB }) {
               data: { amountA, symbolA, amountB, symbolB },
             },
             type: 'add-liquidity',
-          })
+          });
 
           if (pair) {
-            addPair(pair)
+            addPair(pair);
+            console.log(pair);
           }
+
           const status = "add";
           const liquidityData = {
-                chainId,
-                account,
-                currencyA: currencyA.symbol,
-                currencyB: currencyB.symbol,
-                amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-                amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-                pairAddress: pair.liquidityToken.address,
-                price,
-                status,
-              };
-              recordAdd(liquidityData);
+            walletAddress: account, // Ensure this is defined
+            chainId,
+            currencyA: currencyA.symbol,
+            currencyB: currencyB.symbol,
+            amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+            amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+            pairAddress: pair?.liquidityToken.address,
+            txHash: response.hash, // use response.hash here
+            status,
+          };
+
+          // Send data to backend only if transaction is successful
+          recordAdd(liquidityData);
         }),
       )
       .catch((err) => {
         if (err && err.code !== 4001) {
-          logError(err)
-          console.error(`Add Liquidity failed`, err, args, value)
+          logError(err);
+          console.error(`Add Liquidity failed`, err, args, value);
         }
         setLiquidityState({
           attemptingTxn: false,
@@ -345,9 +351,10 @@ export default function AddLiquidity({ currencyA, currencyB }) {
               ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
               : undefined,
           txHash: undefined,
-        })
-      })
+        });
+      });
   }
+
 
   const pendingText = preferZapInstead
     ? t('Zapping %amountA% %symbolA% and %amountB% %symbolB%', {

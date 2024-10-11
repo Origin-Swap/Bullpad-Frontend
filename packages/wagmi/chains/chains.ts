@@ -18,6 +18,23 @@ export const vanar: Chain = {
   },
 }
 
+export const sire: Chain = {
+  id: 997,
+  name: '5ire Testnet',
+  network: '5ire Testnet',
+  rpcUrls: {
+    // default: 'https://rpc.vanarchain.com',
+    default: 'https://rpc.testnet.5ire.network/',
+  },
+  nativeCurrency: { name: '5ire Testnet', symbol: '5ire', decimals: 18 },
+  blockExplorers: {
+    default: {
+      name: '5ire testnet scan',
+      url: 'https://testnet.5irescan.io/',
+    },
+  },
+}
+
 export const bcchain: Chain = {
   id: 1919,
   name: 'BCChain Testnet',
