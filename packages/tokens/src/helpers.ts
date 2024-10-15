@@ -13,6 +13,7 @@ export const EMPTY_LIST: TokenAddressMap<ChainId> = {
   [ChainId.CORE]: {},
   [ChainId.VANAR]: {},
   [ChainId.SIRE_TESTNET]: {},
+  [ChainId.SIRE_MAINNET]: {},
 }
 
 export function serializeTokens(unserializedTokens) {

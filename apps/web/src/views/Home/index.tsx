@@ -14,7 +14,7 @@ import Hero from './components/Hero'
 
 const HomeBodyStyle = createGlobalStyle`
   body {
-    background-color: #002338;
+    background-color: white;
   }
 `
 
@@ -45,10 +45,10 @@ const HeroImageBGWrapper = styled.div`
   left: 0;
   right: 0;
   z-index: -1;
-  background-image:url('/images/newBGCore1.svg');
+  background-image:url('https://i.ytimg.com/vi/R9mXtzn8meE/maxresdefault.jpg');
   background-size: auto 100%;
   background-repeat: no-repeat;
-  background-position: right top;
+  background-position: center center;
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 48px;
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
         <TVLSection />
         <DeFiSection />
       </PageSection>
-      <PageSection
+      {/*  <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background='transparent'
         index={2}

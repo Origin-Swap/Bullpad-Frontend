@@ -24,7 +24,7 @@ export function useNetworkConnectorUpdater() {
     }
     if (loading || !router.isReady) return setPrevChainId()
     const parsedQueryChainId = Number(router.query.chainId)
-    if (!parsedQueryChainId && chainId === ChainId.SIRE_TESTNET) return setPrevChainId()
+    if (!parsedQueryChainId && chainId === ChainId.SIRE_MAINNET) return setPrevChainId()
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
       const removeQueriesFromPath =
         previousChainIdRef.current !== chainId &&

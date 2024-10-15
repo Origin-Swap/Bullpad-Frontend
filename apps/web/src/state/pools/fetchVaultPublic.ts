@@ -19,7 +19,7 @@ export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
 
     const cakeBalanceOfCall = {
       abi: cakeAbi,
-      address: BULL[ChainId.CORE].address,
+      address: BULL[ChainId.SIRE_TESTNET].address,
       name: 'balanceOf',
       params: [cakeVaultV2],
     }
@@ -58,7 +58,7 @@ export const fetchPublicFlexibleSideVaultData = async (cakeVaultAddress = cakeFl
 
     const cakeBalanceOfCall = {
       abi: cakeAbi,
-      address: BULL[ChainId.CORE].address,
+      address: BULL[ChainId.SIRE_TESTNET].address,
       name: 'balanceOf',
       params: [cakeVaultAddress],
     }

@@ -18,6 +18,7 @@ export const SMART_ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.BSC_TESTNET]: '0xCF457465fC0E98a50Bc3E1b3DDAAF1373622f059',
   [ChainId.CORE]: '0xeeF9560CE1f1358011E41974dbE68F8a0Bd86E50',
   [ChainId.VANAR]: '',
+  [ChainId.SIRE_MAINNET]: '',
   [ChainId.SIRE_TESTNET]: '',
 }
 

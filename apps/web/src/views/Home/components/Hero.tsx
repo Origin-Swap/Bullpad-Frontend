@@ -1,102 +1,47 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Button, Flex, useMatchBreakpoints, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import React from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { GothamText, LandingHeading, FuturaText} from './LandingText'
-import LaunchButton from './LaunchButton'
-
-
-const WhiteLogo = styled(Flex)`
-  justify-content:center;
-  align-items:center;
-  width: 70px;
-  height: 70px;
-  background-color: transparent;
-  border-radius:35px;
-  border: 3px solid white;
-  padding: 6px;
-
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 140px;
-    height: 140px;
-    border-radius:70px;
-    border: 4px solid white;
-    padding: 12px;
-  }
-`
-
-const Line = styled.div`
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    height:6px;
-    margin-left: 10px;
-    flex: 1;
-    background-color: ${({ theme }) => theme.colors.primary};
-  }
-`
-
-const SubHeadingWrapper = styled(Flex)`
-  margin-top: 4em;
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-top: 8em;
-    border-radius: 80px 0px 0px 80px;
-    padding: 10px 30px 10px 30px;
-  }
-`
+import { useRouter } from 'next/router'
 
 const Hero = () => {
   const { t } = useTranslation()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const router = useRouter()
+
+  const handleLaunchApp = () => {
+    router.push('/swap')  // Redirect ke halaman "/swap"
+  }
 
   return (
-    <>
-      <Flex flexDirection={['column', 'column', 'column', 'row']}>
-        <Flex flex={[1, null, null, 3]}  flexDirection="column" justifyContent="center" alignItems="center" />
-        <Flex flex={[1, null, null, 4]} flexDirection="column" alignItems={["center", "cener", "center", "end"]}>
-          <Flex flexDirection="column" pr={['0', null, '30px']}>
+    <div className="flex h-screen md:h-auto flex-col md:flex-row justify-center items-center">
+      <div className="flex-1 flex flex-col justify-center md:justify-start items-center md:items-start md:p-4">
+        <div className="text-center md:text-left px-1 py-2">
+          <h1 className="md:text-4xl text-2xl font-bold text-black">
+            {t('DEX, SocialFi And LaunchPad in One Platform')}
+          </h1>
+        </div>
 
-            <Flex flexDirection="row" alignItems="center">
-              <Flex flexDirection="column" alignItems="end">
-                <LandingHeading scale="xl" color="#f7fffa">
-                  {t('Bull')}
-                </LandingHeading>
-                <LandingHeading scale="lg" color="#f7fffa">
-                  {t('Exchange')}
-                </LandingHeading>
-              </Flex>
-              <WhiteLogo>
-                <img src="https://i.ibb.co.com/wdhpDbb/Logo1.png" alt=""/>
-              </WhiteLogo>
-            </Flex>
-          </Flex>
+        <div className="flex flex-col items-center md:items-start text-center md:text-left mt-4">
+          <p className="md:text-xl text-md text-black lowerchase">
+            {t('Trade, Stake, & Earn With 5IRE Blockchain')}
+          </p>
+        </div>
 
-          <Flex flexDirection="column">
-            <SubHeadingWrapper flexDirection="column" alignItems={["center", null, null, "end"]} >
-              <GothamText scale="md" color="#f7fffa" textTransform='uppercase'>
-                {t('Built on Multiple Blockchain')}
-              </GothamText>
-              { isMobile ? (
-                <GothamText scale="lg" color="#f7fffa" textAlign={["center", null, null, "right"]} textTransform='uppercase'>
-                  {t('Trade, Stake, & Earn With Your DeFi Wallet')}
-                </GothamText>
-              ) : (
-                <GothamText scale="lg" color="#f7fffa" textAlign={["center", null, null, "right"]} textTransform='uppercase'>
-                  {t('Trade, Stake, & Earn')}<br/>{t('With Your DeFi Wallet')}
-                </GothamText>
-              )}
+        <div className="flex justify-center md:justify-start w-full mt-6">
+          <button type="button" onClick={handleLaunchApp} className="bg-blue-500 text-white px-6 py-3 rounded-lg">
+            {t('Launch App')}
+          </button>
+        </div>
+      </div>
 
-            </SubHeadingWrapper>
-            <Flex justifyContent="center" width="100%" mt="1em">
-            <NextLinkFromReactRouter to="/swap">
-              <Button mb="24px">{t('Launch App')}</Button>
-              </NextLinkFromReactRouter>
-            </Flex>
-          </Flex>
-
-        </Flex>
-      </Flex>
-    </>
+      <div className="flex-1 flex justify-center items-center p-6">
+        <div className="md:flex justify-center items-center bg-transparent p-2">
+          <img
+            className="w-72 h-72"
+            src="https://cdn3d.iconscout.com/3d/premium/thumb/trading-and-invest-app-3d-illustration-download-in-png-blend-fbx-gltf-file-formats--analytics-logo-loss-hand-holding-phone-pack-miscellaneous-illustrations-4723729.png"
+            alt="Logo"
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 

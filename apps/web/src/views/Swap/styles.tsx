@@ -22,6 +22,6 @@ export const StyledInputCurrencyWrapper = styled(Box)`
 
   @media (max-width: 767px) {
     // Untuk mobile, tampilkan di bawah
-  width: 380px;
+  width: 360px;
   }
 `

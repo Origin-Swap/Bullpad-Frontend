@@ -185,6 +185,7 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
     [ChainId.CORE]: { ...map1[ChainId.CORE], ...map2[ChainId.CORE] },
     [ChainId.VANAR]: { ...map1[ChainId.VANAR], ...map2[ChainId.VANAR] },
     [ChainId.SIRE_TESTNET]: { ...map1[ChainId.SIRE_TESTNET], ...map2[ChainId.SIRE_TESTNET] },
+    [ChainId.SIRE_MAINNET]: { ...map1[ChainId.SIRE_MAINNET], ...map2[ChainId.SIRE_MAINNET] },
   }
 }
 

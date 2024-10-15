@@ -9,6 +9,7 @@ export enum ChainId {
   CORE = 1116,
   VANAR = 2040,
   SIRE_TESTNET = 997,
+  SIRE_MAINNET = 995,
 }
 
 export const FACTORY_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
@@ -24,6 +25,7 @@ export const FACTORY_ADDRESS_MAP: Record<number, string> = {
   [ChainId.CORE]: '0x67f232ee36996cCb863f36E74B093e19851e24c7', //unverify contract
   [ChainId.VANAR]: '0x515f9c54855700e74bdf81D668381453BB30EB4A',
   [ChainId.SIRE_TESTNET]: '0x423d10fCa2433009c218173E043eA016B6E9e6fF',
+  [ChainId.SIRE_MAINNET]: '0x423d10fCa2433009c218173E043eA016B6E9e6fF',
 }
 export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
 
@@ -37,6 +39,7 @@ export const INIT_CODE_HASH_MAP: Record<number, string> = {
   [ChainId.CORE]: '0x4277ea1bf9c2d80fe93c1550902492fcdd6d68fda19af5d892d2b66a8700dd00',
   [ChainId.VANAR]: '0x7e70d033317128b7f797badfc21101a2813199e04e1ff442785eae5bf5e766dd',
   [ChainId.SIRE_TESTNET]: '0xd61c757ce69d0c74993998154b629c19afc3eed53573ecadb92b963d7f2a1f44',
+  [ChainId.SIRE_MAINNET]: '0xd61c757ce69d0c74993998154b629c19afc3eed53573ecadb92b963d7f2a1f44',
 }
 
 export const WETH9 = {
@@ -115,6 +118,14 @@ export const WBNB = {
     'Wrapped 5ire',
     'https://5ire.org/'
   ),
+  [ChainId.SIRE_MAINNET]: new ERC20Token(
+    ChainId.SIRE_MAINNET,
+    '0xCFaEB74409E4C6756C43F75455fc42A6A3FdEb1f',
+    18,
+    'W5IRE',
+    'Wrapped 5ire',
+    'https://5ire.org/'
+  ),
 }
 
 export const WNATIVE: Record<number, ERC20Token> = {
@@ -126,6 +137,7 @@ export const WNATIVE: Record<number, ERC20Token> = {
   [ChainId.CORE]: WBNB[ChainId.CORE],
   [ChainId.VANAR]: WBNB[ChainId.VANAR],
   [ChainId.SIRE_TESTNET]: WBNB[ChainId.SIRE_TESTNET],
+  [ChainId.SIRE_MAINNET]: WBNB[ChainId.SIRE_MAINNET],
 }
 
 export const NATIVE: Record<
@@ -152,4 +164,5 @@ export const NATIVE: Record<
   [ChainId.CORE]: { name: 'CORE', symbol: 'CORE', decimals: 18 },
   [ChainId.VANAR]: { name: 'Vanry', symbol: 'VANRY', decimals: 18 },
   [ChainId.SIRE_TESTNET]: { name: '5ire Testnet', symbol: 'T5ire', decimals: 18 },
+  [ChainId.SIRE_MAINNET]: { name: '5ireChain Mainnet', symbol: '5ire', decimals: 18 },
 }

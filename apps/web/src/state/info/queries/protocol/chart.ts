@@ -11,18 +11,9 @@ import { useGetChainName } from '../../hooks'
  * Data for displaying Liquidity and Volume charts on Overview page
  */
 
- // const PANCAKE_DAY_DATAS = gql`
-//    query overviewCharts($startTime: Int!, $skip: Int!) {
-//      uniswapDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
-//        date
-//        dailyVolumeUSD
-//        totalLiquidityUSD
-//      }
-//    }
-//  `
 const PANCAKE_DAY_DATAS = gql`
   query overviewCharts($startTime: Int!, $skip: Int!) {
-    uniswapDayDatas(first: 1000, skip: $skip, orderBy: date, orderDirection: asc) {
+    pancakeDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
       date
       dailyVolumeUSD
       totalLiquidityUSD
@@ -35,13 +26,13 @@ const getOverviewChartData = async (
   skip: number,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
-    const { uniswapDayDatas } = await getMultiChainQueryEndPointWithStableSwap(
+    const { pancakeDayDatas } = await getMultiChainQueryEndPointWithStableSwap(
       chainName,
     ).request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
       startTime: multiChainStartTime[chainName],
       skip,
     })
-    const data = uniswapDayDatas.map(mapDayData)
+    const data = pancakeDayDatas.map(mapDayData)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch overview chart data', error)

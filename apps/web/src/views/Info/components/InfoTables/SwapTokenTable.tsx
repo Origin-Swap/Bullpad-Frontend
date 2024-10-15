@@ -110,7 +110,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   return (
     <ResponsiveGrid>
       <LinkExternal
-        href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'CORE' && ChainId.CORE)}
+        href={getBlockExploreLink(transaction.hash, 'transaction', chainName === '5IRE' && ChainId.SIRE_TESTNET)}
       >
         <Text fontSize="14px">
           {t('Swap %token0%/%token1%', { token0: inputTokenSymbol, token1: outputTokenSymbol })}
@@ -123,7 +123,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text fontSize="14px">{`${formatAmount(abs1)}`}</Text>
       </Text>
-      <LinkExternal fontSize="14px" href={getBlockExploreLink(transaction.sender, 'address', chainName === 'CORE' && ChainId.CORE)}>
+      <LinkExternal fontSize="14px" href={getBlockExploreLink(transaction.sender, 'address', chainName === '5IRE' && ChainId.SIRE_TESTNET)}>
         {truncateHash(transaction.sender)}
       </LinkExternal>
       <Text fontSize="14px">{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>

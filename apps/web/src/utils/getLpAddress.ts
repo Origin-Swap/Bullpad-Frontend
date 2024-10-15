@@ -3,7 +3,7 @@ import { isAddress } from 'utils'
 import memoize from 'lodash/memoize'
 
 const getLpAddress = memoize(
-  (token1: string | ERC20Token, token2: string | ERC20Token, chainId: number = ChainId.SIRE_TESTNET) => {
+  (token1: string | ERC20Token, token2: string | ERC20Token, chainId: number = ChainId.SIRE_MAINNET) => {
     let token1AsTokenInstance = token1
     let token2AsTokenInstance = token2
     console.log('Pair address:', token1AsTokenInstance, token2AsTokenInstance)

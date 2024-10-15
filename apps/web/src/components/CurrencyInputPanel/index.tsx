@@ -221,20 +221,13 @@ export default function CurrencyInputPanel({
               style={{ width: '100%' }}
             />
           </LabelRow>
-          {/* {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
+              {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
                 <Text fontSize="12px" color="textSubtle">
-                  ~{formatNumber(amountInDollar)} USD
+                  ~${formatNumber(amountInDollar)}
                 </Text>
-              </Flex>
-            </Flex>
-          )} */}
-            <Flex justifyContent="flex-end" mr="1rem">
-              <Flex maxWidth="200px">
-                <Text fontSize="12px" color="textSubtle">
-                  ~{Number.isFinite(amountInDollar)} USD
-                </Text>
+                )}
               </Flex>
             </Flex>
         </InputPanel>

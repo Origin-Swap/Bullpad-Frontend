@@ -51,7 +51,7 @@ export const useLPApr = (pair?: Pair) => {
 const fetchPoolVolumeAndReserveData = async (
   block7d: number,
   poolAddress: string,
-  chainName: 'ETH' | 'CORE' = 'CORE',
+  chainName: 'ETH' | '5IRE' = '5IRE',
 ) => {
   try {
     const query = gql`

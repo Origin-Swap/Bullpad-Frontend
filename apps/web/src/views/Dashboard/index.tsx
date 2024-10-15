@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { Flex, Box, Heading, Button, Text, PageHeader } from '@pancakeswap/uikit';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import useNativeCurrency from 'hooks/useNativeCurrency';
-import useTokenBalance, { useGetCakeBalance, useGetUsdtBalance } from 'hooks/useTokenBalance';
+import useTokenBalance, { useGetCakeBalance, useGetUsdtBalance }from 'hooks/useTokenBalance';
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance';
 import { useBalance } from 'wagmi';
 import {
@@ -23,6 +23,7 @@ import {
   Legend,
   Area,
 } from 'recharts';
+
 
 
 const Avatar = styled.img`
@@ -81,8 +82,8 @@ const UserDataComponent: React.FC = () => {
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
-  const isBSC = chainId === ChainId.SIRE_TESTNET
-  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.SIRE_TESTNET })
+  const isBSC = chainId === ChainId.SIRE_MAINNET
+  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.SIRE_MAINNET })
   const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
 
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
@@ -218,7 +219,7 @@ const UserDataComponent: React.FC = () => {
             </Box>
           </Card>
           <Card style={{ flex: 3 }}>
-            <p className="px-4 py-4 border-2 border-black rounded-lg">Portpolio Chart</p>
+            <p className="px-4 py-4 border-2 border-black rounded-lg">Portfolio Chart</p>
             {/* <ResponsiveContainer width="100%" height={350}>
               <LineChart data={portfolioData}>
                 <defs>

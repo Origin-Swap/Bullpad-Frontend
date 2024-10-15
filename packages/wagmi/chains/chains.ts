@@ -20,8 +20,8 @@ export const vanar: Chain = {
 
 export const sire: Chain = {
   id: 997,
-  name: '5ire Testnet',
-  network: '5ire Testnet',
+  name: 'Testnet',
+  network: '5Ire Testnet',
   rpcUrls: {
     // default: 'https://rpc.vanarchain.com',
     default: 'https://rpc.testnet.5ire.network/',
@@ -31,6 +31,23 @@ export const sire: Chain = {
     default: {
       name: '5ire testnet scan',
       url: 'https://testnet.5irescan.io/',
+    },
+  },
+}
+
+export const sireMainnet: Chain = {
+  id: 995,
+  name: 'Mainnet',
+  network: '5ireChain',
+  rpcUrls: {
+    // default: 'https://rpc.vanarchain.com',
+    default: 'https://rpc.5ire.network/',
+  },
+  nativeCurrency: { name: '5ireChain Mainnet', symbol: '5ire', decimals: 18 },
+  blockExplorers: {
+    default: {
+      name: '5ire scan',
+      url: 'https://5irescan.io/',
     },
   },
 }

@@ -70,7 +70,7 @@ const HotTokenListContainer = styled.div`
   }
 `
 
-const table = [ChainId.CORE]
+const table = [ChainId.SIRE_MAINNET]
 
 export default function Pool() {
   const { address: account } = useAccount()
@@ -224,7 +224,7 @@ export default function Pool() {
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
         </Flex>
-        {chainId === ChainId.CORE && <HotTokenList />}
+        {chainId === ChainId.VANAR && <HotTokenList />}
       </HotTokenListContainer>
     </Page>
   )

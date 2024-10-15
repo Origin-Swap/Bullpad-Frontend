@@ -81,6 +81,22 @@
       "chainId": 997,
       "decimals": 18,
       "logoURI": "https://i.ibb.co.com/wdhpDbb/Logo1.png"
+    },
+    {
+      "name": "Wrapped 5ire",
+      "symbol": "W5IRE",
+      "address": "0xCFaEB74409E4C6756C43F75455fc42A6A3FdEb1f",
+      "chainId": 995,
+      "decimals": 18,
+      "logoURI": "https://docs.5ire.org/id/img/logo.png"
+    },
+    {
+      "name": "Mainnet Test",
+      "symbol": "MMT",
+      "address": "0x3e640F4303f07E51ef2B36F5a83e1D53E31BEBae",
+      "chainId": 995,
+      "decimals": 18,
+      "logoURI": "https://docs.5ire.org/id/img/logo.png"
     }
   ]
 }

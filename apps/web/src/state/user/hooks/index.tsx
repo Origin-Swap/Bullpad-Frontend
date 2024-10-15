@@ -413,7 +413,7 @@ export function useGasPrice(chainIdOverride?: number): string {
   const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
     library &&
       library.provider &&
-      chainId === ChainId.SIRE_TESTNET &&
+      chainId === ChainId.SIRE_MAINNET &&
       userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', library.provider],
     async () => {
       const gasPrice = await library.getGasPrice()
@@ -426,13 +426,13 @@ export function useGasPrice(chainIdOverride?: number): string {
   )
   const { data } = useFeeData({
     chainId,
-    enabled: chainId !== ChainId.SIRE_TESTNET && chainId !== ChainId.SIRE_TESTNET,
+    enabled: chainId !== ChainId.SIRE_TESTNET && chainId !== ChainId.SIRE_MAINNET,
     watch: true,
   })
-  if (chainId === ChainId.SIRE_TESTNET) {
+  if (chainId === ChainId.SIRE_MAINNET) {
     return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : userGas
   }
-  if (chainId === ChainId.SIRE_TESTNET) {
+  if (chainId === ChainId.SIRE_MAINNET) {
     return GAS_PRICE_GWEI.testnet
   }
   if (chain?.testnet) {

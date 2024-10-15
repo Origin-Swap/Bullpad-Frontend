@@ -18,7 +18,7 @@ interface ImportProps {
 }
 
 const getStandard = (chainId: ChainId) =>
-  chainId !== ChainId.VANAR && chainId !== ChainId.SIRE_TESTNET ? 'ERC20' : 'BEP20'
+  chainId !== ChainId.SIRE_TESTNET && chainId !== ChainId.SIRE_MAINNET ? 'ERC20' : 'BEP20'
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
   const { chainId } = useActiveChainId()

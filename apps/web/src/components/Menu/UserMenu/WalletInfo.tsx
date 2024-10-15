@@ -37,12 +37,12 @@ interface WalletInfoProps {
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account, chainId, chain } = useActiveWeb3React()
-  const isBSC = chainId === ChainId.SIRE_TESTNET
-  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.SIRE_TESTNET })
-  const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC }) 
+  const isBSC = chainId === ChainId.SIRE_MAINNET
+  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.SIRE_MAINNET })
+  const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
   const native = useNativeCurrency()
   const wNativeToken = !isBSC ? WNATIVE[chainId] : null
-  const wBNBToken = WNATIVE[ChainId.SIRE_TESTNET]
+  const wBNBToken = WNATIVE[ChainId.SIRE_MAINNET]
   const { balance: wNativeBalance, fetchStatus: wNativeFetchStatus } = useTokenBalance(wNativeToken?.address)
   const { balance: wBNBBalance, fetchStatus: wBNBFetchStatus } = useTokenBalance(wBNBToken?.address, true)
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
@@ -115,13 +115,13 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       <Box mb="24px">
         <Flex justifyContent="space-between" alignItems="center" mb="8px">
           <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
-            <ChainLogo chainId={ChainId.SIRE_TESTNET} />
+            <ChainLogo chainId={ChainId.SIRE_MAINNET} />
             <Text color="white" ml="4px">
               5ire
             </Text>
           </Flex>
-          <LinkExternal href={getBlockExploreLink(account, 'address', ChainId.SIRE_TESTNET)}>
-            {getBlockExploreName(ChainId.SIRE_TESTNET)}
+          <LinkExternal href={getBlockExploreLink(account, 'address', ChainId.SIRE_MAINNET)}>
+            {getBlockExploreName(ChainId.SIRE_MAINNET)}
           </LinkExternal>
         </Flex>
         <Flex alignItems="center" justifyContent="space-between">

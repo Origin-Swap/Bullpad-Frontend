@@ -12,6 +12,7 @@ export const ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.CORE]: '0xeeF9560CE1f1358011E41974dbE68F8a0Bd86E50',
   [ChainId.VANAR]: '0x52e3dAAC347B91FD6d96DC4f7ad6A82156acf1F8',
   [ChainId.SIRE_TESTNET]: '0xE94015A24320C6F4eBC53aDaEa9c9073fe210633',
+  [ChainId.SIRE_MAINNET]: '0x64819710a53bdA8D345bf5C0352Cee562dCE0068',
 }
 
 // used to construct intermediary pairs for trading
@@ -32,6 +33,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.VANAR]: [],
   [ChainId.CORE]: [],
   [ChainId.SIRE_TESTNET]: [],
+  [ChainId.SIRE_MAINNET]: [],
 }
 
 /**
@@ -64,6 +66,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.VANAR]: [],
   [ChainId.CORE]: [],
   [ChainId.SIRE_TESTNET]: [],
+  [ChainId.SIRE_MAINNET]: [],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -76,6 +79,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.VANAR]: [],
   [ChainId.CORE]: [],
   [ChainId.SIRE_TESTNET]: [],
+  [ChainId.SIRE_MAINNET]: [],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -92,6 +96,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.VANAR]: [],
   [ChainId.CORE]: [],
   [ChainId.SIRE_TESTNET]: [],
+  [ChainId.SIRE_MAINNET]: [],
 }
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)

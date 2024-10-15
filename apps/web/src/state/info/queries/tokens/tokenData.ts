@@ -98,7 +98,7 @@ const parseTokenData = (tokens?: TokenFields[]) => {
     const { tradeVolumeUSD, txCount, totalLiquidity, derivedETH } = tokenData
     accum[tokenData.id.toLowerCase()] = {
       ...tokenData,
-      derivedETH: derivedETH ? 0 : parseFloat(derivedETH),
+      derivedETH: derivedETH ? parseFloat(derivedETH) : 0,
       // derivedUSD: parseFloat(derivedUSD),
       tradeVolumeUSD: parseFloat(tradeVolumeUSD),
       txCount: parseFloat(txCount),

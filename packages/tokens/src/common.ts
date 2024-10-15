@@ -45,6 +45,15 @@ export const BULL_SIRE = new ERC20Token(
   'https://bullpad.org/',
 )
 
+export const BULL_MAINNET = new ERC20Token(
+  ChainId.SIRE_MAINNET,
+  '0x8f1593267066a069d79F18a6520d519d4530bF04',
+  18,
+  'BULL',
+  'BullPad',
+  'https://bullpad.org/',
+)
+
 export const USDC_BSC = new ERC20Token(
   ChainId.BSC,
   '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
@@ -187,6 +196,7 @@ export const BUSD: Record<ChainId, ERC20Token> = {
   [ChainId.CORE]: USDT_CORE,
   [ChainId.VANAR]: USDT_VANAR,
   [ChainId.SIRE_TESTNET]: USDT_BC,
+  [ChainId.SIRE_MAINNET]: USDT_BC,
 }
 
 export const CAKE = {
@@ -196,6 +206,7 @@ export const CAKE = {
 
 export const BULL = {
   [ChainId.SIRE_TESTNET]: BULL_SIRE,
+  [ChainId.SIRE_MAINNET]: BULL_MAINNET,
 }
 
 export const USDC = {
@@ -206,6 +217,7 @@ export const USDC = {
   [ChainId.VANAR]: USDC_VANAR,
   [ChainId.CORE]: USDC_CORE,
   [ChainId.SIRE_TESTNET]: USDT_BC,
+  [ChainId.SIRE_MAINNET]: USDT_BC,
 }
 
 export const USDT = {
@@ -214,6 +226,7 @@ export const USDT = {
   [ChainId.VANAR]: USDT_VANAR,
   [ChainId.CORE]: USDT_CORE,
   [ChainId.SIRE_TESTNET]: USDT_BC,
+  [ChainId.SIRE_MAINNET]: USDT_BC,
 }
 
 export const WBTC_ETH = new ERC20Token(

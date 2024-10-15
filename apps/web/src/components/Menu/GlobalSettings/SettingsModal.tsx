@@ -153,7 +153,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   }}
                 />
               </Flex>
-              {chainId === ChainId.SIRE_TESTNET && <GasSettings />}
+              {chainId === ChainId.SIRE_MAINNET && <GasSettings />}
             </Flex>
           </>
         )}
@@ -164,7 +164,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 {t('Swaps & Liquidity')}
               </Text>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                {chainId === ChainId.SIRE_TESTNET && <GasSettings />}
+                {chainId === ChainId.SIRE_MAINNET && <GasSettings />}
               </Flex>
               <TransactionSettings />
             </Flex>
