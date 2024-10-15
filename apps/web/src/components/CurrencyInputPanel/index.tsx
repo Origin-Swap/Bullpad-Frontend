@@ -223,11 +223,14 @@ export default function CurrencyInputPanel({
           </LabelRow>
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
-              {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
+              {/* !!currency && showBUSD && Number.isFinite(amountInDollar) && (
                 <Text fontSize="12px" color="textSubtle">
                   ~${formatNumber(amountInDollar)}
                 </Text>
-                )}
+              ) */}
+                  <Text fontSize="12px" color="textSubtle">
+                    ~${(amountInDollar)}
+                  </Text>
               </Flex>
             </Flex>
         </InputPanel>
