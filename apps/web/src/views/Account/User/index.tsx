@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { DiscordIcon, InstaIcon, TelegramIcon, TwitterIcon, WebIcon } from '@pancakeswap/uikit';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { useSigner } from 'wagmi';
 import { BACKEND_URL } from 'config/constants/backendApi';
-import { WebIcon, TeleIcon, TwitterIcon, DiscordIcon, InstaIcon } from '../svgs';
+
 
 
 interface ProfileProps {
