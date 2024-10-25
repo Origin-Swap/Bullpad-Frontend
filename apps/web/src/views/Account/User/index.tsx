@@ -195,7 +195,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
           />
         )}
         {userData.telegram && (
-          <TeleIcon
+          <TelegramIcon
             src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
             alt="Avatar"
             className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1"
