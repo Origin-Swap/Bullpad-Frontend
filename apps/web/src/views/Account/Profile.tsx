@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { DiscordIcon, InstaIcon, TelegramIcon, TwitterIcon, WebIcon } from '@pancakeswap/uikit';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -6,11 +7,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { useSigner } from 'wagmi';
 import { parseEther } from '@ethersproject/units';
 import { BACKEND_URL } from 'config/constants/backendApi';
-import WebIcon from './svgs/Web';
-import TeleIcon from './svgs/Telegram';
-import TwitterIcon from './svgs/Twitter';
-import DiscordIcon from './svgs/Discord';
-import InstaIcon from './svgs/Insta';
 
 interface ProfileProps {
   bannerUrl: string;
@@ -158,7 +154,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
                 />
               )}
               {userData.telegram && (
-                <TeleIcon
+                <TelegramIcon
                   src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
                   alt="Avatar"
                   className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1"
