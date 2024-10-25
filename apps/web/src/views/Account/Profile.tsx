@@ -6,7 +6,11 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { useSigner } from 'wagmi';
 import { parseEther } from '@ethersproject/units';
 import { BACKEND_URL } from 'config/constants/backendApi';
-import { WebIcon, TeleIcon, TwitterIcon, DiscordIcon, InstaIcon } from './svgs';
+import WebIcon from './svgs/Web';
+import TeleIcon from './svgs/Telegram';
+import TwitterIcon from './svgs/Twitter';
+import DiscordIcon from './svgs/Discord';
+import InstaIcon from './svgs/Insta';
 
 interface ProfileProps {
   bannerUrl: string;
