@@ -145,43 +145,33 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
               className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 bg-gray-100 border-white object-cover"
             />
 
-              <div className="flex items-end md:space-x-4 space-x-2 md:px-4 mt-4 py-4 md:mt-6 md:mb-6 mb-4 transform ">
-               {userData.website && (
-                <WebIcon
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                  alt="Avatar"
-                  className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1"
-                />
+            <div className="flex items-end md:space-x-4 space-x-2 md:px-4 mt-4 py-4 md:mt-6 md:mb-6 mb-4 transform ">
+              {userData.website && (
+                <a href={userData.website} target="_blank" rel="noopener noreferrer">
+                  <WebIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
               )}
               {userData.telegram && (
-                <TelegramIcon
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                  alt="Avatar"
-                  className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1"
-                />
-                )}
-                {userData.twitter && (
-                <TwitterIcon
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                  alt="Avatar"
-                  className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1"
-                />
-                )}
-                {userData.discord && (
-                <DiscordIcon
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                  alt="Avatar"
-                  className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1"
-                />
-                )}
-                {userData.instagram && (
-                <InstaIcon
-                  src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                  alt="Avatar"
-                  className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1"
-                />
-                )}
-              </div>
+                <a href={userData.telegram} target="_blank" rel="noopener noreferrer">
+                  <TelegramIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+              {userData.twitter && (
+                <a href={userData.twitter} target="_blank" rel="noopener noreferrer">
+                  <TwitterIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+              {userData.discord && (
+                <a href={userData.discord} target="_blank" rel="noopener noreferrer">
+                  <DiscordIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+              {userData.instagram && (
+                <a href={userData.instagram} target="_blank" rel="noopener noreferrer">
+                  <InstaIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
