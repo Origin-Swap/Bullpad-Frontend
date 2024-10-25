@@ -8,7 +8,7 @@ const StyledLink = styled(Link)`
 `
 
 const StyledButton = styled(Button)`
-    font-family: 'Overpass', sans-serif,
+    font-family: 'Titillium Web', sans-serif,
 `
 
 const LaunchButton: React.FC<ButtonProps> = ({ ...props }) => {

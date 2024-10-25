@@ -91,6 +91,14 @@
       "logoURI": "https://docs.5ire.org/id/img/logo.png"
     },
     {
+      "name": "BullPad",
+      "symbol": "BULL",
+      "address": "0x95a6B59186664e5Af6949b946fffa1FE601e257e",
+      "chainId": 995,
+      "decimals": 18,
+      "logoURI": "https://i.ibb.co.com/wdhpDbb/Logo1.png"
+    },
+    {
       "name": "Mainnet Test",
       "symbol": "MMT",
       "address": "0x3e640F4303f07E51ef2B36F5a83e1D53E31BEBae",

@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* src/styles/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+
+.corner-border {
+  position: relative;
+  padding: 20px;
+  border-radius: 30px;
+  border: 1px solid white;
+}
+
+.home-bt {
+  background: linear-gradient(100deg, #64e9bf,#2aa8a9,#2aafd0)
+}
+
+.leaderboard-container {
+  display: grid;
+  grid-template-columns: 2fr 5fr 3fr;
+  gap: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.token-container {
+  display: grid;
+  grid-template-columns: 2fr 3fr 3fr 3fr 3fr;
+}

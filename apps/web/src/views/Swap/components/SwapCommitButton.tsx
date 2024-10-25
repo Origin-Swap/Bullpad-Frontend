@@ -114,8 +114,18 @@ export default function SwapCommitButton({
     }
   };
 
+  const fetchPriceData = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/prices`);
+      return response.data.price; // Ensure response contains price
+    } catch (error) {
+      console.error('Failed to fetch price data:', error);
+      return null; // Return null or a default value
+    }
+  };
+
   // Handlers
-  const handleSwap = useCallback(() => {
+  const handleSwap = useCallback(async () => { // Tambahkan async di sini
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return;
     }
@@ -123,42 +133,51 @@ export default function SwapCommitButton({
       return;
     }
     setSwapState((prevState) => ({ ...prevState, attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined }));
-    swapCallback()
-      .then((hash) => {
-        setSwapState((prevState) => ({ ...prevState, attemptingTxn: false, txHash: hash }));
-        // Hitung atau dapatkan nilai untuk amount2
-        const amount2 = trade.outputAmount?.toExact();
-        const isFromNative = isNativeCurrency(currencies[Field.INPUT]);
-        const isToNative = isNativeCurrency(currencies[Field.OUTPUT]);
-        const status = isFromNative ? 'Buy' : isToNative ? 'Sell' : 'Trade';
-        let price;
-        if (isFromNative && amount2 && parsedIndepentFieldAmount) {
-          price = parseFloat(parsedIndepentFieldAmount.toExact()) / parseFloat(amount2);
-        } else if (isToNative && amount2 && parsedIndepentFieldAmount) {
-          price = parseFloat(amount2) / parseFloat(parsedIndepentFieldAmount.toExact());
-        }
-        // Data yang dikirim ke backend harus mencakup semua field yang diperlukan
-        const swapData = {
-          chainId, // Shorthand property
-          walletAddress: account,
-          fromCurrency: currencies[Field.INPUT]?.symbol,
-          toCurrency: currencies[Field.OUTPUT]?.symbol,
-          amount1: parsedIndepentFieldAmount?.toExact(),
-          amount2, // Shorthand property
-          txhash: hash,
-          status,
-          price,
-        };
-        recordSwap(swapData);
-      })
-      .catch((error) => {
-        setSwapState((prevState) => ({
-          ...prevState,
-          attemptingTxn: false,
-          swapErrorMessage: error.message,
-        }));
-      });
+
+    try {
+      const hash = await swapCallback(); // Tunggu hasil dari swapCallback
+      setSwapState((prevState) => ({ ...prevState, attemptingTxn: false, txHash: hash }));
+
+      // Hitung atau dapatkan nilai untuk amount2
+      const amount2 = trade.outputAmount?.toExact();
+      const isFromNative = isNativeCurrency(currencies[Field.INPUT]);
+      const isToNative = isNativeCurrency(currencies[Field.OUTPUT]);
+      const status = isFromNative ? 'Buy' : isToNative ? 'Sell' : 'Trade';
+
+      const priceData = await fetchPriceData(); // Ambil data harga
+      let calculatedPrice;
+
+      if (isFromNative) {
+        calculatedPrice = parseFloat(parsedIndepentFieldAmount.toExact()) * priceData * 2;
+      } else if (isToNative) {
+        calculatedPrice = parseFloat(amount2) * priceData * 2;
+      }
+
+      // Data yang dikirim ke backend harus mencakup semua field yang diperlukan
+      const swapData = {
+        chainId, // Shorthand property
+        walletAddress: account,
+        fromCurrency: currencies[Field.INPUT]?.symbol,
+        toCurrency: currencies[Field.OUTPUT]?.symbol,
+        amount1: parsedIndepentFieldAmount?.toExact(),
+        amount2, // Shorthand property
+        txhash: hash,
+        status,
+        price: calculatedPrice,
+      };
+
+      recordSwap(swapData);
+    } catch (error: unknown) {
+  const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+  setSwapState((prevState) => ({
+    ...prevState,
+    attemptingTxn: false,
+    swapErrorMessage: errorMessage,
+  }));
+}
+
   }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, account, chainId, currencies, parsedIndepentFieldAmount, trade]);
+
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])

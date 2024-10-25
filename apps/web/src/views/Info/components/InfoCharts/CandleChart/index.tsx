@@ -49,7 +49,7 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
         layout: {
           backgroundColor: 'transparent',
           textColor: theme.colors.textSubtle,
-          fontFamily: "Overpass",
+          fontFamily: "Titillium Web",
           fontSize: 12,
         },
         rightPriceScale: {

@@ -60,20 +60,29 @@ const config: (
       items: [].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
-      label: t('EXCHANGE'),
+      label: t('SOCIALFI'),
       icon: SwapIcon,
       fillIcon: SwapFillIcon,
-      href: '/swap',
+      href: '/socialfi',
       showItemsOnMobile: false,
       items: [].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
-      label: t('LIQUIDITY'),
-      icon: LiquidityIcon,
-      fillIcon: LiqFillIcon,
-      href: '/liquidity',
-      showItemsOnMobile: false,
-      items: [].map((item) => addMenuItemSupported(item, chainId)),
+      label: t('EXCHANGE'),
+      icon: SwapIcon,
+      fillIcon: SwapFillIcon,
+      href: '/swap',
+      showItemsOnMobile: true,
+      items: [
+        {
+          label: t('Swap'),
+          href: '/swap',
+        },
+        {
+          label: t('Liquidity'),
+          href: '/liquidity',
+        },
+      ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
       label: 'LAUNCHPAD',

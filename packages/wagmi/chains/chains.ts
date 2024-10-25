@@ -26,7 +26,7 @@ export const sire: Chain = {
     // default: 'https://rpc.vanarchain.com',
     default: 'https://rpc.testnet.5ire.network/',
   },
-  nativeCurrency: { name: '5ire Testnet', symbol: '5ire', decimals: 18 },
+  nativeCurrency: { name: '5ire Testnet', symbol: '5IRE', decimals: 18 },
   blockExplorers: {
     default: {
       name: '5ire testnet scan',
@@ -43,7 +43,7 @@ export const sireMainnet: Chain = {
     // default: 'https://rpc.vanarchain.com',
     default: 'https://rpc.5ire.network/',
   },
-  nativeCurrency: { name: '5ireChain Mainnet', symbol: '5ire', decimals: 18 },
+  nativeCurrency: { name: '5ireChain Mainnet', symbol: '5IRE', decimals: 18 },
   blockExplorers: {
     default: {
       name: '5ire scan',

@@ -31,6 +31,7 @@ import { ZapCheckbox } from 'components/CurrencyInputPanel/ZapCheckbox'
 import { CommitButton } from 'components/CommitButton'
 import { useTranslation } from '@pancakeswap/localization'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { BACKEND_URL } from 'config/constants/backendApi';
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/useLPApr'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
@@ -75,7 +76,7 @@ const zapSupportedChainId = []
 const recordRemove = async (removeData) => {
   try {
     // console.log('Sending removeData:', removeData); // Log the data being sent
-    const response = await axios.post('https://swapback.vercel.app/api/removes', removeData);
+    const response = await axios.post(`${BACKEND_URL}/api/remove`, removeData);
     // console.log('Server response:', response.data); // Log the server's response
   } catch (error) {
     console.error('Failed to record swap:', error);
@@ -468,13 +469,14 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
             type: 'remove-liquidity',
           })
           const removeData = {
-            chainId,
-            account,
-            currencyA: pair.token0.symbol,
-            currencyB: pair.token1.symbol,
+            walletAddress: account,
+            txhash: response.hash,
             amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
             amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-            status: "Remove",
+            status: "remove",
+            currencyA: pair.token0.symbol,
+            currencyB: pair.token1.symbol,
+            chainId
           };
           recordRemove(removeData);
         })

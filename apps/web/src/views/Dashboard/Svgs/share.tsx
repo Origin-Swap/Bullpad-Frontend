@@ -6,13 +6,16 @@ const SVGComponent = (props) => (
     width={800}
     height={800}
     viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    stroke="#000"
-    strokeLinecap="round"
+    xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <path d="m21 10-9 11-9-11h5V2h8v8z" />
+    <path
+      d="M20.5 3.5 3.5 9l6.5 3 7-5-5 7 3 6.5z"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 export default SVGComponent;

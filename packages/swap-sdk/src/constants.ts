@@ -164,5 +164,5 @@ export const NATIVE: Record<
   [ChainId.CORE]: { name: 'CORE', symbol: 'CORE', decimals: 18 },
   [ChainId.VANAR]: { name: 'Vanry', symbol: 'VANRY', decimals: 18 },
   [ChainId.SIRE_TESTNET]: { name: '5ire Testnet', symbol: 'T5ire', decimals: 18 },
-  [ChainId.SIRE_MAINNET]: { name: '5ireChain Mainnet', symbol: '5ire', decimals: 18 },
+  [ChainId.SIRE_MAINNET]: { name: '5ireChain Mainnet', symbol: '5IRE', decimals: 18 },
 }

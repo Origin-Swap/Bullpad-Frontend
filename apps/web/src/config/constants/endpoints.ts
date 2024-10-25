@@ -21,7 +21,7 @@ export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/
 export const INFO_CLIENT = 'http://127.0.0.1:8000/subgraphs/name/nanda/bullpad'
 
 export const INFO_CLIENT_ETH = 'https://thegraph.coredao.org/subgraphs/name/bullexchangev2'
-export const BLOCKS_CLIENT = 'http://127.0.0.1:8000/subgraphs/name/bullpad/block'
+export const BLOCKS_CLIENT = 'http://127.0.0.1:8001/subgraphs/name/bullpad/block'
 export const BLOCKS_CLIENT_ETH = 'https://thegraph.coredao.org/subgraphs/name/Bullpad-block'
 export const STABLESWAP_SUBGRAPH_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/smartdev1990/nft-market'

@@ -73,15 +73,12 @@ enum Steps {
   Add,
 }
 
-// const API_BASE_URL = 'https://swapback.vercel.app'; // Replace with your API base URL
-// const API_BASE_URL = 'http://localhost:5000';
-
 const recordAdd = async (liquidityData) => {
   try {
     const response = await axios.post(`${BACKEND_URL}/api/add`, liquidityData);
     // Removed console.log statement
   } catch (error) {
-    console.error('Failed to record swap:', error);
+    console.error('Failed to add liquidity:', error);
   }
 };
 
@@ -246,113 +243,103 @@ export default function AddLiquidity({ currencyA, currencyB }) {
   const routerContract = useRouterContract()
 
   async function onAdd() {
-    if (!chainId || !account || !routerContract) return;
+      if (!chainId || !account || !routerContract) return;
 
-    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts;
-    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
-      return;
-    }
+      const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts;
+      if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
+          return;
+      }
 
-    const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
-    };
+      const amountsMin = {
+          [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
+          [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
+      };
 
-    let estimate;
-    let method;
-    let args;
-    let value;
+      let estimate;
+      let method;
+      let args;
+      let value;
 
-    if (currencyA?.isNative || currencyB?.isNative) {
-      const tokenBIsNative = currencyB?.isNative;
-      estimate = routerContract.estimateGas.addLiquidityETH;
-      method = routerContract.addLiquidityETH;
-      args = [
-        (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
-        (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
-        amountsMin[tokenBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-        amountsMin[tokenBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
-        account,
-        deadline.toHexString(),
-      ];
-      value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString());
-    } else {
-      estimate = routerContract.estimateGas.addLiquidity;
-      method = routerContract.addLiquidity;
-      args = [
-        currencyA?.wrapped?.address ?? '',
-        currencyB?.wrapped?.address ?? '',
-        parsedAmountA.quotient.toString(),
-        parsedAmountB.quotient.toString(),
-        amountsMin[Field.CURRENCY_A].toString(),
-        amountsMin[Field.CURRENCY_B].toString(),
-        account,
-        deadline.toHexString(),
-      ];
-      value = null;
-    }
+      if (currencyA?.isNative || currencyB?.isNative) {
+          const tokenBIsNative = currencyB?.isNative;
+          estimate = routerContract.estimateGas.addLiquidityETH;
+          method = routerContract.addLiquidityETH;
+          args = [
+              (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
+              (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
+              amountsMin[tokenBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
+              amountsMin[tokenBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
+              account,
+              deadline.toHexString(),
+          ];
+          value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString());
+      } else {
+          estimate = routerContract.estimateGas.addLiquidity;
+          method = routerContract.addLiquidity;
+          args = [
+              currencyA?.wrapped?.address ?? '',
+              currencyB?.wrapped?.address ?? '',
+              parsedAmountA.quotient.toString(),
+              parsedAmountB.quotient.toString(),
+              amountsMin[Field.CURRENCY_A].toString(),
+              amountsMin[Field.CURRENCY_B].toString(),
+              account,
+              deadline.toHexString(),
+          ];
+          value = null;
+      }
 
-    setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined });
+      setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined });
 
-    await estimate(...args, value ? { value } : {})
-      .then((estimatedGasLimit) =>
-        method(...args, {
-          ...(value ? { value } : {}),
-          gasLimit: calculateGasMargin(estimatedGasLimit),
-          gasPrice,
-        }).then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash });
+      await estimate(...args, value ? { value } : {})
+          .then((estimatedGasLimit) =>
+              method(...args, {
+                  ...(value ? { value } : {}),
+                  gasLimit: calculateGasMargin(estimatedGasLimit),
+                  gasPrice,
+              }).then((response: TransactionResponse) => {
 
-          const symbolA = currencies[Field.CURRENCY_A]?.symbol;
-          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3);
-          const symbolB = currencies[Field.CURRENCY_B]?.symbol;
-          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3);
+                const liquidityData = {
+                    walletAddress: account,
+                    txHash: response.hash,
+                    symbolA: currencies[Field.CURRENCY_A]?.symbol,
+                    amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+                    symbolB: currencies[Field.CURRENCY_B]?.symbol,
+                    amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+                    status: "add",
+                    currencyA: currencies[Field.CURRENCY_A]?.symbol, // shorthand
+                    currencyB: currencies[Field.CURRENCY_B]?.symbol, // shorthand
+                    chainId // shorthand for `chainId: chainId`
+                };
 
-          addTransaction(response, {
-            summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
-            translatableSummary: {
-              text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
-              data: { amountA, symbolA, amountB, symbolB },
-            },
-            type: 'add-liquidity',
+
+                  console.log('Liquidity Data to record:', liquidityData);
+                  recordAdd(liquidityData); // Kirim data termasuk txHash
+
+                  setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash });
+
+                  addTransaction(response, {
+                      summary: `Add ${liquidityData.amountA} ${liquidityData.symbolA} and ${liquidityData.amountB} ${liquidityData.symbolB}`,
+                      translatableSummary: {
+                          text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+                          data: { amountA: liquidityData.amountA, symbolA: liquidityData.symbolA, amountB: liquidityData.amountB, symbolB: liquidityData.symbolB },
+                      },
+                      type: 'add-liquidity',
+                  });
+
+                  if (pair) {
+                      addPair(pair);
+                  }
+              })
+          )
+          .catch((err) => {
+              setLiquidityState({
+                  attemptingTxn: false,
+                  liquidityErrorMessage: transactionErrorToUserReadableMessage(err, t), // Pass the translation function here
+                  txHash: undefined
+              });
+              logError(err);
           });
-
-          if (pair) {
-            addPair(pair);
-            console.log(pair);
-          }
-
-          const status = "add";
-          const liquidityData = {
-            walletAddress: account, // Ensure this is defined
-            chainId,
-            currencyA: currencyA.symbol,
-            currencyB: currencyB.symbol,
-            amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-            amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-            pairAddress: pair?.liquidityToken.address,
-            txHash: response.hash, // use response.hash here
-            status,
-          };
-
-          // Send data to backend only if transaction is successful
-          recordAdd(liquidityData);
-        }),
-      )
-      .catch((err) => {
-        if (err && err.code !== 4001) {
-          logError(err);
-          console.error(`Add Liquidity failed`, err, args, value);
-        }
-        setLiquidityState({
-          attemptingTxn: false,
-          liquidityErrorMessage:
-            err && err.code !== 4001
-              ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
-              : undefined,
-          txHash: undefined,
-        });
-      });
   }
 
 

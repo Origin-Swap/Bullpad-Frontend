@@ -13,7 +13,7 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    'https://thegraph.coredao.org/subgraphs/name/bullpadv2',
+    'http://127.0.0.1:8000/subgraphs/name/nanda/bullpad',
     200,
   )
 

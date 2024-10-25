@@ -4,7 +4,7 @@ import UserRecommendations from './UserRecommendations';  // Path ke komponen Us
 
 const SocialMediaRecommendations = () => {
   return (
-    <div className=" w-full bg-gray-100 flex justify-center items-start p-2">
+    <div className=" w-full flex justify-center items-start p-2">
       <div className="max-w-5xl w-full space-y-2">
         <Top3Coins />
         <UserRecommendations />

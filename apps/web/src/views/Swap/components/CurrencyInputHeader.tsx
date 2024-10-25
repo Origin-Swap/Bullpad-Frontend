@@ -68,7 +68,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
             <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
           </Flex>
           <Flex width="100%" justifyContent="left">
-            {/* {isChartSupported && setIsChartDisplayed && (
+            {isChartSupported && setIsChartDisplayed && (
               <ColoredIconButton
                 onClick={() => {
                   if (!isChartDisplayed && isSwapHotTokenDisplay) {
@@ -85,7 +85,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
                   <ChartIcon width="24px" color="textSubtle" />
                 )}
               </ColoredIconButton>
-            )} */}
+            )}
             {isChartSupported && (
               <ColoredIconButton
                 variant="text"

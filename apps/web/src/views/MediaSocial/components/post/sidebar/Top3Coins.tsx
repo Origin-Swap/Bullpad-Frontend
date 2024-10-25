@@ -20,7 +20,7 @@ const topCoins = [
 const Top3Coins = () => {
   return (
     <div className="bg-white p-4 shadow-lg rounded-lg w-full">
-      <h2 className="text-xl font-bold text-gray-700 mb-2">Top Coins This Week</h2>
+      <h2 className="text-xl font-bold text-gray-700 font-roboto mb-2">Top Coins This Week</h2>
       <ul>
         {topCoins.map((coin) => (
           <li key={coin.id} className="flex justify-between items-center mb-2 border-b pb-2">

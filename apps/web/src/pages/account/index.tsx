@@ -1,4 +1,4 @@
-import Account from '../views/Account/Profile'
+import Account from 'views/Account/Profile'
 
 const AccountPage = () => {
   const bannerUrl = "https://example.com/banner.jpg";

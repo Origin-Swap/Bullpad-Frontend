@@ -4,7 +4,8 @@ import useTheme from 'hooks/useTheme'
 import { useMatchBreakpoints, Flex } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
 import PageSection from 'components/PageSection'
-import Hero from './components/Hero'
+import Hero from './components2/Hero'
+import FeaturesSection from './components2/About'
 // import TVLSection from './components/TVLSection'
 // import TradeSection from './components/TradeSection'
 // import MetaverseSection from './components/MetaverseSection'
@@ -14,7 +15,7 @@ import Hero from './components/Hero'
 
 const HomeBodyStyle = createGlobalStyle`
   body {
-    background-color: white;
+    background-color: linear-gradient(163deg, #0b4b30,#0f060e,#124a34);
   }
 `
 
@@ -45,10 +46,6 @@ const HeroImageBGWrapper = styled.div`
   left: 0;
   right: 0;
   z-index: -1;
-  background-image:url('https://i.ytimg.com/vi/R9mXtzn8meE/maxresdefault.jpg');
-  background-size: auto 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 48px;
@@ -116,10 +113,9 @@ const Home: React.FC = () => {
   return (
     <>
       <PageMeta />
-      <HomeBodyStyle />
       <StyledHeroSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
-        background='linear-gradient(180deg, rgb(0,35,56,0.1) 90%, rgb(0,35,56) 100%)'
+        background= 'linear-gradient(163deg, #0b4b30,#0f060e,#124a34)'
         index={2}
         hasCurvedDivider={false}
       >
@@ -128,37 +124,12 @@ const Home: React.FC = () => {
       </StyledHeroSection>
       {/* <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
-        background='transparent'
+        background='linear-gradient(180deg, rgb(0,35,56,0.1) 90%, rgb(0,35,56) 100%)'
         index={2}
         hasCurvedDivider={false}
       >
-        <DefiBGWrapper />
-        <TVLSection />
-        <DeFiSection />
-      </PageSection>
-      {/*  <PageSection
-        innerProps={{ style: { margin: '0', width: '100%' } }}
-        background='transparent'
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <TradeBGImageWrapper/>
-        <TradeBGWrapper/>
-        <Moon>
-          <img src="/images/home/moon.png" alt=""/>
-        </Moon>
-        <TradeSection />
-        <Flex height={["0px", null, null, "300px"]}/>
-      </PageSection>
-
-      <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
-        background='#66afbc'
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <MobileAppSection/>
-      </PageSection> */}
+        <FeaturesSection />
+      </PageSection> */} 
 
     </>
   )
