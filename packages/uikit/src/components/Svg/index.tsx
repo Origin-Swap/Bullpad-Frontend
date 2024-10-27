@@ -134,6 +134,8 @@ export { default as SunIcon } from "./Icons/Sun";
 export { default as SwapFillIcon } from "./Icons/SwapFill";
 export { default as SwapIcon } from "./Icons/Swap";
 export { default as SwapVertIcon } from "./Icons/SwapVert";
+export { default as SocialIcon } from "./Icons/Social";
+export { default as SocialFillIcon } from "./Icons/SocialFill";
 export { default as SyncAltIcon } from "./Icons/SyncAlt";
 export { default as TeamBattleIcon } from "./Icons/TeamBattle";
 export { default as TeamPlayerIcon } from "./Icons/TeamPlayer";

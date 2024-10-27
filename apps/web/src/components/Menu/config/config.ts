@@ -18,6 +18,8 @@ import {
   RocketIcon,
   StakingIcon,
   DropdownMenuItems,
+  SocialIcon,
+  SocialFillIcon,
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
@@ -61,8 +63,8 @@ const config: (
     },
     {
       label: t('SOCIALFI'),
-      icon: SwapIcon,
-      fillIcon: SwapFillIcon,
+      icon: SocialIcon,
+      fillIcon: SocialFillIcon,
       href: '/socialfi',
       showItemsOnMobile: false,
       items: [].map((item) => addMenuItemSupported(item, chainId)),

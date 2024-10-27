@@ -83,7 +83,7 @@ const UserDataComponent: React.FC = () => {
 
     if (!account) {
     return (
-      <div className="text-center pt-8">
+      <div className="h-screen text-center content-center">
         <p className="text-black">Connect wallet to view dashboard</p>
       </div>
     );

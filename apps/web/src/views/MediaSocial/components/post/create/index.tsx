@@ -3,22 +3,24 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { BACKEND_URL } from 'config/constants/backendApi';
-import UploadIcon from './Upload'; // Import Font Awesome icon
-import CloseIcon from './Close'; // Import the close icon
+import UploadIcon from './Upload';
+import CloseIcon from './Close';
 
 const CreatePost = () => {
   const { account } = useActiveWeb3React();
   const [content, setContent] = useState('');
-  const [image, setImage] = useState<File | null>(null); // Store uploaded image file
-  const [preview, setPreview] = useState<string | null>(null); // Preview image URL
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [userData, setUserData] = useState<{
+    isActivate?: boolean;
     username?: string;
     avatarUrl?: string;
   }>({
+    isActivate: false,
     username: '',
     avatarUrl: '',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false); // State untuk blokir klik berulang
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const fetchUserData = useCallback(async (): Promise<void> => {
@@ -31,11 +33,12 @@ const CreatePost = () => {
         },
       });
 
-      const { username, avatarUrl, ...rest } = response.data;
+      const { username, avatarUrl, isActivate, ...rest } = response.data;
       setUserData({
         ...rest,
         username,
         avatarUrl,
+        isActivate,
       });
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -53,7 +56,6 @@ const CreatePost = () => {
     if (file) {
       setImage(file);
 
-      // Create image preview
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
@@ -69,15 +71,9 @@ const CreatePost = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
 
-    if (isSubmitting) return; // Jika sedang submit, blokir klik berulang
-
-    if (!userData) {
-      console.log('Loading user data, please wait...');
-      return;
-    }
-
-    setIsSubmitting(true); // Set state untuk mengindikasikan sedang submit
+    setIsSubmitting(true);
 
     try {
       const formData = new FormData();
@@ -94,8 +90,8 @@ const CreatePost = () => {
       });
 
       if (response.status === 200) {
-        alert('Post created successfully!'); // Menampilkan alert setelah post berhasil
-        setContent(''); // Reset form
+        alert('Post created successfully!');
+        setContent('');
         setImage(null);
         setPreview(null);
         router.push('/socialfi');
@@ -104,18 +100,33 @@ const CreatePost = () => {
       console.error('Error creating post:', error);
       alert('Failed to create post');
     } finally {
-      setIsSubmitting(false); // Kembalikan state setelah proses selesai
+      setIsSubmitting(false);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-
     const target = e.target;
     target.style.height = 'auto';
     target.style.height = `${target.scrollHeight}px`;
   };
 
+  // Tampilkan tombol aktivasi jika akun belum diaktifkan
+  if (!userData.isActivate) {
+    return (
+      <div className="flex py-4 justify-center items-center">
+        <button
+          type="button"
+          className="border-2 px-4 py-2 border-gray-300 rounded-lg shadow-md"
+          onClick={() => router.push('/account')}
+        >
+          Activate your profile to create post
+        </button>
+      </div>
+    );
+  }
+
+  // Tampilkan form Create Post jika akun sudah diaktifkan
   return (
     <div className="mx-auto p-4 bg-white rounded-xl shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-4">

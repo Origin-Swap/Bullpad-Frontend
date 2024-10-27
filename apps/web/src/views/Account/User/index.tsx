@@ -213,7 +213,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
           </a>
         )}
       </div>
-        <div className="md:absolute flex justify-between text-left mt-4 md:px-4 ml-2 md:mb-4 mb-2">
+        <div className="md:absolute flex justify-between text-left mt-2 md:px-4 ml-2 md:mb-4 mb-2">
           <div className="flex md:justify-start items-center justify-center space-x-8">
             {/* Menampilkan jumlah Followers */}
             <div className="md:flex">
