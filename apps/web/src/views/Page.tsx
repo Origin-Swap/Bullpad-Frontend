@@ -22,7 +22,7 @@ const Page: React.FC<
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const isBSC = chainId === ChainId.SIRE_TESTNET
+  const isBSC = chainId === ChainId.SIRE_MAINNET
   // const externalText = isBSC ? t('Bridge your Asset to SIRE_TESTNET chain') : ''
   // const externalLinkUrl = isBSC ? 'https://app.multichain.org/#/router' : ''
 

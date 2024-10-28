@@ -19,8 +19,6 @@ interface ProfileProps {
 }
 
 
-const Container = styled.div``; // Mengganti 'Div' dengan 'Container'
-
 const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, following }) => {
   const { account } = useActiveWeb3React();
   const router = useRouter();
@@ -138,22 +136,48 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
 
 
   return (
-    <Container>
-    <div className="w-full md:m-1 rounded-2xl">
-      <div className="px-2 pt-2">
-        {/* Banner */}
+    <div>
+    <div className="md:px-8 px-4 pt-4">
         <div className="relative md:px-4 md:pt-4 ">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuWltO_NqEn3SjW4eFfH_ubrhFFlLZZreFxw&s"
             alt="Banner"
             className="w-full md:h-60 h-40 rounded-3xl object-cover"
           />
-          <div className="flex absolute bottom-0 md:left-22 left-[10px] transform translate-y-1/2 z-10">
+          <div className="flex absolute bottom-0 md:left-[20px] left-[10px] transform translate-y-1/2">
             <img
               src={userAccountData.avatarUrl || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'}
               alt="Avatar"
               className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 bg-gray-100 border-white object-cover"
             />
+
+            <div className="flex items-end md:space-x-4 space-x-2 md:px-4 mt-4 py-4 md:mt-6 md:mb-6 mb-4 transform ">
+              {userData.website && (
+                <a href={userData.website} target="_blank" rel="noopener noreferrer">
+                  <WebIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+              {userData.telegram && (
+                <a href={userData.telegram} target="_blank" rel="noopener noreferrer">
+                  <TelegramIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+              {userData.twitter && (
+                <a href={userData.twitter} target="_blank" rel="noopener noreferrer">
+                  <TwitterIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+              {userData.discord && (
+                <a href={userData.discord} target="_blank" rel="noopener noreferrer">
+                  <DiscordIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+              {userData.instagram && (
+                <a href={userData.instagram} target="_blank" rel="noopener noreferrer">
+                  <InstaIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
@@ -185,62 +209,29 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
       </div>
       )}
       </div>
-
-      <div className="flex items-end md:space-x-4 space-x-2 md:px-4 mt-4 py-4 md:mt-6 md:mb-6 mb-4 transform ">
-        {userData.website && (
-          <a href={userData.website} target="_blank" rel="noopener noreferrer">
-            <WebIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
-          </a>
-        )}
-        {userData.telegram && (
-          <a href={userData.telegram} target="_blank" rel="noopener noreferrer">
-            <TelegramIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
-          </a>
-        )}
-        {userData.twitter && (
-          <a href={userData.twitter} target="_blank" rel="noopener noreferrer">
-            <TwitterIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
-          </a>
-        )}
-        {userData.discord && (
-          <a href={userData.discord} target="_blank" rel="noopener noreferrer">
-            <DiscordIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
-          </a>
-        )}
-        {userData.instagram && (
-          <a href={userData.instagram} target="_blank" rel="noopener noreferrer">
-            <InstaIcon className="w-8 h-8 md:w-10 md:h-10 rounded-lg border-4 border-white object-cover bg-gray-200 px-1 py-1" />
-          </a>
-        )}
-      </div>
         <div className="md:absolute flex justify-between text-left mt-2 md:px-4 ml-2 md:mb-4 mb-2">
           <div className="flex md:justify-start items-center justify-center space-x-8">
             {/* Menampilkan jumlah Followers */}
-            <div className="md:flex">
-              <span className="block md:text-xl text-md font-bold md:mr-2">
-                {userAccountData.followers !== undefined ? userAccountData.followers : '0'}
+            <div>
+              <span className="block md:text-xl text-md font-bold">
+              {userAccountData.followers !== undefined ? userAccountData.followers : '0'}
               </span>
               <span className="text-gray-600 md:text-lg text-xs">Followers</span>
             </div>
-            {/* Menampilkan jumlah Following */}
-            <div className="md:flex">
-              <span className="block md:text-xl text-md font-bold md:mr-2">
-                {userAccountData.following !== undefined ? userAccountData.following : '0'}
+            <div>
+              <span className="block md:text-xl text-md font-bold">
+              {userAccountData.following !== undefined ? userAccountData.following : '0'}
               </span>
               <span className="text-gray-600 md:text-lg text-xs">Following</span>
             </div>
-            {/* Menampilkan jumlah Transaksi */}
-            <div className="md:flex">
-              <span className="block md:text-xl text-md font-bold md:mr-2">
-                {userAccountData.totalTx}
-              </span>
+            <div>
+              <span className="block md:text-xl text-md font-bold">{userAccountData.totalTx}</span>
               <span className="text-gray-600 md:text-lg text-xs">Txns</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    </Container>
   );
 };
 

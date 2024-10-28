@@ -21,12 +21,12 @@ export const multiChainStartTime = {
 }
 
 export const multiChainId = {
-  '5IRE': ChainId.SIRE_TESTNET,
+  '5IRE': ChainId.SIRE_MAINNET,
   ETH: ChainId.ETHEREUM,
 }
 
 export const multiChainPaths = {
-  [ChainId.SIRE_TESTNET]: '',
+  [ChainId.SIRE_MAINNET]: '',
   [ChainId.ETHEREUM]: '/eth',
 }
 

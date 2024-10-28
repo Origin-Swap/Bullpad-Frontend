@@ -224,7 +224,7 @@ export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' 
       abi: IPancakePairABI,
       calls,
       options: { requireSuccess: false },
-      chainId: chainName === '5IRE' ? ChainId.SIRE_TESTNET : ChainId.ETHEREUM,
+      chainId: chainName === '5IRE' ? ChainId.SIRE_MAINNET : ChainId.ETHEREUM,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')
@@ -253,7 +253,7 @@ export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' 
       abi: bep20Abi,
       calls: tokenCalls,
       options: { requireSuccess: false },
-      chainId: chainName === '5IRE' ? ChainId.SIRE_TESTNET : ChainId.ETHEREUM,
+      chainId: chainName === '5IRE' ? ChainId.SIRE_MAINNET : ChainId.ETHEREUM,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')

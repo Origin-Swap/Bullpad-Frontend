@@ -186,9 +186,9 @@ const PostContent: React.FC<PostContentProps> = ({ activeTab }) => {
                       </div>
                     )}
                     </div>
-                    <div className="px-2 pb-2">
+                    <div className="pb-2">
                       <a href={`/socialfi/post/${post.id}`}>
-                        <p className="text-gray-600 md:text-lg text-md whitespace-pre-wrap">{post.content}</p>
+                        <p className="text-gray-600 md:text-lg text-md whitespace-pre-wrap py-2">{post.content}</p>
                         {post.image && (
                           <img
                             src={post.image}

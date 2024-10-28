@@ -205,7 +205,7 @@ export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
 export const getCakeContract = (signer?: Signer | Provider, chainId?: number) => {
   return getContract({
     abi: cakeAbi,
-    address: chainId ? BULL[chainId].address : BULL[ChainId.SIRE_TESTNET].address,
+    address: chainId ? BULL[chainId].address : BULL[ChainId.SIRE_MAINNET].address,
     signer,
   }) as Cake
 }

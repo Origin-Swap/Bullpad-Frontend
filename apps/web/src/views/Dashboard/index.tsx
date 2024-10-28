@@ -93,21 +93,6 @@ const UserDataComponent: React.FC = () => {
     return <div className="text-center">Loading...</div>;
   }
 
-  if (userData) {
-    if (userData === null) {
-      return (
-        <div className="rounded-lg p-4">
-          <div className="grid mb-5">
-            <p className="text-black text-center">You have no register yet. Register now...</p>
-            <button onClick={() => router.push('/register')} type="button" className="mt-5">
-              Register Now
-            </button>
-          </div>
-        </div>
-      );
-    }
-  }
-
   const userAccountData = userData;
 
   return (

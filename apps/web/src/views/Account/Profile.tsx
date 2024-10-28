@@ -17,7 +17,6 @@ interface ProfileProps {
   walletAddress?: string;  // Change to number
 }
 
-const Container = styled.div``; // Mengganti 'Div' dengan 'Container'
 
 const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, following }) => {
   const router = useRouter();
@@ -122,7 +121,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
 }, [userAccountData, account]);
 
   return (
-    <Container>
+    <div>
       <div className="md:px-8 px-4 pt-4">
         {/* Banner */}
         <div className="relative md:px-4 md:pt-4 ">
@@ -223,7 +222,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
           </div>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 

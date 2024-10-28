@@ -61,20 +61,20 @@ const VolumePage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto mt-4">
       <h2 className="text-lg font-bold mb-2 mt-6">Top 10 tokens by volume</h2>
-      <div className="overflow-hidden">
-        <table className="w-full bg-white">
+      <div className="overflow-x-auto">
+        <table className="table-auto w-full text-left rounded-full" style={{borderRadius: '10px', border: '1px solid gray'}}>
           <thead>
-            <tr className="token-container">
-              <th className="flex md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Token</th>
-              <th className="flex md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Price</th>
-              <th className="flex md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>24h TXNS</th>
-              <th className="flex md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Last 24 Hours</th>
-              <th className="flex md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Total Volume</th>
+            <tr>
+              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Token</th>
+              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Price</th>
+              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>24h Txns</th>
+              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Volume 24h</th>
+              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Total Volume</th>
             </tr>
           </thead>
           <tbody>
             {sortedVolumes.map(([token, { lastPrice, totalVolume, volume24h, txns24h }]) => (
-              <tr key={token} className="token-container">
+              <tr key={token}>
                 <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>{token}</td>
                 <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>${lastPrice.toFixed(5)}</td>
                 <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>{txns24h}</td>
