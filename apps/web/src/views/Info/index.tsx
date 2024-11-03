@@ -25,7 +25,7 @@ export const InfoPageLayout = ({ children }) => {
   const isStableSwap = router.query.type === 'stableSwap'
   return (
     <>
-      {chainName === '5IRE' && (
+      {chainName === 'SIRE' && (
         <SubMenuItems
           items={[
             {

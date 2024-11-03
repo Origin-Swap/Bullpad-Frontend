@@ -18,11 +18,11 @@ export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancak
  */
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
 
-export const INFO_CLIENT = 'https://api.subgraph.5ire.network:8000/subgraphs/name/bullpad/exchange-v2'
+export const INFO_CLIENT = 'https://api.graph.5ire.network/subgraphs/name/bullpad/exchange-v2'
 
-export const INFO_CLIENT_ETH = 'https://thegraph.coredao.org/subgraphs/name/bullexchangev2'
-export const BLOCKS_CLIENT = 'https://api.subgraph.5ire.network:8000/subgraphs/name/bullpad/block'
-export const BLOCKS_CLIENT_ETH = 'https://thegraph.coredao.org/subgraphs/name/Bullpad-block'
+export const INFO_CLIENT_ETH = 'https://api.graph.5ire.network/subgraphs/name/bullEx/exchange-v2'
+export const BLOCKS_CLIENT = 'https://api.graph.5ire.network/subgraphs/name/bullpad/block'
+export const BLOCKS_CLIENT_ETH = 'https://api.graph.5ire.network/subgraphs/name/bullpad/block'
 export const STABLESWAP_SUBGRAPH_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/smartdev1990/nft-market'
 export const GRAPH_HEALTH = 'https://thegraph-is.coredao.orgs'

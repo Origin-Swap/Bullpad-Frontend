@@ -3,25 +3,25 @@ import { infoClientETH, infoClient, infoStableSwapClient } from 'utils/graphql'
 import { ChainId } from '@pancakeswap/sdk'
 import { ETH_TOKEN_BLACKLIST, PCS_ETH_START, PCS_V2_START, TOKEN_BLACKLIST } from 'config/constants/info'
 
-export type MultiChainName = '5IRE' | 'ETH'
+export type MultiChainName = 'SIRE' | 'ETH'
 
 export const multiChainQueryMainToken = {
-  '5IRE': '5IRE',
+  SIRE: 'SIRE',
   ETH: 'ETH',
 }
 
 export const multiChainBlocksClient = {
-  '5IRE': BLOCKS_CLIENT,
+  SIRE: BLOCKS_CLIENT,
   ETH: BLOCKS_CLIENT,
 }
 
 export const multiChainStartTime = {
-  '5IRE': 2427588,
+  SIRE: 3102841,
   ETH: 14028044,
 }
 
 export const multiChainId = {
-  '5IRE': ChainId.SIRE_MAINNET,
+  SIRE: ChainId.SIRE_MAINNET,
   ETH: ChainId.ETHEREUM,
 }
 
@@ -31,22 +31,22 @@ export const multiChainPaths = {
 }
 
 export const multiChainQueryClient = {
-  '5IRE': infoClient,
+  SIRE: infoClient,
   ETH: infoClientETH,
 }
 
 export const multiChainQueryEndPoint = {
-  '5IRE': INFO_CLIENT,
+  SIRE: INFO_CLIENT,
   ETH: INFO_CLIENT_ETH,
 }
 
 export const multiChainScan = {
-  '5IRE': 'CoreScan',
+  SIRE: '5ireScan',
   ETH: 'EtherScan',
 }
 
 export const multiChainTokenBlackList = {
-  '5IRE': TOKEN_BLACKLIST,
+  SIRE: TOKEN_BLACKLIST,
   ETH: ETH_TOKEN_BLACKLIST,
 }
 

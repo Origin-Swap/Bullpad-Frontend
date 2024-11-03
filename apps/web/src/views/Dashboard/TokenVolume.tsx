@@ -75,11 +75,17 @@ const VolumePage: React.FC = () => {
           <tbody>
             {sortedVolumes.map(([token, { lastPrice, totalVolume, volume24h, txns24h }]) => (
               <tr key={token}>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>{token}</td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>${lastPrice.toFixed(5)}</td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>{txns24h}</td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>${(volume24h * lastPrice).toFixed(5)}</td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{border: '1px solid gray'}}>${(totalVolume * lastPrice).toFixed(5)}</td>
+                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>{token}</td>
+                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>
+                  ${lastPrice !== null && lastPrice !== undefined ? lastPrice.toFixed(5) : 'N/A'}
+                </td>
+                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>{txns24h}</td>
+                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>
+                  ${lastPrice !== null && lastPrice !== undefined ? (volume24h * lastPrice).toFixed(5) : 'N/A'}
+                </td>
+                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>
+                  ${lastPrice !== null && lastPrice !== undefined ? (totalVolume * lastPrice).toFixed(5) : 'N/A'}
+                </td>
               </tr>
             ))}
           </tbody>

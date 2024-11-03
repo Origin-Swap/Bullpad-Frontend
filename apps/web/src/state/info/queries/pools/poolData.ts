@@ -89,7 +89,7 @@ export const fetchPoolData = async (
   block7d: number,
   block14d: number,
   poolAddresses: string[],
-  chainName: 'ETH' | '5IRE' = '5IRE',
+  chainName: 'ETH' | 'SIRE' = 'SIRE',
 ) => {
   // console.log("poolAddresses:", poolAddresses)
   try {

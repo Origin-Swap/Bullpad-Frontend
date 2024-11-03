@@ -118,7 +118,7 @@ export const getStaticProps: GetStaticProps = async () => {
       }
     `)
     const cake = await (await fetch('https://farms.pancake-swap.workers.dev/price/cake')).json()
-    const { totalLiquidityUSD } = result.uniswapFactories[0]
+    const { totalLiquidityUSD } = result.pancakeFactories[0]
     const cakeVaultV2 = getCakeVaultAddress()
     const cakeContract = getCakeContract()
     const totalCakeInVault = await cakeContract.balanceOf(cakeVaultV2)

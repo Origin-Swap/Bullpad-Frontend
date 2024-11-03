@@ -81,14 +81,6 @@ const UserDataComponent: React.FC = () => {
       return () => clearInterval(intervalId);
     }, [fetchUserData]);
 
-    if (!account) {
-    return (
-      <div className="h-screen text-center content-center">
-        <p className="text-black">Connect wallet to view dashboard</p>
-      </div>
-    );
-  }
-
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
@@ -139,9 +131,10 @@ const UserDataComponent: React.FC = () => {
             <div className="ml-4">
               <p className="text-lg text-black">Balance</p>
               <p className="text-2xl md:text-3xl text-black">
-                ${bnbBalance?.data?.value && priceData ? (parseFloat(formatBigNumber(bnbBalance.data.value, 2)) * priceData).toFixed(2) : '0.00'}
+                ${bnbBalance?.data?.value && priceData ?
+                  (parseFloat(formatBigNumber(bnbBalance?.data?.value || '0', 2)) * priceData).toFixed(2)
+                  : '0.00'}
               </p>
-
             </div>
             <div className="flex justify-center items-center">
               <img src="/images/cardheaddashboard.png" alt="sire" className="h-24 w-24 mr-8" />

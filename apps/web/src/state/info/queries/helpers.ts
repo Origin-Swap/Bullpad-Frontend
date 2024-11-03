@@ -11,7 +11,7 @@ import { getUnixTime } from 'date-fns'
 import { TransactionType } from 'state/info/types'
 import { ChartEntry } from '../types'
 import { MultiChainName, multiChainStartTime } from '../constant'
-import { MintResponse, SwapResponse, BurnResponse, TokenDayData, PairDayData, pancakeDayData } from './types'
+import { MintResponse, SwapResponse, BurnResponse, TokenDayData, PairDayData, uniswapDayData } from './types'
 
 export const mapMints = (mint: MintResponse) => {
   return {
@@ -61,7 +61,7 @@ export const mapSwaps = (swap: SwapResponse) => {
   }
 }
 
-export const mapDayData = (tokenDayData: TokenDayData | pancakeDayData): ChartEntry => ({
+export const mapDayData = (tokenDayData: TokenDayData | uniswapDayData): ChartEntry => ({
   date: tokenDayData.date,
   volumeUSD: parseFloat(tokenDayData.dailyVolumeUSD),
   liquidityUSD: parseFloat(tokenDayData.totalLiquidityUSD),
@@ -209,7 +209,7 @@ export const fetchChartDataWithAddress = async (
   }
 }
 
-export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' | '5IRE') {
+export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' | 'SIRE') {
   let rawPairTokenResults: string[][]
   const calls = poolAddresses
     .map((poolAddress) => {
@@ -224,7 +224,7 @@ export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' 
       abi: IPancakePairABI,
       calls,
       options: { requireSuccess: false },
-      chainId: chainName === '5IRE' ? ChainId.SIRE_MAINNET : ChainId.ETHEREUM,
+      chainId: chainName === 'SIRE' ? ChainId.ETHEREUM : ChainId.SIRE_MAINNET,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')
@@ -253,7 +253,7 @@ export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' 
       abi: bep20Abi,
       calls: tokenCalls,
       options: { requireSuccess: false },
-      chainId: chainName === '5IRE' ? ChainId.SIRE_MAINNET : ChainId.ETHEREUM,
+      chainId: chainName === 'SIRE' ? ChainId.ETHEREUM : ChainId.SIRE_MAINNET,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')
