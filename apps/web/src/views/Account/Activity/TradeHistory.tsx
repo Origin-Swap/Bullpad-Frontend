@@ -36,7 +36,7 @@ const useUserData = () => {
   return (
     <div>
       <div className="border rounded-lg py-4">
-        <div className="mt-3">
+        <div className="mt-1">
           <div className="text-lg">Last 5 Trading Transactions</div>
           {userAccountData && userAccountData.lastTransactions && userAccountData.lastTransactions.length > 0 ? (
             <div className="grid grid-cols-3 gap-2 mt-4 border border-gray-100" style={{border: '2px solid gray', borderRadius: '10px', padding: '10px'}}>

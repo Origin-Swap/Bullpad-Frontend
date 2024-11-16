@@ -29,3 +29,7 @@
   display: grid;
   grid-template-columns: 2fr 3fr 3fr 3fr 3fr;
 }
+
+.border-top {
+  border-top: 1px solid gray;
+}

@@ -7,6 +7,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { useSigner } from 'wagmi';
 import { parseEther } from '@ethersproject/units';
 import { BACKEND_URL } from 'config/constants/backendApi';
+import LiquidityHistory from './Activity/LiquidityHistory'
+import TradeHistory from './Activity/TradeHistory'
 
 interface ProfileProps {
   bannerUrl: string;
@@ -59,6 +61,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
   const { data: signer } = useSigner();
   const [loading, setLoading] = useState<boolean>(true);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState('Feeds');
 
   const fetchUserData = useCallback(async (): Promise<void> => {
     if (!account) return;
@@ -199,7 +202,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
             </div>
           </div>
 
-          <div className="flex md:relative md:-top-32 translate-y-1/2 mb-6 mt-4">
+          <div className="flex md:relative md:-top-32 translate-y-1/2 mb-6 mt-4 border-t-2 border-gray-200">
           <div className="mt-2 mr-2">
             {userData.isActivate ? (
               <button
@@ -220,6 +223,44 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
             )}
           </div>
           </div>
+        </div>
+      </div>
+      <div className="mt-6 md:px-6 px-2 ">
+        <div className="flex justify-start border-b border-gray-300">
+          {['Feeds', 'Trade', 'Liquidity'].map((tab) => (
+            <button
+              key={tab}
+              className={`py-2 px-4 text-lg font-semibold ${
+                activeTab === tab ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-600'
+              }`}
+              onClick={() => setActiveTab(tab)}
+              type="button"
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab Content */}
+        <div className="mt-4 border-top mb-4">
+          {activeTab === 'Feeds' && (
+            <div className="p-4  bg-gray-100">
+              <h2 className="text-xl font-bold">Feeds</h2>
+              <p>Here you can see all the latest updates and posts.</p>
+            </div>
+          )}
+          {activeTab === 'Trade' && (
+            <div className="p-4  bg-gray-100">
+              <h2 className="text-xl font-bold">Trade Activity</h2>
+              <TradeHistory />
+            </div>
+          )}
+          {activeTab === 'Liquidity' && (
+            <div className="p-4  bg-gray-100">
+              <h2 className="text-xl font-bold">Liquidity Activity</h2>
+              <LiquidityHistory />
+            </div>
+          )}
         </div>
       </div>
     </div>

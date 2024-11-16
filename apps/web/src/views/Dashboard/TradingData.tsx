@@ -47,7 +47,7 @@ const TransactionRecords: React.FC = () => {
         // Sort and get only the last 20 transactions
         const sortedTransactions = response.data
           .sort((a: TransactionRecord, b: TransactionRecord) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 20); // Limit to last 20 transactions
+          .slice(0, 100); // Limit to last 20 transactions
 
         setTransactions(sortedTransactions);
       } catch (err) {
@@ -71,7 +71,7 @@ const TransactionRecords: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto py-4">
-      <h2 className="text-lg font-bold mb-2 mt-6">Last 20 Transactions (all users & tokens)</h2>
+      <h2 className="text-lg font-bold mb-2 mt-6">Last 100 Transactions (all users & tokens)</h2>
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-left rounded-full" style={{borderRadius: '10px', border: '1px solid gray'}}>
           <thead>

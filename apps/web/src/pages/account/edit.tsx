@@ -88,6 +88,24 @@ const EditProfile: React.FC<EditProfileProps> = ({ user = {} }) => {
       <h2 className="text-2xl font-semibold mb-6">Edit Profile</h2>
 
       <div className="mb-4">
+        <label htmlFor="avatar" className="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
+        <input
+          id="avatar"
+          type="file"
+          accept="image/*"
+          onChange={handleAvatarChange}
+          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+        />
+        {avatarPreview && (
+          <img
+            src={avatarPreview}
+            alt="Avatar Preview"
+            className="mt-4 rounded-full w-24 h-24 object-cover"
+          />
+        )}
+      </div>
+
+      <div className="mb-4">
         <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Username</label>
         <input
           id="username"
@@ -111,7 +129,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user = {} }) => {
         />
       </div>
 
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
         <input
           id="fullName"
@@ -121,7 +139,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user = {} }) => {
           placeholder="Full Name"
           className="w-full px-4 py-2 border rounded-md focus:ring-blue-500"
         />
-      </div>
+      </div> */}
 
       <div className="mb-4">
         <label htmlFor="telegram" className="block text-sm font-medium text-gray-700 mb-1">Telegram</label>
@@ -181,24 +199,6 @@ const EditProfile: React.FC<EditProfileProps> = ({ user = {} }) => {
           placeholder="Instagram"
           className="w-full px-4 py-2 border rounded-md focus:ring-blue-500"
         />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="avatar" className="block text-sm font-medium text-gray-700 mb-1">Avatar</label>
-        <input
-          id="avatar"
-          type="file"
-          accept="image/*"
-          onChange={handleAvatarChange}
-          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
-        />
-        {avatarPreview && (
-          <img
-            src={avatarPreview}
-            alt="Avatar Preview"
-            className="mt-4 rounded-full w-24 h-24 object-cover"
-          />
-        )}
       </div>
 
       <button

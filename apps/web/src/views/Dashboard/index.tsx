@@ -131,9 +131,9 @@ const UserDataComponent: React.FC = () => {
             <div className="ml-4">
               <p className="text-lg text-black">Balance</p>
               <p className="text-2xl md:text-3xl text-black">
-                ${bnbBalance?.data?.value && priceData ?
-                  (parseFloat(formatBigNumber(bnbBalance?.data?.value || '0', 2)) * priceData).toFixed(2)
-                  : '0.00'}
+              ${bnbBalance?.data?.value && priceData ?
+                (parseFloat(formatBigNumber(bnbBalance.data.value, 2)) * priceData).toFixed(2)
+                : '0.00'}
               </p>
             </div>
             <div className="flex justify-center items-center">
@@ -154,8 +154,14 @@ const UserDataComponent: React.FC = () => {
                </div>
                </div>
                <div>
-                <p className="text-lg font-semibold">{formatBigNumber(bnbBalance.data.value, 2)}</p>
-                <p className="text-xs">${bnbBalance?.data?.value && priceData ? (parseFloat(formatBigNumber(bnbBalance.data.value, 2)) * priceData).toFixed(2) : '0.00'}</p>
+               <p className="text-lg font-semibold">
+                 {bnbBalance?.data?.value ? formatBigNumber(bnbBalance.data.value, 2) : '0.00'}
+               </p>
+               <p className="text-xs">
+                 ${bnbBalance?.data?.value && priceData ?
+                   (parseFloat(formatBigNumber(bnbBalance.data.value, 2)) * priceData).toFixed(2)
+                   : '0.00'}
+               </p>
                </div>
               </div>
               <div className="flex justify-between mb-4 mt-2" style={{borderBottom: '1px solid gray', paddingBottom: '10px'}}>
