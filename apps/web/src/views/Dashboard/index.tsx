@@ -7,7 +7,7 @@ import { BACKEND_URL } from 'config/constants/backendApi';
 import { useRouter } from 'next/router';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import useNativeCurrency from 'hooks/useNativeCurrency';
-import useTokenBalance, { useGetCakeBalance, useGetUsdtBalance }from 'hooks/useTokenBalance';
+import useTokenBalance, { useGetCakeBalance, useGetUsdtBalance } from 'hooks/useTokenBalance';
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance';
 import { useBalance } from 'wagmi';
 import TradingRank from './TradingRank';
@@ -15,10 +15,9 @@ import LiquidityRank from './LiquidityRank';
 import TokenInfo from './TokenVolume';
 import TradingData from './TradingData';
 
-
 const UserDataComponent: React.FC = () => {
   const { account, chainId } = useActiveWeb3React();
-  const [ priceData, setPriceData ] = useState();
+  const [priceData, setPriceData] = useState<number | null>(null);
   const [userData, setUserData] = useState<{
     isActivate?: boolean;
     username?: string;
@@ -32,17 +31,16 @@ const UserDataComponent: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
-  const isBSC = chainId === ChainId.SIRE_MAINNET
-  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.SIRE_MAINNET })
-  const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
+  const isBSC = chainId === ChainId.SIRE_MAINNET;
+  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.SIRE_MAINNET });
+  const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC });
 
-  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
-  const { balance: usdtBalance, fetchStatus: usdtFetchStatus } = useGetUsdtBalance()
+  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance();
+  const { balance: usdtBalance, fetchStatus: usdtFetchStatus } = useGetUsdtBalance();
 
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        // Ambil harga 5ire dari CoinGecko
         const priceResponse = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=5ire&vs_currencies=usd');
         const priceInUSD = priceResponse.data['5ire'].usd;
         setPriceData(priceInUSD);
@@ -55,31 +53,31 @@ const UserDataComponent: React.FC = () => {
   }, []);
 
   const fetchUserData = useCallback(async (): Promise<void> => {
-      if (!account) return;
-      try {
-        const response = await axios.put(`${BACKEND_URL}/api/users/${account}`, {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-          },
-        });
-        const { isActivate, ...rest } = response.data; // Ensure isActivate is extracted
+    if (!account) return;
+    try {
+      const response = await axios.put(`${BACKEND_URL}/api/users/${account}`, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      });
+      const { isActivate, ...rest } = response.data; // Ensure isActivate is extracted
 
-          setUserData({
-            ...rest,
-            isActivate,
-        });
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    }, [account]);
+      setUserData({
+        ...rest,
+        isActivate,
+      });
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [account]);
 
-    useEffect(() => {
-      fetchUserData();
-      const intervalId = setInterval(fetchUserData, 5000);
-      return () => clearInterval(intervalId);
-    }, [fetchUserData]);
+  useEffect(() => {
+    fetchUserData();
+    const intervalId = setInterval(fetchUserData, 5000);
+    return () => clearInterval(intervalId);
+  }, [fetchUserData]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
@@ -219,6 +217,6 @@ const UserDataComponent: React.FC = () => {
       </div>
     </div>
   );
-};
+  };
 
 export default UserDataComponent;
