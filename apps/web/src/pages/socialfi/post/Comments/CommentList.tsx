@@ -87,9 +87,9 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
   }
 
   return (
-    <div className="mt-4 space-y-4">
+    <div className="mt-1 space-y-2">
       {visibleComments.map((comment) => (
-        <div key={comment.id} className="m-2 p-4 bg-gray-100 rounded-lg shadow-lg">
+        <div key={comment.id} className="p-4 bg-gray-100 rounded-lg shadow-lg">
           <div className="flex items-center mb-2">
             <img
               src={comment.user.avatarUrl}

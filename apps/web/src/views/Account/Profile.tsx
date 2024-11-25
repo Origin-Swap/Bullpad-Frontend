@@ -9,6 +9,7 @@ import { parseEther } from '@ethersproject/units';
 import { BACKEND_URL } from 'config/constants/backendApi';
 import LiquidityHistory from './Activity/LiquidityHistory'
 import TradeHistory from './Activity/TradeHistory'
+import Rank from './Activity/Rank'
 
 interface ProfileProps {
   bannerUrl: string;
@@ -124,10 +125,10 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
 }, [userAccountData, account]);
 
   return (
-    <div>
-      <div className="md:px-8 px-4 pt-4">
+    <div className="md:flex">
+      <div className="md:w-4/6 px-2 m-2 shadow-lg pt-4 rounded-xl" style={{border: '2px solid #f3f4f6'}}>
         {/* Banner */}
-        <div className="relative md:px-4 md:pt-4 ">
+        <div className="relative md:px-4  ">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuWltO_NqEn3SjW4eFfH_ubrhFFlLZZreFxw&s"
             alt="Banner"
@@ -177,7 +178,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
           </div>
         </div>
 
-        <h1 className="text-3xl font-roboto font-semibold md:font-bold md:px-4 md:mt-20 mt-14">
+        <h1 className="text-3xl font-roboto font-semibold md:font-bold md:px-4 md:mt-20 mt-14 md:mb-6">
           {userAccountData.username
             ? userAccountData.username
             : `${account?.slice(0, 6)}...${account?.slice(-4)}`}
@@ -197,7 +198,9 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
               <span className="text-gray-600 md:text-lg text-xs">Following</span>
             </div>
             <div>
-              <span className="block md:text-xl text-md font-bold">{userAccountData.totalTx}</span>
+              <span className="block md:text-xl text-md font-bold">
+              {userAccountData.totalTx !== undefined ? userAccountData.totalTx : '0'}
+              </span>
               <span className="text-gray-600 md:text-lg text-xs">Txns</span>
             </div>
           </div>
@@ -224,44 +227,53 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
           </div>
           </div>
         </div>
-      </div>
-      <div className="mt-6 md:px-6 px-2 ">
-        <div className="flex justify-start border-b border-gray-300">
-          {['Feeds', 'Trade', 'Liquidity'].map((tab) => (
-            <button
-              key={tab}
-              className={`py-2 px-4 text-lg font-semibold ${
-                activeTab === tab ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-600'
-              }`}
-              onClick={() => setActiveTab(tab)}
-              type="button"
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        <div className="mt-6 md:px-4 px-2">
+          <div className="flex justify-start border-b border-gray-300">
+            {['Feeds', 'Trade', 'Liquidity', 'Rank'].map((tab) => (
+              <button
+                key={tab}
+                className={`py-2 px-4 text-lg font-semibold ${
+                  activeTab === tab ? 'border-b-2 border-blue-500 text-blue-500 bg-white' : 'text-gray-600'
+                } ${tab === 'Rank' ? 'md:hidden' : ''}`} // Sembunyikan Rank di PC
+                onClick={() => setActiveTab(tab)}
+                type="button"
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
 
-        {/* Tab Content */}
-        <div className="mt-4 border-top mb-4">
-          {activeTab === 'Feeds' && (
-            <div className="p-4  bg-gray-100">
-              <h2 className="text-xl font-bold">Feeds</h2>
-              <p>Here you can see all the latest updates and posts.</p>
-            </div>
-          )}
-          {activeTab === 'Trade' && (
-            <div className="p-4  bg-gray-100">
-              <h2 className="text-xl font-bold">Trade Activity</h2>
-              <TradeHistory />
-            </div>
-          )}
-          {activeTab === 'Liquidity' && (
-            <div className="p-4  bg-gray-100">
-              <h2 className="text-xl font-bold">Liquidity Activity</h2>
-              <LiquidityHistory />
-            </div>
-          )}
+
+          {/* Tab Content */}
+          <div className="mt-4 border-top mb-4">
+            {activeTab === 'Feeds' && (
+              <div className="px-4 py-2 pb-6">
+                <h2 className="text-xl font-bold">Feeds</h2>
+                <p>Here you can see all the latest updates and posts.</p>
+              </div>
+            )}
+            {activeTab === 'Trade' && (
+              <div className="px-4 py-2 pb-6">
+                <h2 className="text-xl font-bold">Trade Activity</h2>
+                <TradeHistory />
+              </div>
+            )}
+            {activeTab === 'Liquidity' && (
+              <div className="px-4 py-2 pb-6">
+                <h2 className="text-xl font-bold">Liquidity Activity</h2>
+                <LiquidityHistory />
+              </div>
+            )}
+            {activeTab === 'Rank' && (
+              <div className="md:hidden block px-4 py-2 pb-6">
+                <Rank />
+              </div>
+            )}
+          </div>
         </div>
+      </div>
+      <div className="md:w-2/6 md:block hidden px-2 m-2 shadow-lg pt-4 rounded-xl" style={{border: '2px solid #f3f4f6'}}>
+        <Rank />
       </div>
     </div>
   );

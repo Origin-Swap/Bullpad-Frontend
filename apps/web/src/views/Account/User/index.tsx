@@ -59,6 +59,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
   const { data: signer } = useSigner();
   const [loading, setLoading] = useState<boolean>(true);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState('Feeds');
 
   const fetchUserData = useCallback(async (): Promise<void> => {
     if (!walletAddress || !account) return;
@@ -137,7 +138,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
 
   return (
     <div>
-    <div className="md:px-8 px-4 pt-4">
+    <div className="md:w-4/6 px-2 m-2 shadow-lg pt-4 rounded-xl" style={{border: '2px solid #f3f4f6'}}>
         <div className="relative md:px-4 md:pt-4 ">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuWltO_NqEn3SjW4eFfH_ubrhFFlLZZreFxw&s"
@@ -182,7 +183,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
         </div>
 
       <div className="flex justify-between pl-2 items-center">
-        <h1 className="md:text-3xl text-xl font-semibold md:font-bold md:ml-4 ml-1 mt-16 md:mt-20">
+        <h1 className="md:text-3xl text-xl font-semibold md:font-bold md:ml-4 ml-1 mt-14 md:mt-16 md:mb-6">
           {userAccountData.username
             ? userAccountData.username
             : `${userAccountData.walletAddress?.slice(0, 6)}...${userAccountData.walletAddress?.slice(-4)}`}
@@ -225,9 +226,49 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
               <span className="text-gray-600 md:text-lg text-xs">Following</span>
             </div>
             <div>
-              <span className="block md:text-xl text-md font-bold">{userAccountData.totalTx}</span>
+              <span className="block md:text-xl text-md font-bold">
+              {userAccountData.totalTx !== undefined ? userAccountData.totalTx : '0'}
+              </span>
               <span className="text-gray-600 md:text-lg text-xs">Txns</span>
             </div>
+          </div>
+        </div>
+        <div className="mt-20 md:px-2 px-2 ">
+          <div className="flex justify-start border-b border-gray-300">
+            {['Feeds', 'Like', 'News'].map((tab) => (
+              <button
+                key={tab}
+                className={`py-2 px-4 text-lg font-semibold ${
+                  activeTab === tab ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-600'
+                }`}
+                onClick={() => setActiveTab(tab)}
+                type="button"
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content */}
+          <div className="mt-4 border-top mb-4">
+            {activeTab === 'Feeds' && (
+              <div className="p-2  bg-gray-100">
+                <h2 className="text-xl font-bold">Feeds</h2>
+                <p>Here you can see all the latest updates and posts.</p>
+              </div>
+            )}
+            {activeTab === 'Like' && (
+              <div className="p-2  bg-gray-100">
+                <h2 className="text-xl font-bold">Likes</h2>
+                <p>Here you can see all the latest updates of your like on post.</p>
+              </div>
+            )}
+            {activeTab === 'News' && (
+              <div className="p-2  bg-gray-100">
+                <h2 className="text-xl font-bold">News</h2>
+                <p>Here you can see all the latest updates of your favorite news.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

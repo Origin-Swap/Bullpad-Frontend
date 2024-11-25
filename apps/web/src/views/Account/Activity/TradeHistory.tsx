@@ -35,32 +35,32 @@ const useUserData = () => {
 
   return (
     <div>
-      <div className="border rounded-lg py-4">
-        <div className="mt-1">
-          <div className="text-lg">Last 5 Trading Transactions</div>
+      <div className="border rounded-lg py-2">
+        <div>
+          <div className="text-sm">Last 5 Trading Transactions</div>
           {userAccountData && userAccountData.lastTransactions && userAccountData.lastTransactions.length > 0 ? (
-            <div className="grid grid-cols-3 gap-2 mt-4 border border-gray-100" style={{border: '2px solid gray', borderRadius: '10px', padding: '10px'}}>
+            <div className="grid grid-cols-3 gap-y-2 mt-4 border border-gray-100">
               {/* Column Headers */}
-              <div className="font-semibold" style={{borderRight: '2px solid gray', borderBottom: '2px solid gray', padding: '10px 5px 5px 5px'}}>Sent</div>
-              <div className="font-semibold" style={{borderRight: '2px solid gray', borderBottom: '2px solid gray', padding: '10px 5px 5px 5px'}}>Received</div>
-              <div className="font-semibold" style={{borderBottom: '2px solid gray', padding: '10px 5px 5px 5px'}}>TX Hash</div>
+              <div className="font-semibold px-2" >Swap</div>
+              <div className="font-semibold" >Received</div>
+              <div className="font-semibold" >TX Hash</div>
 
               {userAccountData.lastTransactions.map((transaction: any) => (
                 <React.Fragment key={transaction.txhash}> {/* Use a unique identifier here */}
-                  <p className="text-sm" style={{ borderRight: '1px solid gray', borderBottom: '1px solid gray', padding: '0px 5px 5px 5px' }}>
+                  <p className="text-sm bg-blue-200 py-1 px-2 rounded-l-lg" >
                     {transaction.amount1} {transaction.fromCurrency}
                   </p>
-                  <p className="text-sm" style={{ borderRight: '1px solid gray', borderBottom: '1px solid gray', padding: '0px 5px 5px 5px' }}>
+                  <p className="text-sm bg-blue-200 py-1" >
                     {transaction.amount2} {transaction.toCurrency}
                   </p>
-                  <p className="text-sm" style={{ borderBottom: '1px solid gray', padding: '0px 5px 5px 5px' }}>
+                  <p className="text-sm bg-blue-200 py-1 rounded-r-lg">
                     <a
                       href={`https://testnet.5irescan.io/tx/${transaction.txhash}`} // Change URL if you are using another explorer
                       target="_blank" // Opens in a new tab
                       rel="noopener noreferrer" // Security for opening the link in a new tab
-                      style={{ textDecoration: 'underline', color: 'green' }} // Add styles for the link
+                      style={{ color: 'green' }} // Add styles for the link
                     >
-                      {`${transaction.txhash.slice(0, 3)}...${userAccountData.walletAddress.slice(-4)}`}
+                      {`${transaction.txhash.slice(0, 6)}...${userAccountData.walletAddress.slice(-8)}`}
                     </a>
                   </p>
                 </React.Fragment>

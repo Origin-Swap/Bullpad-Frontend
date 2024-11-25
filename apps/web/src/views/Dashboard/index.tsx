@@ -70,7 +70,7 @@ const UserDataComponent: React.FC = () => {
         });
       } catch (error) {
         console.error('Error fetching user data:', error);
-      } 
+      }
     }, [account]);
 
     useEffect(() => {
@@ -117,7 +117,7 @@ const UserDataComponent: React.FC = () => {
         </div>
         <div className="flex flex-col md:flex-row gap-2 mt-4">
 
-          <div className="w-full md:w-6/12 p-4 md:mb-4" style={{border: '1px solid gray', borderRadius: '10px'}}>
+          <div className="w-full md:w-6/12 p-4 md:mb-4 rounded-xl shadow-lg" style={{border: '1px solid #e5e7eb' }}>
           <div
           className="flex pt-4 pb-4 items-center content-center bg-blue-100 justify-between"
           style={{border: '1px solid gray', borderRadius: '10px'}}
@@ -194,15 +194,14 @@ const UserDataComponent: React.FC = () => {
               </div>
             </div>
           </div>
-          <div
-          className="w-full md:w-6/12 mb-4 mt-4 md:mt-0 md:mb-0"
-          style={{border: '1px solid black', borderRadius: '10px', }}>
-            <p className="px-2 py-4 font-bold text-center" style={{borderBottom: '1px solid black'}}>Top 10 trading points</p>
+          <div className=" md:w-6/12 mb-4 shadow-lg md:mb-0 rounded-xl"
+           style={{border: '1px solid #e5e7eb' }}>
+            <p className="px-2 py-4 font-bold " >Top Trading Points</p>
             <TradingRank />
           </div>
-          <div className="w-full md:w-6/12 mb-4 md:mb-0"
-           style={{border: '1px solid black', borderRadius: '10px', }}>
-            <p className="px-4 py-4 font-bold text-center" style={{borderBottom: '1px solid black'}}>Top 10 Liquidity Points</p>
+          <div className=" md:w-6/12 mb-4 shadow-lg md:mb-0 rounded-xl"
+           style={{border: '1px solid #e5e7eb' }}>
+            <p className="px-4 py-4 font-bold">Top Liquidity Points</p>
             <LiquidityRank />
           </div>
         </div>

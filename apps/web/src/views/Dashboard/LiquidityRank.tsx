@@ -100,23 +100,22 @@ const LiquidityPoints: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto">
-      <div className="leaderboard-container px-2 py-2 text-sm text-center font-semibold bg-gray-100 rounded-md">
-        <div className="flex">Rank</div>
-        <div className="flex">Name</div>
-        <div className="flex">Point Earning</div>
+    <div className="container mx-auto pb-4">
+      <div className="leaderboard-container px-2 py-2 text-sm text-center font-semibold rounded-md">
+        <div className="flex pl-1">Rank</div>
+        <div className="flex pl-1">User</div>
+        <div className="text-right pr-1">Point</div>
       </div>
         {topTenLiquidityPoints.map((point) => (
-          <div key={point.walletAddress} className="leaderboard-container px-2 text-xs divide-y py-1 divide-gray-200"
-          style={{borderTop: '1px solid gray', borderBottom: '1px solid gray'}}>
-            <div className="flex py-1 text-center">{point.rank}</div>
-            <div className="flex py-1 text-center items-center">
+          <div key={point.walletAddress} className="leaderboard-container px-2 text-xs divide-y py-1 divide-gray-200">
+            <div className="py-1 text-sm text-center bg-sky-100 rounded-lg mr-2">{point.rank}</div>
+            <div className="flex text-sm py-1 text-center items-center bg-sky-100 pl-2 rounded-l-lg">
               <img src={point.avatarUrl} alt="avatar" className="w-4 h-4 rounded-full mr-2" />
               <span style={{ color: point.walletAddress === account ? 'red' : 'inherit' }}>
                 {point.username}
               </span>
             </div>
-            <div className="flex py-1 text-center">{point.totalPoint}</div>
+            <div className="py-1 text-sm text-right bg-sky-100 pr-2 rounded-r-lg">{point.totalPoint}</div>
           </div>
         ))}
     </div>

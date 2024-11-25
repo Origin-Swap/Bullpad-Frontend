@@ -71,60 +71,90 @@ const TransactionRecords: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto py-4">
-      <h2 className="text-lg font-bold mb-2 mt-6">Last 100 Transactions (all users & tokens)</h2>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full text-left rounded-full" style={{borderRadius: '10px', border: '1px solid gray'}}>
-          <thead>
-            <tr>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>TIME</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>TYPE</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold hidden md:block" style={{border: '1px solid gray'}}>PRICE 5IRE</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>PRICE USD</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>AMOUNT</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Value</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>TX</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.txhash} className="border-t border-gray-300">
-                <td className="md:px-4 md:text-sm text-xs px-2 py-1" style={{border: '1px solid gray'}}>
-                  {formatTimeAgo(transaction.date)}
-                </td>
-                <td
-                  className={`md:px-4 md:text-sm text-xs px-2 py-1 ${
-                    transaction.type === 'Buy' ? 'text-green-500' : transaction.type === 'Sell' ? 'text-red-500' : ''
-                  }`}
-                  style={{border: '1px solid gray'}}
-                >
-                  {transaction.type}
-                </td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-1 hidden md:block" style={{border: '1px solid gray'}}>
-                  {transaction.nativePrice.toFixed(4)}
-                </td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-1" style={{border: '1px solid gray'}}>
-                  ${transaction.usdPrice.toFixed(4)}
-                </td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-1" style={{border: '1px solid gray'}}>
-                  {transaction.tokenAmount.toFixed(1)} {transaction.tokenSymbol}
-                </td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-1" style={{border: '1px solid gray'}}>
-                  ${transaction.amountInUsd.toFixed(3)}
-                </td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-1" style={{border: '1px solid gray'}}>
-                  <a
-                    href={`https://5irescan.io/tx/${transaction.txhash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500"
-                  >
-                    Tx
-                  </a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <h2 className="text-lg font-bold mb-2 mt-6 px-2">Last 100 Transactions</h2>
+      <div className="grid md:grid-cols-7 grid-cols-5 gap-y-2 text-sm text-left p-2 rounded-lg">
+        {/* Header */}
+        <div className="font-bold px-2">TIME</div>
+        <div className="font-bold">TYPE</div>
+        <div className="font-bold hidden md:block">PRICE 5IRE</div>
+        <div className="font-bold hidden md:block">PRICE USD</div>
+        <div className="font-bold">AMOUNT</div>
+        <div className="font-bold">VALUE</div>
+        <div className="font-bold">TX</div>
+
+        {/* Content */}
+        {transactions.map((transaction) => (
+          <React.Fragment key={transaction.txhash}>
+            <div  className={`p-2 ${
+              transaction.type === 'Buy'
+                ? 'bg-green-100 rounded-l-lg'
+                : transaction.type === 'Sell'
+                ? 'bg-red-100 rounded-l-lg'
+                : ''
+                }`}>
+              {formatTimeAgo(transaction.date)}
+            </div>
+            <div
+              className={`p-2 ${
+                transaction.type === 'Buy'
+                  ? 'bg-green-100'
+                  : transaction.type === 'Sell'
+                  ? 'bg-red-100'
+                  : ''
+              }`}
+            >
+              {transaction.type}
+            </div>
+            <div className={`p-2 hidden md:block ${
+              transaction.type === 'Buy'
+                ? 'bg-green-100'
+                : transaction.type === 'Sell'
+                ? 'bg-red-100'
+                : ''
+            }`}>
+              {transaction.nativePrice.toFixed(4)}
+            </div>
+            <div className={`p-2 hidden md:block ${
+              transaction.type === 'Buy'
+                ? 'bg-green-100'
+                : transaction.type === 'Sell'
+                ? 'bg-red-100'
+                : ''
+            }`}>${transaction.usdPrice.toFixed(4)}</div>
+            <div className={`p-2 ${
+              transaction.type === 'Buy'
+                ? 'bg-green-100'
+                : transaction.type === 'Sell'
+                ? 'bg-red-100'
+                : ''
+            }`}>
+              {transaction.tokenAmount.toFixed(1)} {transaction.tokenSymbol}
+            </div>
+            <div className={`p-2 ${
+              transaction.type === 'Buy'
+                ? 'bg-green-100'
+                : transaction.type === 'Sell'
+                ? 'bg-red-100'
+                : ''
+            }`}>${transaction.amountInUsd.toFixed(3)}</div>
+            <div className={`p-2 ${
+              transaction.type === 'Buy'
+                ? 'bg-green-100 rounded-r-lg'
+                : transaction.type === 'Sell'
+                ? 'bg-red-100 rounded-r-lg'
+                : ''
+            }`}>
+              <a
+                href={`https://5irescan.io/tx/${transaction.txhash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500"
+              >
+                Tx
+              </a>
+            </div>
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ const Hero = () => {
 
         <div className="flex flex-col items-center md:items-start text-center md:text-left mt-4">
           <p className="md:text-xl text-md text-black md:px-6 lowerchase">
-            {t('Trade, Stake, & Earn With 5IRE BlockChain')}
+            {t('Trade, Stake, & Earn With BULLPAD.')}
           </p>
         </div>
 

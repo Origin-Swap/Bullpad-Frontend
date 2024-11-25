@@ -60,36 +60,31 @@ const VolumePage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto mt-4">
-      <h2 className="text-lg font-bold mb-2 mt-6">Top 10 tokens by volume</h2>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full text-left rounded-full" style={{borderRadius: '10px', border: '1px solid gray'}}>
-          <thead>
-            <tr>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Token</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Price</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>24h Txns</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Volume 24h</th>
-              <th className="md:px-4 md:text-md text-sm px-2 py-2 font-bold" style={{border: '1px solid gray'}}>Total Volume</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedVolumes.map(([token, { lastPrice, totalVolume, volume24h, txns24h }]) => (
-              <tr key={token}>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>{token}</td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>
-                  ${lastPrice !== null && lastPrice !== undefined ? lastPrice.toFixed(5) : 'N/A'}
-                </td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>{txns24h}</td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>
-                  ${lastPrice !== null && lastPrice !== undefined ? (volume24h * lastPrice).toFixed(5) : 'N/A'}
-                </td>
-                <td className="md:px-4 md:text-sm text-xs px-2 py-2" style={{ border: '1px solid gray' }}>
-                  ${lastPrice !== null && lastPrice !== undefined ? (totalVolume * lastPrice).toFixed(5) : 'N/A'}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <h2 className="text-lg font-bold mb-2 mt-6 px-2">Top 10 tokens by volume</h2>
+      <div className="grid grid-cols-5 gap-y-2 text-sm text-left p-2 rounded-lg">
+        {/* Header */}
+        <div className="font-bold">Token</div>
+        <div className="font-bold">Price</div>
+        <div className="font-bold">24h Txns</div>
+        <div className="font-bold">Volume 24h</div>
+        <div className="font-bold">Total Volume</div>
+
+        {/* Content */}
+        {sortedVolumes.map(([token, { lastPrice, totalVolume, volume24h, txns24h }]) => (
+          <React.Fragment key={token}>
+            <div className="p-2 bg-green-200 rounded-l-lg">{token}</div>
+            <div className="p-2 bg-green-200">
+              ${lastPrice !== null && lastPrice !== undefined ? lastPrice.toFixed(5) : 'N/A'}
+            </div>
+            <div className="p-2 bg-green-200">{txns24h}</div>
+            <div className="p-2 bg-green-200">
+              ${lastPrice !== null && lastPrice !== undefined ? (volume24h * lastPrice).toFixed(5) : 'N/A'}
+            </div>
+            <div className="p-2 bg-green-200 rounded-r-lg">
+              ${lastPrice !== null && lastPrice !== undefined ? (totalVolume * lastPrice).toFixed(5) : 'N/A'}
+            </div>
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );

@@ -32,6 +32,8 @@ const EditProfile: React.FC<EditProfileProps> = ({ user = {} }) => {
   const [instagram, setInstagram] = useState(user.instagram || '');
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (user.username) setUsername(user.username);
@@ -78,7 +80,9 @@ const EditProfile: React.FC<EditProfileProps> = ({ user = {} }) => {
         },
       });
       console.log(response.data);
+      window.location.href = '/account';
     } catch (error: any) {
+      setErrorMessage(error.response?.data?.message || 'Failed to update profile.');
       console.error('Error:', error.response?.data);
     }
   };

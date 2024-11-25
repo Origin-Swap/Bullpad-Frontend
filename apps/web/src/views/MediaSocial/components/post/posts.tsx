@@ -207,9 +207,11 @@ const PostContent: React.FC<PostContentProps> = ({ activeTab }) => {
                             {post.postLikes?.length || '0'}
                           </button>
                         </p>
+                        <a href={`/socialfi/post/${post.id}`}>
                         <p className="flex items-center text-[16px]">
                           <CommentIcon className="h-5 w-5 mr-1 items-center" /> {post.comments.length}
                         </p>
+                        </a>
                       </div>
                       <p className="flex items-center text-[16px]">
                         <ShareIcon className="h-5 w-5 mr-1 items-center" /> Share

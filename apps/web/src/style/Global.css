@@ -19,10 +19,7 @@
 
 .leaderboard-container {
   display: grid;
-  grid-template-columns: 2fr 5fr 3fr;
-  gap: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
+  grid-template-columns: 1fr 5fr 3fr;
 }
 
 .token-container {
