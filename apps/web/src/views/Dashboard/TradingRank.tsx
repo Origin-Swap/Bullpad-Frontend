@@ -10,9 +10,6 @@ interface TradingPoint {
   avatarUrl: string;
   username: string;
   totalPoint: number;
-  dailyPoint: number;
-  weeklyPoint: number;
-  monthlyPoint: number;
 }
 
 const TradingPoints: React.FC = () => {

@@ -60,7 +60,7 @@ const LiquidityPoints: React.FC = () => {
   useEffect(() => {
     const fetchLiquidityPoints = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/api/point/liquiditypoints`);
+        const response = await fetch(`${BACKEND_URL}/api/point/socialpoints`);
         const data = await response.json();
 
         if (Array.isArray(data)) {

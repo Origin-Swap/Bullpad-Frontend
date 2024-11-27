@@ -1,40 +1,52 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { format, parseISO, formatDistanceToNowStrict } from 'date-fns';
+import React, { useEffect, useState } from 'react';
+import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { parseISO, formatDistanceToNowStrict } from 'date-fns';
 import { BACKEND_URL } from 'config/constants/backendApi';
 
 interface Comment {
   id: number;
   content: string;
+  parentCommentId?: number;
   walletAddress: string;
-  createdAt: string;  // Pastikan 'createdAt' ada di interface
+  createdAt: string;
   user: {
     username: string;
     avatarUrl: string;
-    fullName: string;
   };
+  replies?: Comment[];
 }
 
-interface CommentListProps {
+interface NestedCommentListProps {
   postId: number;
 }
 
-const CommentList: React.FC<CommentListProps> = ({ postId }) => {
-  const router = useRouter();
-  const { id } = router.query;
+const NestedCommentList: React.FC<NestedCommentListProps> = ({ postId }) => {
+  const { account } = useActiveWeb3React();
   const [comments, setComments] = useState<Comment[]>([]);
-  const [visibleComments, setVisibleComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [commentsToShow, setCommentsToShow] = useState(10); // Jumlah awal komentar yang ditampilkan
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyContent, setReplyContent] = useState<string>('');
 
-  // Fungsi untuk fetch data komentar
   const fetchComments = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/posts/${id}`);
+      const response = await fetch(`${BACKEND_URL}/api/posts/${postId}`);
       const data = await response.json();
-      const sortedComments = data.comments.sort((a: Comment, b: Comment) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      setComments(sortedComments);
-      setVisibleComments(sortedComments.slice(0, commentsToShow)); // Tampilkan 10 pertama
+
+      const commentsMap: { [key: number]: Comment } = {};
+      data.comments.forEach((comment: Comment) => {
+        commentsMap[comment.id] = { ...comment, replies: [] };
+      });
+
+      const nestedComments: Comment[] = [];
+      data.comments.forEach((comment: Comment) => {
+        if (comment.parentCommentId) {
+          commentsMap[comment.parentCommentId].replies?.push(commentsMap[comment.id]);
+        } else {
+          nestedComments.push(commentsMap[comment.id]);
+        }
+      });
+
+      setComments(nestedComments);
     } catch (error) {
       console.error('Error fetching comments:', error);
     } finally {
@@ -42,82 +54,107 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
     }
   };
 
-  useEffect(() => {
-    fetchComments();
+  const handleReplySubmit = async (parentCommentId: number) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/posts/${postId}/comments/${parentCommentId}/reply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: replyContent,
+          walletAddress: account,
+        }),
+      });
 
-    // Polling setiap 10 detik untuk mendapatkan komentar terbaru
-    const intervalId = setInterval(fetchComments, 2000); // 10 detik
+      if (!response.ok) {
+        throw new Error('Failed to post reply');
+      }
 
-    return () => clearInterval(intervalId);
-  }, [postId, commentsToShow]);
-
-  const loadMoreComments = () => {
-    setCommentsToShow((prev) => prev + 10); // Tambah 10 komentar lagi
-    setVisibleComments(comments.slice(0, commentsToShow + 10)); // Update komentar yang ditampilkan
+      fetchComments();
+      setReplyingTo(null);
+      setReplyContent('');
+    } catch (error) {
+      console.error('Error posting reply:', error);
+    }
   };
 
   const displayTime = (createdAt: string) => {
     const postDate = parseISO(createdAt);
-    const daysDifference = Math.abs((new Date().getTime() - postDate.getTime()) / (1000 * 3600 * 24));
-
-    if (daysDifference > 5) {
-      return format(postDate, 'dd MMM yyyy');
-    }
-    const timeAgo = formatDistanceToNowStrict(postDate, { addSuffix: false });
-    const shortTimeAgo = timeAgo
-      .replace(' hours', 'h')
-      .replace(' hour', 'h')
-      .replace(' minutes', 'm')
-      .replace(' minute', 'm')
-      .replace(' days', 'd')
-      .replace(' day', 'd')
-      .replace(' seconds', 's')
-      .replace(' second', 's');
-
-    return `${shortTimeAgo} ago`;
+    return `${formatDistanceToNowStrict(postDate).replace(' hour', 'h').replace(' minutes', 'm')} ago`;
   };
 
+  const renderComments = (commentList: Comment[]) => {
+    return commentList.map((comment) => (
+      <div key={comment.id} className="p-4 bg-[#f8fafc] rounded-lg mt-4 mb-4" style={{ border: '1px solid #e2e8f0' }}>
+        <div className="flex items-center mb-2">
+          <img
+            src={comment.user.avatarUrl}
+            alt={comment.user.username}
+            className="w-10 h-10 rounded-full"
+          />
+          <div className="ml-3 flex justify-between items-center">
+            <p className="font-semibold mr-6">{comment.user.username}</p>
+            <p className="text-sm text-gray-500">{displayTime(comment.createdAt)}</p>
+          </div>
+        </div>
+        <p className="py-3">{comment.content}</p>
+
+        <button
+          onClick={() => setReplyingTo(comment.id)}
+          className="text-blue-500 text-sm font-semibold mt-2"
+          type="button"
+        >
+          Reply
+        </button>
+
+        {replyingTo === comment.id && (
+          <div className="mt-2 ml-4">
+            <textarea
+              value={replyContent}
+              onChange={(e) => setReplyContent(e.target.value)}
+              placeholder="Write your reply..."
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+            <button
+              onClick={() => handleReplySubmit(comment.id)}
+              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+              type="button"
+            >
+              Submit
+            </button>
+            <button
+              onClick={() => setReplyingTo(null)}
+              className="ml-2 text-gray-500 text-sm"
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+
+        {comment.replies && comment.replies.length > 0 && (
+          <div className="ml-8 mt-2">
+            {renderComments(comment.replies)}
+          </div>
+        )}
+      </div>
+    ));
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, [postId]);
 
   if (loading) {
     return <p>Loading comments...</p>;
   }
 
-  if (!comments || comments.length === 0) {
-    return <p className="py-6 text-center">No comments yet. Be the first to comment!</p>;
+  if (comments.length === 0) {
+    return <p className="text-center">No comments yet. Be the first to comment!</p>;
   }
 
-  return (
-    <div className="mt-1 space-y-2">
-      {visibleComments.map((comment) => (
-        <div key={comment.id} className="p-4 bg-gray-100 rounded-lg shadow-lg">
-          <div className="flex items-center mb-2">
-            <img
-              src={comment.user.avatarUrl}
-              alt={comment.user.username}
-              className="w-10 h-10 rounded-full"
-            />
-            <div className="ml-3">
-              <p className="font-bold">{comment.user.username}</p>
-              <p className="text-sm text-gray-500">{displayTime(comment.createdAt)}</p>
-            </div>
-          </div>
-          <p className="p-2">{comment.content}</p>
-        </div>
-      ))}
-
-      {commentsToShow < comments.length && (
-        <div className="flex justify-center">
-          <button
-            type="button"
-            onClick={loadMoreComments}
-            className="px-4 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
-          >
-            Load More
-          </button>
-        </div>
-      )}
-    </div>
-  );
+  return <div>{renderComments(comments)}</div>;
 };
 
-export default CommentList;
+export default NestedCommentList;

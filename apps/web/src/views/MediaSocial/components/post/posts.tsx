@@ -146,7 +146,7 @@ const PostContent: React.FC<PostContentProps> = ({ activeTab }) => {
 
 
   return (
-    <div className="flex bg-gray-100 justify-center items-start md:p-2">
+    <div className="flex justify-center items-start md:p-2">
       <div className="w-full bg-[#f8fafc]" style={{ borderRadius: '10px' }}>
         <div className="max-w-7xl w-full p-2 rounded-lg">
           {Array.isArray(posts) &&
@@ -157,65 +157,64 @@ const PostContent: React.FC<PostContentProps> = ({ activeTab }) => {
                 const hasLiked = post.postLikes?.some((like: any) => like.walletAddress === account);
 
                 return (
-                  <div key={post.id} className="mb-2 p-2 space-x-2 bg-white shadow-lg block" style={{ borderRadius: '10px' }}>
-                   <div className="flex justify-between">
-                    <div className="flex items-center p-2">
+                  <div key={post.id} className="flex mb-2 p-2 shadow-sm rounded-xl space-y-2 bg-white md:flex-row md:space-y-0 md:space-x-2" style={{ borderBottom: '2px solid #f3f4f6' }}>
+                    <div className="md:w-1/12 w-2/14">
                       <a href={post.walletAddress === account ? '/account' : `/account/${post.walletAddress}`} className="flex items-center">
                         <img
                           src={avatarUrl || '/default-avatar.png'}
-                          className="w-8 h-8 mr-2 rounded-full bg-gray-200"
+                          className="w-10 h-10 rounded-full mr-2 md:mr-0 bg-gray-200"
                           alt={username}
                         />
                       </a>
-                      <div>
-                        <a href={post.walletAddress === account ? '/account' : `/account/${post.walletAddress}`} className="items-center text-md font-semibold text-gray-800">
-                          {username}
-                        </a>
-                        <p className="text-xs text-gray-500">{displayTime(post.createdAt)}</p>
-                      </div>
                     </div>
-                    {post.walletAddress === account && (
-                      <div className="flex justify-end">
-                        <button
-                          onClick={() => handleDelete(post.id)}
-                          type="button"
-                          className="text-red-500 hover:text-red-700"
-                        >
-                        <TrashIcon className="w-4 h-4" />
-                        </button>
-                      </div>
-                    )}
-                    </div>
-                    <div className="pb-2">
-                      <a href={`/socialfi/post/${post.id}`}>
-                        <p className="text-gray-600 md:text-lg text-md whitespace-pre-wrap py-2">{post.content}</p>
-                        {post.image && (
-                          <img
-                            src={post.image}
-                            className="w-full py-2 pr-4"
-                            alt={username}
-                            style={{ borderRadius: '20px' }}
-                          />
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center">
+                          <a href={post.walletAddress === account ? '/account' : `/account/${post.walletAddress}`} className="text-md font-semibold text-gray-800">
+                            {username}
+                          </a>
+                          <p className="text-xs px-2 text-gray-500">~</p>
+                          <p className="text-sm text-gray-500">{displayTime(post.createdAt)}</p>
+                        </div>
+                        {post.walletAddress === account && (
+                          <button
+                            onClick={() => handleDelete(post.id)}
+                            type="button"
+                            className="text-red-500 hover:text-red-700 md:ml-2"
+                          >
+                            <TrashIcon className="w-4 h-4" />
+                          </button>
                         )}
-                      </a>
-                    </div>
-                    <div className="flex justify-between py-2 border-gray-100" style={{ borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb' }}>
-                      <div className="flex items-center space-x-2">
-                        <p className="flex items-center text-[16px] pr-2" style={{ borderRight: '1px solid gray' }}>
+                      </div>
+                      <div className="py-2">
+                        <a href={`/socialfi/post/${post.id}`}>
+                          <p className="text-gray-600 text-md whitespace-pre-wrap">{post.content}</p>
+                          {post.image && (
+                            <img
+                              src={post.image}
+                              className="w-full py-2 pr-4"
+                              alt={username}
+                              style={{ borderRadius: '20px' }}
+                            />
+                          )}
+                        </a>
+                      </div>
+                      <div className="flex justify-between items-center border-gray-100 md:flex-row md:space-x-2">
+                        <div className="flex items-center space-x-2 mt-2 md:mt-0">
+                        <a href={`/socialfi/post/${post.id}`}>
+                          <p className="flex items-center text-[16px]">
+                            <CommentIcon className="h-4 w-4 mr-1" /> {post.comments.length}
+                          </p>
+                        </a>
                           <button onClick={() => handleLike(post.id)} type="button" className="flex items-center">
-                            {hasLiked ? <UpvoteFillIcon className="h-5 w-5 mr-1" /> : <UpvoteIcon className="h-5 w-5 mr-1" />}
+                            {hasLiked ? <UpvoteFillIcon className="h-4 w-4 mr-1" /> : <UpvoteIcon className="h-4 w-4 mr-1" />}
                             {post.postLikes?.length || '0'}
                           </button>
+                        </div>
+                        <p className="flex items-center text-[16px] md:order-2 order-1">
+                          <ShareIcon className="h-4 w-4 mr-1" /> Share
                         </p>
-                        <a href={`/socialfi/post/${post.id}`}>
-                        <p className="flex items-center text-[16px]">
-                          <CommentIcon className="h-5 w-5 mr-1 items-center" /> {post.comments.length}
-                        </p>
-                        </a>
                       </div>
-                      <p className="flex items-center text-[16px]">
-                        <ShareIcon className="h-5 w-5 mr-1 items-center" /> Share
-                      </p>
                     </div>
                   </div>
                 );

@@ -128,20 +128,20 @@ const CreatePost = () => {
 
   // Tampilkan form Create Post jika akun sudah diaktifkan
   return (
-    <div className="mx-auto p-4 bg-white rounded-xl shadow-lg">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex items-center">
-          <img
-            src={
-              userData.avatarUrl ||
-              'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=338&ext=jpg&ga=GA1.1.2113030492.1729123200&semt=ais_hybrid'
-            }
-            className="w-10 h-10 rounded-full"
-            alt="User Avatar"
-          />
-          <p className="ml-2 items-center text-xl font-bold">{userData.username}</p>
-        </div>
-        <div>
+    <div className="mx-auto p-4 bg-white rounded-xl shadow-sm">
+      <form onSubmit={handleSubmit} className=" flex">
+      <div className="md:w-1/12 w-2/14">
+      <img
+        src={
+          userData.avatarUrl ||
+          'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=338&ext=jpg&ga=GA1.1.2113030492.1729123200&semt=ais_hybrid'
+        }
+        className="w-10 h-10 rounded-full"
+        alt="User Avatar"
+      />
+      </div>
+      <div className="flex-1">
+        <div className="mb-2">
           <textarea
             value={content}
             onChange={handleInputChange}
@@ -181,13 +181,14 @@ const CreatePost = () => {
           <div>
             <button
               type="submit"
-              className={`text-black border-2 border-gray-300 px-4 py-2 rounded-xl ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`text-black border-2 border-gray-300 px-4 py-1 rounded-xl ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Posting...' : 'Post'}
             </button>
           </div>
         </div>
+      </div>
       </form>
     </div>
   );

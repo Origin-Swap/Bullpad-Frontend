@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
 import { BACKEND_URL } from 'config/constants/backendApi';
-import CommentList from './CommentList';
 
 interface CommentFormProps {
   postId: number;
@@ -41,8 +40,8 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentAdded }) => 
   };
 
   return (
-  <div className="py-2 shadow-lg rounded-lg">
-    <form onSubmit={handleSubmit} className="mt-4">
+  <div className="py-2 rounded-lg">
+    <form onSubmit={handleSubmit}>
      <div className="flex p-2">
       <textarea
         value={content}
@@ -61,9 +60,6 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentAdded }) => 
       </button>
       </div>
     </form>
-    <CommentList
-    postId={Number(id)}
-    />
     </div>
   );
 };

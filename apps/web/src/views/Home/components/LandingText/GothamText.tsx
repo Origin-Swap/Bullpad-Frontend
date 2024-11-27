@@ -29,7 +29,7 @@ const GothamText = styled(Text).attrs({ bold: true })<LandingTextProps>`
   font-size: ${({ scale }) => style[scale || scales.MD].fontSize};
   font-weight: 600;
   line-height: 1.1;
-  font-family: 'Titillium Web', sans-serif,
+  font-family: 'Work Sans', sans-serif,
   letter-spacing: 0.05em;
   text-shadow: ${({ scale }) => style[scale || scales.MD].shadow};
 

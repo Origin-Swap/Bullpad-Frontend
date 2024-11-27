@@ -13,9 +13,12 @@ const SocialMediaHome = () => {
 
   return (
     <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto">
-      <div className="md:w-2/12 w-full bg-white md:bg-[#f8fafc] p-2 md:pt-6">
+      {/* Tabs Container */}
+      <div className="md:w-2/12 w-full bg-white md:bg-[#f8fafc] text-center md:text-left flex md:block items-center justify-center p-2 md:pt-6">
         <Tabs activeTab={activeTab} onTabChange={handleTabChange} />
       </div>
+
+      {/* Content Container */}
       <div className="md:w-10/12 w-full p-2 md:p-0">
         {activeTab === 'post' && <PostContent />}
         {activeTab === 'news' && <News />}

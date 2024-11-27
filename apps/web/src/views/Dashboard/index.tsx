@@ -161,23 +161,6 @@ const UserDataComponent: React.FC = () => {
               <div className="flex justify-between mb-4 mt-2" style={{borderBottom: '1px solid gray', paddingBottom: '10px'}}>
               <div className="flex">
                <img
-               src="https://w7.pngwing.com/pngs/840/253/png-transparent-usdt-cryptocurrencies-icon-thumbnail.png"
-               alt="sire"
-               className="h-10 w-10 mr-2 rounded-full"
-               />
-               <div>
-                <p className="text-lg font-semibold">USDT</p>
-                <p className="text-xs">tether USD</p>
-               </div>
-               </div>
-               <div>
-                <p className="text-lg font-semibold">{formatBigNumber(usdtBalance, 2)}</p>
-                <p className="text-xs">$0.000</p>
-               </div>
-              </div>
-              <div className="flex justify-between mb-4 mt-2" style={{borderBottom: '1px solid gray', paddingBottom: '10px'}}>
-              <div className="flex">
-               <img
                src="/BullPad.png"
                alt="sire"
                className="h-10 w-10 mr-2 rounded-full"
@@ -196,12 +179,12 @@ const UserDataComponent: React.FC = () => {
           </div>
           <div className=" md:w-6/12 mb-4 shadow-lg md:mb-0 rounded-xl"
            style={{border: '1px solid #e5e7eb' }}>
-            <p className="px-2 py-4 font-bold " >Top Trading Points</p>
+            <p className="px-2 py-4 font-bold " >Top 10 Transaction Points</p>
             <TradingRank />
           </div>
           <div className=" md:w-6/12 mb-4 shadow-lg md:mb-0 rounded-xl"
            style={{border: '1px solid #e5e7eb' }}>
-            <p className="px-4 py-4 font-bold">Top Liquidity Points</p>
+            <p className="px-4 py-4 font-bold">Top SocialFi Points</p>
             <LiquidityRank />
           </div>
         </div>

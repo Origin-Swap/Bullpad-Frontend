@@ -8,7 +8,7 @@ declare module 'styled-components' {
 
 const GlobalStyle = createGlobalStyle`
   * {
-    font-family: 'Titillium Web', sans-serif;
+    font-family: 'Work Sans', sans-serif;
   }
   body {
     // background-color: #f1f3f4;

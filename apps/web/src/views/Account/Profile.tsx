@@ -10,6 +10,8 @@ import { BACKEND_URL } from 'config/constants/backendApi';
 import LiquidityHistory from './Activity/LiquidityHistory'
 import TradeHistory from './Activity/TradeHistory'
 import Rank from './Activity/Rank'
+import SocialRank from './Activity/SocialRank'
+import SidebarUser from './Activity/SidebarUser'
 
 interface ProfileProps {
   bannerUrl: string;
@@ -178,7 +180,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
           </div>
         </div>
 
-        <h1 className="text-3xl font-roboto font-semibold md:font-bold md:px-4 md:mt-20 mt-14 md:mb-6">
+        <h1 className="text-xl font-roboto font-semibold md:font-bold md:px-4 md:mt-20 mt-14 md:mb-6">
           {userAccountData.username
             ? userAccountData.username
             : `${account?.slice(0, 6)}...${account?.slice(-4)}`}
@@ -205,12 +207,12 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
             </div>
           </div>
 
-          <div className="flex md:relative md:-top-32 translate-y-1/2 mb-6 mt-4 border-t-2 border-gray-200">
-          <div className="mt-2 mr-2">
+          <div className="flex md:relative md:-top-32 -top-25 translate-y-1/2 mb-6 mt-4 border-t-2 border-gray-200">
+          <div className="mr-2 mb-2">
             {userData.isActivate ? (
               <button
                 type="button"
-                className="bg-green-500 text-black px-4 py-2 rounded-xl shadow hover:bg-green-600"
+                className="bg-[#86efac] text-black px-4 py-2 rounded-xl shadow hover:bg-green-600"
                 onClick={() => router.push('/account/edit')}
               >
                 Edit Profile
@@ -248,32 +250,32 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
           <div className="mt-4 border-top mb-4">
             {activeTab === 'Feeds' && (
               <div className="px-4 py-2 pb-6">
-                <h2 className="text-xl font-bold">Feeds</h2>
+                <h2 className="text-lg">Feeds</h2>
                 <p>Here you can see all the latest updates and posts.</p>
               </div>
             )}
             {activeTab === 'Trade' && (
               <div className="px-4 py-2 pb-6">
-                <h2 className="text-xl font-bold">Trade Activity</h2>
+                <h2 className="text-lg">Trade Activity</h2>
                 <TradeHistory />
               </div>
             )}
             {activeTab === 'Liquidity' && (
               <div className="px-4 py-2 pb-6">
-                <h2 className="text-xl font-bold">Liquidity Activity</h2>
+                <h2 className="text-lg">Liquidity Activity</h2>
                 <LiquidityHistory />
               </div>
             )}
             {activeTab === 'Rank' && (
-              <div className="md:hidden block px-4 py-2 pb-6">
-                <Rank />
+              <div className="md:hidden block py-4">
+                <SidebarUser />
               </div>
             )}
           </div>
         </div>
       </div>
-      <div className="md:w-2/6 md:block hidden px-2 m-2 shadow-lg pt-4 rounded-xl" style={{border: '2px solid #f3f4f6'}}>
-        <Rank />
+      <div className="md:w-2/6 md:block hidden space-y-2 px-2 m-2 shadow-lg pt-4 rounded-xl" style={{border: '2px solid #f3f4f6'}}>
+      <SidebarUser />
       </div>
     </div>
   );

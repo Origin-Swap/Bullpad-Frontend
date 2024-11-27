@@ -39,7 +39,7 @@ const LandingHeading = styled(Text).attrs({ bold: true })<LandingTextProps>`
   font-size: ${({ scale }) => style[scale || scales.MD].fontSize};
   font-weight: 400;
   line-height: 1.1;
-  font-family: 'Titillium Web', sans-serif,
+  font-family: 'Work Sans', sans-serif,
   text-shadow: ${({ scale }) => style[scale || scales.MD].shadow};
 
   ${({ theme }) => theme.mediaQueries.lg} {

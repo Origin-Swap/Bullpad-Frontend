@@ -9,6 +9,7 @@ import UpvoteFillIcon from './svgs/hasVote';
 import CommentIcon from './svgs/comment';
 import ShareIcon from './svgs/share';
 import CommentForm from './Comments/CommentForm';
+import CommentList from './Comments/CommentList';
 
 const PostDetail = () => {
   const { account } = useActiveWeb3React();
@@ -18,6 +19,7 @@ const PostDetail = () => {
   const [wallets, setWallets] = useState<any[]>([]); // State untuk menyimpan wallet detail
   const [hasLiked, setHasLiked] = useState(false); // State untuk menyimpan status like
   const [comments, setComments] = useState<any[]>([]);
+  const [showCommentForm, setShowCommentForm] = useState(false);
 
   useEffect(() => {
     // Fetch data post dan wallet dari API
@@ -119,9 +121,14 @@ const PostDetail = () => {
     }
   };
 
+  const toggleCommentForm = () => {
+   setShowCommentForm((prev) => !prev); // Tampilkan atau sembunyikan CommentForm
+ };
+
+
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="w-full md:w-7/12 md:p-4 p-2 m-2">
+      <div className="w-full md:w-7/12 md:px-4 p-2 m-2 rounded-xl" style={{border: '1px solid #e2e8f0'}}>
         <button
           className="px-2 pb-4 text-blue-500"
           onClick={() => router.push('/socialfi')}
@@ -131,20 +138,20 @@ const PostDetail = () => {
         >
           . . . Back To Feeds
         </button>
-        <div className="shadow-xl" style={{borderRadius: '10px' }}>
+        <div style={{borderRadius: '10px' }}>
           <div className="p-4">
             <div className="flex items-center">
               <img
                 src={avatarUrl || '/default-avatar.png'}
-                className="w-10 h-10 mr-2 rounded-full bg-gray-200"
+                className="w-8 h-8 mr-2 rounded-full bg-gray-200"
                 alt={username}
               />
               <div>
-                <p className="text-xl font-semibold text-gray-800">{username}</p>
+                <p className="text-md font-semibold text-gray-800">{username}</p>
                 <p className="text-xs text-gray-500">{post.createAt}</p>
               </div>
             </div>
-            <p className="py-2 text-md md:text-lg">{post.content}</p>
+            <p className="py-2 text-md md:text-md">{post.content}</p>
             {post.image && (
               <img
                 src={post.image}
@@ -153,9 +160,9 @@ const PostDetail = () => {
                 alt={username}
               />
             )}
-            <p className="text-sm pt-4 text-gray-500">{displayTime(post.createdAt)}</p>
+            <p className="text-sm pt-2 text-gray-500">{displayTime(post.createdAt)}</p>
           </div>
-          <div className="flex px-4 pb-4 justify-between py-2" style={{ borderTop: '1px solid gray' }}>
+          <div className="flex px-4 justify-between py-2" style={{ borderTop: '1px solid gray', borderBottom: '1px solid gray' }}>
             <div className="flex items-center space-x-2" >
               <p
                 className="flex items-center text-[16px] pr-2"
@@ -171,15 +178,19 @@ const PostDetail = () => {
                 </button>
               </p>
               <p className="flex items-center text-[16px]">
-                <CommentIcon className="h-5 w-5 mr-1 items-center" /> {post.comments.length}
+                <button onClick={toggleCommentForm} type="button" className="flex items-center">
+                  <CommentIcon className="h-5 w-5 mr-1 items-center" /> {post.comments.length}
+                </button>
               </p>
             </div>
             <ShareIcon className="h-5 w-5 mr-1 items-center" />
           </div>
         </div>
-        <CommentForm
-        postId={Number(id)}
-        onCommentAdded={refreshComments} // Refresh comments when a new one is added
+        {showCommentForm && (
+          <CommentForm postId={Number(id)} onCommentAdded={refreshComments} />
+        )}
+      <CommentList
+      postId={Number(id)}
       />
       </div>
       <div className="md:w-5/12 w-full md:block hidden">

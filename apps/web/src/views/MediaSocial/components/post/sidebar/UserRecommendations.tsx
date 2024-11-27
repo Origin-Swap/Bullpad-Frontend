@@ -20,7 +20,7 @@ const userRecommendations = [
 
 const UserRecommendations = () => {
   return (
-    <div className="bg-white p-4 shadow-lg rounded-lg w-full mt-2">
+    <div className="bg-[#f8fafc] p-4 shadow-sm rounded-lg w-full mt-2">
       <h2 className="text-xl font-bold text-gray-700 mb-2">User Recomendations</h2>
       <ul>
         {userRecommendations.map((user) => (

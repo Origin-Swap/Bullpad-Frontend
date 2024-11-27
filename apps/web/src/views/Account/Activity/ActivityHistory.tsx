@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { BACKEND_URL } from 'config/constants/backendApi';
 import axios from 'axios';
 import useActiveWeb3React from 'hooks/useActiveWeb3React';
+import { formatDistanceToNow, differenceInDays, parseISO, format } from 'date-fns';
 
 interface TradingPoint {
   rank: number;
@@ -25,6 +26,8 @@ const TradingPoints: React.FC = () => {
   const [userData, setUserData] = useState<{ isActivate?: boolean }>({
     isActivate: false,
   });
+  const [pointHistory, setPointHistory] = useState<PointHistory[]>([]);
+  console.log('pointHistory:', pointHistory);
 
   const fetchUserData = useCallback(async (): Promise<void> => {
     if (!account) return;
@@ -63,10 +66,44 @@ const TradingPoints: React.FC = () => {
     }
   }, [account]);
 
+  const fetchPointHistory = useCallback(async (): Promise<void> => {
+    if (!account) return;
+
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/api/users/${account}/transaction-point-history`
+      );
+
+      const { history } = response.data;
+      setPointHistory(history.slice(0, 10)); // Tampilkan 5 riwayat terbaru
+    } catch (error) {
+      console.error('Error fetching point history:', error);
+    }
+  }, [account]);
+
   useEffect(() => {
     fetchUserData();
     fetchUserTradingPoint();
-  }, [fetchUserData, fetchUserTradingPoint]);
+    fetchPointHistory();
+  }, [fetchUserData, fetchUserTradingPoint, fetchPointHistory]);
+
+  const formatTimeAgo = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+
+    if (interval >= 1) return interval === 1 ? '1 year ago' : `${interval} year ago`;
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) return interval === 1 ? '1 month ago' : `${interval} month ago`;
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) return interval === 1 ? '1d ago' : `${interval}d ago`;
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) return interval === 1 ? '1h ago' : `${interval}h ago`;
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) return interval === 1 ? '1m ago' : `${interval}m ago`;
+    return 's ago';
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -89,34 +126,27 @@ const TradingPoints: React.FC = () => {
   }
 
   return (
-    <div
-      className="mx-4 p-4 rounded-xl shadow-lg"
-      style={{ border: "2px solid #e2e8f0" }}
-    >
-      <h1 className="text-left mb-2">My Transaction Rank</h1>
-      <div className="flex justify-between">
-      <p className="py-1 text-sm text-center">Rank:</p>
-      <p className="py-1 text-sm text-center">{userPoint.rank  || '0'}</p>
+    <div>
+      <h1 className="text-left mb-2">Recent Points History</h1>
+      <div className="flex justify-between items-center px-2 py-2 text-sm text-center font-semibold rounded-md">
+        <div className="flex pl-1">Activities</div>
+        <div className="flex pl-1">Points</div>
       </div>
-      <div className="flex justify-between">
-      <p className="py-1 text-sm text-center">Current:</p>
-      <p className="py-1 text-sm text-center">{userPoint.currentPoint || '0'} Points</p>
-      </div>
-      <div className="flex justify-between">
-      <p className="py-1 text-sm text-center">Claimed:</p>
-      <p className="py-1 text-sm text-center">{userPoint.claimedPoint || '0'} Points</p>
-      </div>
-      <div className="flex justify-between">
-      <p className="py-1 text-sm text-center">Total:</p>
-      <p className="py-1 text-sm text-center">{userPoint.totalPoint || '0'} Points</p>
-      </div>
-      <div className="flex justify-center mt-4">
-        <button
-          type="button"
-          className="px-4 py-2 rounded-lg text-sm font-semibold bg-[#fef9c3] text-black hover:bg-blue-500 hover:text-white transition"
-        >
-          Convert to BULL
-        </button>
+      <div className="space-y-2">
+        {pointHistory.map((history) => (
+          <div
+            key={history.id}
+            className="flex justify-between px-4 py-2 border rounded-lg bg-gray-100"
+          >
+            <div>
+            <div>{history.activity}</div>
+            <div className="text-gray-400 text-xs">
+              {formatTimeAgo(history.timestamp)}
+            </div>
+            </div>
+            <div className="text-green-600 text-left text-lg">+{history.points}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

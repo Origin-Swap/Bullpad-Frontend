@@ -50,7 +50,7 @@ const TradingPoints: React.FC = () => {
     if (!account) return;
 
     try {
-      const response = await fetch(`${BACKEND_URL}/api/point/tradingpoints`);
+      const response = await fetch(`${BACKEND_URL}/api/point/socialpoints`);
       const data: TradingPoint[] = await response.json();
 
       // Cari data untuk wallet address terkait
@@ -93,7 +93,7 @@ const TradingPoints: React.FC = () => {
       className="mx-4 p-4 rounded-xl shadow-lg"
       style={{ border: "2px solid #e2e8f0" }}
     >
-      <h1 className="text-left mb-2">My Transaction Rank</h1>
+      <h1 className="text-left mb-2">My Social Activity Rank</h1>
       <div className="flex justify-between">
       <p className="py-1 text-sm text-center">Rank:</p>
       <p className="py-1 text-sm text-center">{userPoint.rank  || '0'}</p>
