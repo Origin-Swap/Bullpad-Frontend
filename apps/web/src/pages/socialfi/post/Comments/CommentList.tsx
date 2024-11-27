@@ -86,21 +86,22 @@ const NestedCommentList: React.FC<NestedCommentListProps> = ({ postId }) => {
 
   const renderComments = (commentList: Comment[]) => {
     return commentList.map((comment) => (
-      <div key={comment.id} className="p-4 bg-[#f8fafc] rounded-lg mt-4 mb-4" style={{ border: '1px solid #e2e8f0' }}>
+      <div key={comment.id} className="p-2 bg-[#f8fafc] rounded-lg mt-1" style={{ borderBottom: '1px solid #e2e8f0' }}>
         <div className="flex items-center mb-2">
           <img
             src={comment.user.avatarUrl}
             alt={comment.user.username}
-            className="w-10 h-10 rounded-full"
+            className="w-8 h-8 rounded-full"
           />
           <div className="ml-3 flex justify-between items-center">
-            <p className="font-semibold mr-6">{comment.user.username}</p>
+            <p className="font-semibold ">{comment.user.username}</p>
+            <p className="text-xs px-2 text-gray-500">~</p>
             <p className="text-sm text-gray-500">{displayTime(comment.createdAt)}</p>
           </div>
         </div>
-        <p className="py-3">{comment.content}</p>
+        <p className="pt-2 pb-1 text-sm">{comment.content}</p>
 
-        <button
+        {/* <button
           onClick={() => setReplyingTo(comment.id)}
           className="text-blue-500 text-sm font-semibold mt-2"
           type="button"
@@ -137,7 +138,7 @@ const NestedCommentList: React.FC<NestedCommentListProps> = ({ postId }) => {
           <div className="ml-8 mt-2">
             {renderComments(comment.replies)}
           </div>
-        )}
+        )} */}
       </div>
     ));
   };

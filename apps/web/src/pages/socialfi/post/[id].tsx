@@ -151,12 +151,11 @@ const PostDetail = () => {
                 <p className="text-xs text-gray-500">{post.createAt}</p>
               </div>
             </div>
-            <p className="py-2 text-md md:text-md">{post.content}</p>
+            <p className="py-2 text-md md:text-md whitespace-pre-wrap">{post.content}</p>
             {post.image && (
               <img
                 src={post.image}
-                className="w-full py-1 pr-4"
-                style={{ borderRadius: '20px' }}
+                className="w-full py-1 rounded-3xl"
                 alt={username}
               />
             )}

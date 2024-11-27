@@ -192,7 +192,7 @@ const PostContent: React.FC<PostContentProps> = ({ activeTab }) => {
                           {post.image && (
                             <img
                               src={post.image}
-                              className="w-full py-2 pr-4"
+                              className="w-full py-2"
                               alt={username}
                               style={{ borderRadius: '20px' }}
                             />

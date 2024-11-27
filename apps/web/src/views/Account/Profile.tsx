@@ -201,7 +201,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
             </div>
             <div>
               <span className="block md:text-xl text-md font-bold">
-              {userAccountData.totalTx !== undefined ? userAccountData.totalTx : '0'}
+              {userAccountData.totalTx || '0'}
               </span>
               <span className="text-gray-600 md:text-lg text-xs">Txns</span>
             </div>
@@ -234,7 +234,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
             {['Feeds', 'Trade', 'Liquidity', 'Rank'].map((tab) => (
               <button
                 key={tab}
-                className={`py-2 px-4 text-lg font-semibold ${
+                className={`p-2 text-lg font-semibold ${
                   activeTab === tab ? 'border-b-2 border-blue-500 text-blue-500 bg-white' : 'text-gray-600'
                 } ${tab === 'Rank' ? 'md:hidden' : ''}`} // Sembunyikan Rank di PC
                 onClick={() => setActiveTab(tab)}

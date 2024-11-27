@@ -227,7 +227,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ bannerUrl, avatarUrl, followers, 
             </div>
             <div>
               <span className="block md:text-xl text-md font-bold">
-              {userAccountData.totalTx !== undefined ? userAccountData.totalTx : '0'}
+              {userAccountData.totalTx || '0'}
               </span>
               <span className="text-gray-600 md:text-lg text-xs">Txns</span>
             </div>
