@@ -18,10 +18,6 @@ const getPathList = (t: ContextApi['t']): PathList => {
   return {
     paths: {
       '/': { title: t('Home') },
-      '/dashboard': { basePath: true, title: t('Dashboard') },
-      '/register': { basePath: true, title: t('Register') },
-      '/account': { basePath: true, title: t('Account') },
-      '/account/edit': { basePath: true, title: t('Edit') },
       '/swap': { basePath: true, title: t('Exchange') },
       '/limit-orders': { basePath: true, title: t('Limit Orders') },
       '/add': { basePath: true, title: t('Add Liquidity') },
@@ -48,10 +44,6 @@ const getPathList = (t: ContextApi['t']): PathList => {
     //   '/profile': { basePath: true, title: t('Profile') },
       '/pancake-squad': { basePath: true, title: t('Bull Squad') },
       '/pottery': { basePath: true, title: t('Pottery') },
-      '/socialfi': { basePath: true, title: t('Social') },
-      '/socialfi/post': { basePath: true, title: t('Post') },
-      '/socialfi/news': { basePath: true, title: t('News') },
-      '/socialfi/event': { basePath: true, title: t('Event') },
     },
     defaultTitleSuffix: t('BullEx'),
   }

@@ -63,10 +63,10 @@ const UserMenu = () => {
           {hasPendingTransactions && <RefreshIcon spin />}
         </UserMenuItem>
         <UserMenuDivider />
-        <NextLink href="/account" passHref>
-          <UserMenuItem as="a">{t('Account')}</UserMenuItem>  {/* Menghilangkan kurung yang tidak perlu */}
+        {/* <NextLink href="/account" passHref>
+          <UserMenuItem as="a">{t('Account')}</UserMenuItem>
         </NextLink>
-        <UserMenuDivider />
+        <UserMenuDivider /> */}
         <UserMenuItem as="button" onClick={logout}>
           <Flex alignItems="center" justifyContent="space-between" width="100%">
             {t('Disconnect')}

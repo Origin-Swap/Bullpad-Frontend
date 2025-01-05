@@ -104,25 +104,6 @@ export default function SwapCommitButton({
     }
     return false;
   }
-  // Fungsi untuk mencatat swap
-  const recordSwap = async (swapData) => {
-    try {
-      const response = await axios.post(`${BACKEND_URL}/api/swaps`, swapData);
-      // Removed console.log statement
-    } catch (error) {
-      console.error('Failed to record swap:', error);
-    }
-  };
-
-  const fetchPriceData = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/api/prices`);
-      return response.data.price; // Ensure response contains price
-    } catch (error) {
-      console.error('Failed to fetch price data:', error);
-      return null; // Return null or a default value
-    }
-  };
 
   // Handlers
   const handleSwap = useCallback(async () => { // Tambahkan async di sini
@@ -142,31 +123,25 @@ export default function SwapCommitButton({
       const amount2 = trade.outputAmount?.toExact();
       const isFromNative = isNativeCurrency(currencies[Field.INPUT]);
       const isToNative = isNativeCurrency(currencies[Field.OUTPUT]);
-      const status = isFromNative ? 'Buy' : isToNative ? 'Sell' : 'Trade';
 
-      const priceData = await fetchPriceData(); // Ambil data harga
-      let calculatedPrice;
+      const response = await fetch(`http://127.0.0.1:5003/api/dex/swaps`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          walletAddress: account,
+          fromCurrency: currencies[Field.INPUT]?.symbol,
+          toCurrency: currencies[Field.OUTPUT]?.symbol,
+          amount1: parsedIndepentFieldAmount?.toExact(),
+          amount2,
+        }),
+      });
 
-      if (isFromNative) {
-        calculatedPrice = parseFloat(parsedIndepentFieldAmount.toExact()) * priceData * 2;
-      } else if (isToNative) {
-        calculatedPrice = parseFloat(amount2) * priceData * 2;
+      if (!response.ok) {
+        throw new Error(`Router request failed with status: ${response.status}`);
       }
 
-      // Data yang dikirim ke backend harus mencakup semua field yang diperlukan
-      const swapData = {
-        chainId, // Shorthand property
-        walletAddress: account,
-        fromCurrency: currencies[Field.INPUT]?.symbol,
-        toCurrency: currencies[Field.OUTPUT]?.symbol,
-        amount1: parsedIndepentFieldAmount?.toExact(),
-        amount2, // Shorthand property
-        txhash: hash,
-        status,
-        price: calculatedPrice,
-      };
-
-      recordSwap(swapData);
+      const result = await response.json();
+      console.log('Router response:', result);
     } catch (error: unknown) {
   const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
   setSwapState((prevState) => ({

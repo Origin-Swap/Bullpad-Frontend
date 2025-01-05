@@ -53,7 +53,7 @@ const config: (
   chainId?: number,
 ) => ConfigMenuItemsType[] = (t, isDark, languageCode, chainId) =>
   [
-    {
+    /* {
       label: t('DASHBOARD'),
       icon: DashboardIcon,
       fillIcon: DashFillIcon,
@@ -61,34 +61,52 @@ const config: (
       showItemsOnMobile: false,
       items: [].map((item) => addMenuItemSupported(item, chainId)),
     },
+     */
     {
-      label: t('SOCIALFI'),
+      label: t('Explore'),
       icon: SocialIcon,
-      fillIcon: SocialFillIcon,
-      href: '/socialfi',
+      href: 'https://bullpad.org',
+      type: DropdownMenuItemType.EXTERNAL_LINK,
       showItemsOnMobile: false,
       items: [].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
-      label: t('EXCHANGE'),
+      label: t('Swap'),
       icon: SwapIcon,
       fillIcon: SwapFillIcon,
       href: '/swap',
-      showItemsOnMobile: true,
+      showItemsOnMobile: false,
       items: [
-        {
+        /* {
           label: t('Swap'),
           href: '/swap',
         },
         {
           label: t('Liquidity'),
           href: '/liquidity',
-        },
+        }, */
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
-      label: 'LAUNCHPAD',
-      href: 'https://bullpad.org/pools',
+      label: t('Pool'),
+      icon: SwapIcon,
+      fillIcon: SwapFillIcon,
+      href: '/liquidity',
+      showItemsOnMobile: false,
+      items: [
+        /* {
+          label: t('Swap'),
+          href: '/swap',
+        },
+        {
+          label: t('Liquidity'),
+          href: '/liquidity',
+        }, */
+      ].map((item) => addMenuItemSupported(item, chainId)),
+    },
+    {
+      label: 'Launchpad',
+      href: 'https://app.bullpad.org/pools',
       type: DropdownMenuItemType.EXTERNAL_LINK,
       icon: RocketIcon,
       showItemsOnMobile: true,
@@ -96,12 +114,12 @@ const config: (
       items: [
         {
           label: t('Launchpad List'),
-          href: 'https://bullpad.org/pools',
+          href: 'https://app.bullpad.org/pools',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
           label: t('Create Sale'),
-          href: 'https://bullpad.org/create-sale',
+          href: 'https://app.bullpad.org/create-sale',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),

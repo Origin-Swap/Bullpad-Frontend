@@ -75,7 +75,7 @@ enum Steps {
 
 const recordAdd = async (liquidityData) => {
   try {
-    const response = await axios.post(`${BACKEND_URL}/api/add`, liquidityData);
+    const response = await axios.post(`${BACKEND_URL}/api/dex/add`, liquidityData);
     // Removed console.log statement
   } catch (error) {
     console.error('Failed to add liquidity:', error);
