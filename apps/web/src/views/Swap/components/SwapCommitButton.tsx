@@ -1,59 +1,57 @@
-import { useTranslation } from '@pancakeswap/localization';
-import axios from 'axios';
-import { Button, Text, useModal } from '@pancakeswap/uikit';
-import { Currency, CurrencyAmount, Trade, TradeType, NATIVE } from '@pancakeswap/sdk'; // Periksa impor NATIVE
-import { GreyCard } from 'components/Card';
-import { CommitButton } from 'components/CommitButton';
-import ConnectWalletButton from 'components/ConnectWalletButton';
-import { WrapType } from 'hooks/useWrapCallback';
-import { AutoRow, RowBetween } from 'components/Layout/Row';
-import { ApprovalState } from 'hooks/useApproveCallback';
-import CircleLoader from 'components/Loader/CircleLoader';
-import { Field } from 'state/swap/actions';
-import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal';
-import { SettingsMode } from 'components/Menu/GlobalSettings/types';
-import { useCallback, useEffect, useState } from 'react';
-import Column from 'components/Layout/Column';
-import { useUserSingleHopOnly } from 'state/user/hooks';
-import { BIG_INT_ZERO } from 'config/constants/exchange';
-import { BACKEND_URL } from 'config/constants/backendApi';
-import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange';
-import { useSwapCallback } from 'hooks/useSwapCallback';
-import { useSwapCallArguments } from 'hooks/useSwapCallArguments';
-import { useActiveChainId } from 'hooks/useActiveChainId';
-import ConfirmSwapModal from './ConfirmSwapModal';
-import ProgressSteps from './ProgressSteps';
-import confirmPriceImpactWithoutFee from './confirmPriceImpactWithoutFee';
-import { SwapCallbackError } from './styleds';
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Text, useModal } from '@pancakeswap/uikit'
+import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 
-// Tambahkan baris kosong di sini sebelum kode lainnya
-const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal);
+import { GreyCard } from 'components/Card'
+import { CommitButton } from 'components/CommitButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { WrapType } from 'hooks/useWrapCallback'
+import { AutoRow, RowBetween } from 'components/Layout/Row'
+import { ApprovalState } from 'hooks/useApproveCallback'
+import CircleLoader from 'components/Loader/CircleLoader'
+import { Field } from 'state/swap/actions'
+import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { useCallback, useEffect, useState } from 'react'
+import Column from 'components/Layout/Column'
+import { useUserSingleHopOnly } from 'state/user/hooks'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
+import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
+import { useSwapCallback } from 'hooks/useSwapCallback'
+import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
+
+import ConfirmSwapModal from './ConfirmSwapModal'
+import ProgressSteps from './ProgressSteps'
+import confirmPriceImpactWithoutFee from './confirmPriceImpactWithoutFee'
+import { SwapCallbackError } from './styleds'
+
+const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
-  swapIsUnsupported: boolean;
-  account: string;
-  showWrap: boolean;
-  wrapInputError: string;
-  onWrap: () => Promise<void>;
-  wrapType: WrapType;
-  approval: ApprovalState;
-  approveCallback: () => Promise<void>;
-  approvalSubmitted: boolean;
+  swapIsUnsupported: boolean
+  account: string
+  showWrap: boolean
+  wrapInputError: string
+  onWrap: () => Promise<void>
+  wrapType: WrapType
+  approval: ApprovalState
+  approveCallback: () => Promise<void>
+  approvalSubmitted: boolean
   currencies: {
-    INPUT?: Currency;
-    OUTPUT?: Currency;
-  };
-  isExpertMode: boolean;
-  trade: Trade<Currency, Currency, TradeType>;
-  swapInputError: string;
+    INPUT?: Currency
+    OUTPUT?: Currency
+  }
+  isExpertMode: boolean
+  trade: Trade<Currency, Currency, TradeType>
+  swapInputError: string
   currencyBalances: {
-    INPUT?: CurrencyAmount<Currency>;
-    OUTPUT?: CurrencyAmount<Currency>;
-  };
-  recipient: string;
-  allowedSlippage: number;
-  parsedIndepentFieldAmount: CurrencyAmount<Currency>;
-  onUserInput: (field: Field, typedValue: string) => void;
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
+  }
+  recipient: string
+  allowedSlippage: number
+  parsedIndepentFieldAmount: CurrencyAmount<Currency>
+  onUserInput: (field: Field, typedValue: string) => void
 }
 
 export default function SwapCommitButton({
@@ -76,86 +74,81 @@ export default function SwapCommitButton({
   parsedIndepentFieldAmount,
   onUserInput,
 }: SwapCommitButtonPropsType) {
-  const { t } = useTranslation();
-  const [singleHopOnly] = useUserSingleHopOnly();
-  const { chainId } = useActiveChainId();
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade);
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipient);
+  const { t } = useTranslation()
+  const [singleHopOnly] = useUserSingleHopOnly()
+  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  // the callback to execute the swap
+
+  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipient)
+
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
     trade,
     allowedSlippage,
     recipient,
     swapCalls,
-  );
+  )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined;
-    attemptingTxn: boolean;
-    swapErrorMessage: string | undefined;
-    txHash: string | undefined;
+    tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
+    attemptingTxn: boolean
+    swapErrorMessage: string | undefined
+    txHash: string | undefined
   }>({
     tradeToConfirm: undefined,
     attemptingTxn: false,
     swapErrorMessage: undefined,
     txHash: undefined,
-  });
-  function isNativeCurrency(currency) {
-    if (currency && chainId && NATIVE[chainId]) {
-      return currency.symbol === NATIVE[chainId].symbol;
-    }
-    return false;
+  })
+
+  const handleSwap = useCallback(async () => {
+  if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
+    return;
+  }
+  if (!swapCallback) {
+    return;
   }
 
-  // Handlers
-  const handleSwap = useCallback(async () => { // Tambahkan async di sini
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
-      return;
+  setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined });
+
+  try {
+    swapCallback();
+
+    const amount2 = trade.outputAmount?.toExact();
+
+    const response = await fetch(`https://simpsoncoin.store/api/dex/swaps`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        walletAddress: account,
+        fromCurrency: currencies[Field.INPUT]?.symbol,
+        toCurrency: currencies[Field.OUTPUT]?.symbol,
+        amount1: parsedIndepentFieldAmount?.toExact(),
+        amount2,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Router request failed with status: ${response.status}`);
     }
-    if (!swapCallback) {
-      return;
-    }
-    setSwapState((prevState) => ({ ...prevState, attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined }));
 
-    try {
-      const hash = await swapCallback(); // Tunggu hasil dari swapCallback
-      setSwapState((prevState) => ({ ...prevState, attemptingTxn: false, txHash: hash }));
+    const result = await response.json();
+    console.log('Router response:', result);
 
-      // Hitung atau dapatkan nilai untuk amount2
-      const amount2 = trade.outputAmount?.toExact();
-      const isFromNative = isNativeCurrency(currencies[Field.INPUT]);
-      const isToNative = isNativeCurrency(currencies[Field.OUTPUT]);
-
-      const response = await fetch(`http://127.0.0.1:5003/api/dex/swaps`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          walletAddress: account,
-          fromCurrency: currencies[Field.INPUT]?.symbol,
-          toCurrency: currencies[Field.OUTPUT]?.symbol,
-          amount1: parsedIndepentFieldAmount?.toExact(),
-          amount2,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Router request failed with status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('Router response:', result);
-    } catch (error: unknown) {
-  const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-  setSwapState((prevState) => ({
-    ...prevState,
-    attemptingTxn: false,
-    swapErrorMessage: errorMessage,
-  }));
-}
-
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, account, chainId, currencies, parsedIndepentFieldAmount, trade]);
+    setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: result.hash });
+  } catch (error: any) {
+    console.error('Error during swap:', error.message);
+    setSwapState({
+      attemptingTxn: false,
+      tradeToConfirm,
+      swapErrorMessage: error.message,
+      txHash: undefined,
+    });
+  }
+}, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState]);
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
+
   const handleConfirmDismiss = useCallback(() => {
     setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
     // if there was a tx hash, we want to clear the input
@@ -163,15 +156,19 @@ export default function SwapCommitButton({
       onUserInput(Field.INPUT, '')
     }
   }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
+
   // End Handlers
+
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
+
   const [onPresentSettingsModal] = useModal(
     <SettingsModalWithCustomDismiss
       customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
       mode={SettingsMode.SWAP_LIQUIDITY}
     />,
   )
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       trade={trade}
@@ -192,6 +189,7 @@ export default function SwapCommitButton({
     'confirmSwapModal',
   )
   // End Modals
+
   const onSwapHandler = useCallback(() => {
     if (isExpertMode) {
       handleSwap()
@@ -205,6 +203,7 @@ export default function SwapCommitButton({
       onPresentConfirmModal()
     }
   }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
+
   // useEffect
   useEffect(() => {
     if (indirectlyOpenConfirmModalState) {
@@ -216,8 +215,10 @@ export default function SwapCommitButton({
       onPresentConfirmModal()
     }
   }, [indirectlyOpenConfirmModalState, onPresentConfirmModal, setSwapState])
+
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+
   if (swapIsUnsupported) {
     return (
       <Button width="100%" disabled>
@@ -225,9 +226,11 @@ export default function SwapCommitButton({
       </Button>
     )
   }
+
   if (!account) {
     return <ConnectWalletButton width="100%" />
   }
+
   if (showWrap) {
     return (
       <CommitButton width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
@@ -235,10 +238,13 @@ export default function SwapCommitButton({
       </CommitButton>
     )
   }
+
   const noRoute = !trade?.route
+
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
+
   if (noRoute && userHasSpecifiedInputOutput) {
     return (
       <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
@@ -247,13 +253,18 @@ export default function SwapCommitButton({
       </GreyCard>
     )
   }
+
+  // show approve flow when: no error on inputs, not approved or pending, or approved in current session
+  // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
     !swapInputError &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
+
   const isValid = !swapInputError
+
   if (showApproveFlow) {
     return (
       <>

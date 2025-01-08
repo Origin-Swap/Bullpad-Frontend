@@ -47,11 +47,11 @@ export const BULL_SIRE = new ERC20Token(
 
 export const BULL_MAINNET = new ERC20Token(
   ChainId.SIRE_MAINNET,
-  '0x8f1593267066a069d79F18a6520d519d4530bF04',
+  '0xFD39ee1A6d4F5e190A994D70E501E79B4b99Cf43',
   18,
-  'BULL',
-  'BullPad',
-  'https://bullpad.org/',
+  'xBULL',
+  'BabyBull Token',
+  'https://bullpad.org',
 )
 
 export const USDC_BSC = new ERC20Token(

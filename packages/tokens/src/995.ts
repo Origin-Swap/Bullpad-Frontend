@@ -4,10 +4,10 @@ export const sireMainnet = {
   weth: WBNB[ChainId.SIRE_MAINNET],
   bull: new ERC20Token(
   ChainId.SIRE_MAINNET,
-  '0xc6460D248CF1B085069C5663D2123539aE6a1E0d',
+  '0xFD39ee1A6d4F5e190A994D70E501E79B4b99Cf43',
   18,
-  'BULL',
-  'BullPad Token',
+  'xBULL',
+  'BabyBull Token',
   'https://bullpad.org',
 ),
 }
