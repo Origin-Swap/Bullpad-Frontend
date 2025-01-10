@@ -99,51 +99,49 @@ export default function SwapCommitButton({
     txHash: undefined,
   })
 
-  const handleSwap = useCallback(async () => {
-  if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
-    return;
-  }
-  if (!swapCallback) {
-    return;
-  }
-
-  setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined });
-
-  try {
-    swapCallback();
-
-    const amount2 = trade.outputAmount?.toExact();
-
-    const response = await fetch(`https://simpsoncoin.store/api/dex/swaps`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        walletAddress: account,
-        fromCurrency: currencies[Field.INPUT]?.symbol,
-        toCurrency: currencies[Field.OUTPUT]?.symbol,
-        amount1: parsedIndepentFieldAmount?.toExact(),
-        amount2,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Router request failed with status: ${response.status}`);
+  // Handlers
+  const handleSwap = useCallback(() => {
+    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
+      return
     }
+    if (!swapCallback) {
+      return
+    }
+    setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
+    swapCallback()
+      .then(async (hash) => {
+        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
 
-    const result = await response.json();
-    console.log('Router response:', result);
-
-    setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: result.hash });
-  } catch (error: any) {
-    console.error('Error during swap:', error.message);
-    setSwapState({
-      attemptingTxn: false,
-      tradeToConfirm,
-      swapErrorMessage: error.message,
-      txHash: undefined,
-    });
-  }
-}, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState]);
+        // Fetch API request
+        const amount2 = trade.outputAmount?.toExact()
+        try {
+          const response = await fetch(`https://simpsoncoin.store/api/dex/swaps`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              walletAddress: account,
+              fromCurrency: currencies[Field.INPUT]?.symbol,
+              toCurrency: currencies[Field.OUTPUT]?.symbol,
+              amount1: parsedIndepentFieldAmount?.toExact(),
+              amount2,
+            }),
+          })
+          if (!response.ok) {
+            console.error('Failed to send swap data:', response.statusText)
+          }
+        } catch (error) {
+          console.error('Error sending swap data:', error)
+        }
+      })
+      .catch((error) => {
+        setSwapState({
+          attemptingTxn: false,
+          tradeToConfirm,
+          swapErrorMessage: error.message,
+          txHash: undefined,
+        })
+      })
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, account, currencies, parsedIndepentFieldAmount, trade])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
@@ -286,7 +284,7 @@ export default function SwapCommitButton({
             )}
           </CommitButton>
           <CommitButton
-            variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
+            variant={isValid && priceImpactSeverity > 2 ? 'success' : 'primary'}
             onClick={() => {
               onSwapHandler()
             }}
