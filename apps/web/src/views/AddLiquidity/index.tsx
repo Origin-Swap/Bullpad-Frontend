@@ -316,31 +316,41 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                   console.log('Liquidity Data to record:', liquidityData);
                   recordAdd(liquidityData); // Kirim data termasuk txHash
 
-                  setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash });
+                  setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
+                  const symbolA = currencies[Field.CURRENCY_A]?.symbol
+                  const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+                  const symbolB = currencies[Field.CURRENCY_B]?.symbol
+                  const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
                   addTransaction(response, {
-                      summary: `Add ${liquidityData.amountA} ${liquidityData.symbolA} and ${liquidityData.amountB} ${liquidityData.symbolB}`,
-                      translatableSummary: {
-                          text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
-                          data: { amountA: liquidityData.amountA, symbolA: liquidityData.symbolA, amountB: liquidityData.amountB, symbolB: liquidityData.symbolB },
-                      },
-                      type: 'add-liquidity',
-                  });
+                    summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+                    translatableSummary: {
+                      text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+                      data: { amountA, symbolA, amountB, symbolB },
+                    },
+                    type: 'add-liquidity',
+                  })
 
                   if (pair) {
-                      addPair(pair);
+                    addPair(pair)
                   }
-              })
-          )
-          .catch((err) => {
-              setLiquidityState({
+                }),
+              )
+              .catch((err) => {
+                if (err && err.code !== 4001) {
+                  logError(err)
+                  console.error(`Add Liquidity failed`, err, args, value)
+                }
+                setLiquidityState({
                   attemptingTxn: false,
-                  liquidityErrorMessage: transactionErrorToUserReadableMessage(err, t), // Pass the translation function here
-                  txHash: undefined
-              });
-              logError(err);
-          });
-  }
+                  liquidityErrorMessage:
+                    err && err.code !== 4001
+                      ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
+                      : undefined,
+                  txHash: undefined,
+                })
+              })
+          }
 
 
   const pendingText = preferZapInstead

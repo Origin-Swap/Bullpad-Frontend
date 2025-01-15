@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
+import axios from 'axios';
 import { Button, Text, useModal } from '@pancakeswap/uikit'
 import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
-
+import { BACKEND_URL } from 'config/constants/backendApi';
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -99,6 +100,15 @@ export default function SwapCommitButton({
     txHash: undefined,
   })
 
+  const recordSwap = async (swapData) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/dex/swaps`, swapData);
+      // Removed console.log statement
+    } catch (error) {
+      console.error('Failed to record swap:', error);
+    }
+  };
+
   // Handlers
   const handleSwap = useCallback(() => {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
@@ -109,29 +119,18 @@ export default function SwapCommitButton({
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
-      .then(async (hash) => {
-        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
+      .then((hash) => {
+        const amount2 = trade.outputAmount?.toExact();
+        const swapData = {
+          walletAddress: account,
+          fromCurrency: currencies[Field.INPUT]?.symbol,
+          toCurrency: currencies[Field.OUTPUT]?.symbol,
+          amount1: parsedIndepentFieldAmount?.toExact(),
+          amount2,
+        };
 
-        // Fetch API request
-        const amount2 = trade.outputAmount?.toExact()
-        try {
-          const response = await fetch(`https://simpsoncoin.store/api/dex/swaps`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              walletAddress: account,
-              fromCurrency: currencies[Field.INPUT]?.symbol,
-              toCurrency: currencies[Field.OUTPUT]?.symbol,
-              amount1: parsedIndepentFieldAmount?.toExact(),
-              amount2,
-            }),
-          })
-          if (!response.ok) {
-            console.error('Failed to send swap data:', response.statusText)
-          }
-        } catch (error) {
-          console.error('Error sending swap data:', error)
-        }
+        recordSwap(swapData);
+        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
       })
       .catch((error) => {
         setSwapState({
@@ -141,7 +140,7 @@ export default function SwapCommitButton({
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, account, currencies, parsedIndepentFieldAmount, trade])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
